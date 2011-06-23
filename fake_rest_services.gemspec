@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rake'
 
   Gem.post_install do
-    require 'fake_rest_services'
+    require File.expand_path('../fake_rest_services', __FILE__)
     require 'rake'
     require 'sinatra/activerecord/rake'
 
