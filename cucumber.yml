@@ -1,0 +1,3 @@
+default: --tags ~@long
+long: --tags @long
+wip: --tags @wip
