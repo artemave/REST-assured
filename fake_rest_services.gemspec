@@ -15,8 +15,7 @@ Gem::Specification.new do |s|
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  #s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.bindir = '.'
+  s.bindir        = '.'
   s.executables   = ['fake_rest_services.rb']
   s.require_paths = ['.']
 
@@ -29,4 +28,13 @@ Gem::Specification.new do |s|
   s.add_dependency 'sinatra-activerecord'
   s.add_dependency 'sqlite3'
   s.add_dependency 'rake'
+
+  Gem.post_install do
+    require 'fake_rest_services'
+    require 'rake'
+    require 'sinatra/activerecord/rake'
+
+    Rake::Task['db:migrate'].invoke
+  end
 end
+
