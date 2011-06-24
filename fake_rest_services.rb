@@ -9,6 +9,7 @@ ActiveRecord::Base.establish_connection(
   database: File.expand_path('../production.db', __FILE__)
 )
 
+$:.push File.expand_path('../lib', __FILE__)
 require 'models/fixture'
 
 #get '/dsp/assets/search' do

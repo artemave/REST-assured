@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
+$:.push File.dirname(__FILE__)
 
 Gem::Specification.new do |s|
   s.name        = "fake_rest_services"
@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rake'
 
   Gem.post_install do
-    require File.expand_path('../fake_rest_services', __FILE__)
+    require 'fake_rest_services'
     require 'rake'
     require 'sinatra/activerecord/rake'
 
