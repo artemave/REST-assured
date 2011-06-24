@@ -1,9 +1,10 @@
 # -*- encoding: utf-8 -*-
-$:.push File.dirname(__FILE__)
+$:.push File.expand_path("../lib", __FILE__)
+require 'fake_rest_services/version'
 
 Gem::Specification.new do |s|
   s.name        = "fake_rest_services"
-  s.version     = '0.1'
+  s.version     = FakeRestServices::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ['Artem Avetisyan', 'Jamal Natour']
   s.email       = ['artem.avetisyan@bbc.co.uk', 'jamal.natour@bbc.co.uk']
@@ -15,9 +16,8 @@ Gem::Specification.new do |s|
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.bindir        = '.'
-  s.executables   = ['fake_rest_services.rb']
-  s.require_paths = ['.']
+  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.require_paths = ['lib']
 
   s.add_development_dependency 'cucumber'
   s.add_development_dependency 'rspec'
