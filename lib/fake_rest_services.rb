@@ -5,7 +5,11 @@ require 'fake_rest_services/models/fixture'
 module FakeRestServices
   class Application < Sinatra::Base
     post '/fixtures' do
-      Fixture.create(url: params['url'], content: params['content'])
+      Fixture.create(url: params['url'], content: params['content']) and status 200
+    end
+
+    delete '/fixtures/all' do
+      Fixture.destroy_all and status 200
     end
 
     get /.*/ do

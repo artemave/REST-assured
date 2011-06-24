@@ -1,7 +1,6 @@
 Given /^I register "([^"]*)" as url and "([^"]*)" as response content$/ do |url, content|
-  n = Fixture.where(url: url, content: content).count
   post '/fixtures', { url: url, content: content }
-  Fixture.where(url: url, content: content).count.should == n + 1
+  last_response.should be_ok
 end
 
 When /^I request "([^"]*)"$/ do |url|
@@ -20,4 +19,19 @@ end
 Then /^it should redirect to "([^"]*)"$/ do |real_api_url|
   follow_redirect!
   last_response.header['Location'].should == real_api_url
+end
+
+Given /^there are some fixtures$/ do
+  [['url1', 'content1'], ['url2', 'content2'], ['url3', 'content3']].each do |fixture|
+    Fixture.create(url: fixture[0], content: fixture[1])
+  end
+end
+
+When /^I delete all fixtures$/ do
+  delete '/fixtures/all'
+  last_response.should be_ok
+end
+
+Then /^there should be no fixtures$/ do
+  Fixture.count.should == 0
 end

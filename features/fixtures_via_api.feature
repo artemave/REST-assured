@@ -31,3 +31,8 @@ Feature: manage fixtures via api
         | /api/something                 | https://api.int.bbc.co.uk/api/something                 |
         | /esp-service/something?p=2&a=5 | http://open.int.bbc.co.uk/esp-service/something?p=2&a=5 |
         | /esp-service/something         | http://open.int.bbc.co.uk/esp-service/something         |
+
+  Scenario: clear fixtures
+    Given there are some fixtures
+    When I delete all fixtures
+    Then there should be no fixtures
