@@ -3,6 +3,6 @@ require 'sinatra/activerecord'
 
 ActiveRecord::Base.establish_connection(
   adapter: "sqlite3",
-  database: File.expand_path('../production.db', __FILE__)
+  database: File.expand_path('../../db/production.db', __FILE__)
 )
 
