@@ -1,5 +1,5 @@
 require 'sinatra/base'
-require 'fake_rest_services/initialize'
+require 'fake_rest_services/config'
 require 'fake_rest_services/models/fixture'
 
 module FakeRestServices
