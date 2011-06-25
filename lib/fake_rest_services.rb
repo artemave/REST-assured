@@ -6,11 +6,11 @@ require 'fake_rest_services/models/redirect'
 module FakeRestServices
   class Application < Sinatra::Base
     post '/fixtures' do
-      Fixture.create(url: params['url'], content: params['content']) and status 200
+      Fixture.create(url: params['url'], content: params['content'])
     end
 
     delete '/fixtures/all' do
-      Fixture.destroy_all and status 200
+      Fixture.delete_all
     end
 
     post '/redirects' do
@@ -18,11 +18,11 @@ module FakeRestServices
     end
 
     get /.*/ do
-      Fixture.where(url: request.fullpath).last.try(:content) or perform_redirect(request) or status 404
+      Fixture.where(url: request.fullpath).last.try(:content) or try_redirect(request) or status 404
     end
 
     private
-      def perform_redirect(request)
+      def try_redirect(request)
         r = Redirect.all.find do |r|
           request.fullpath =~ /#{r.pattern}/
         end
