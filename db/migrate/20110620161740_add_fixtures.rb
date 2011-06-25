@@ -4,7 +4,6 @@ class AddFixtures < ActiveRecord::Migration
       t.string  :url
       t.text    :content 
     end
-
   end
 
   def self.down

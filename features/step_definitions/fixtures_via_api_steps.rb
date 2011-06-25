@@ -5,20 +5,10 @@ end
 
 When /^I request "([^"]*)"$/ do |url|
   get url
-  @last_response = last_response
 end
 
 Then /^I should get "([^"]*)" in response content$/ do |content|
-  @last_response.body.should == content
-end
-
-Given /^there is no fixtures for "([^"]*)"$/ do |url|
-  Fixture.where(url: url).destroy_all
-end
-
-Then /^it should redirect to "([^"]*)"$/ do |real_api_url|
-  follow_redirect!
-  last_response.header['Location'].should == real_api_url
+  last_response.body.should == content
 end
 
 Given /^there are some fixtures$/ do
