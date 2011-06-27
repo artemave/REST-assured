@@ -5,6 +5,8 @@ require 'fake_rest_services/models/redirect'
 
 module FakeRestServices
   class Application < Sinatra::Base
+    enable :logging
+
     post '/fixtures' do
       Fixture.create(url: params['url'], content: params['content'])
     end
