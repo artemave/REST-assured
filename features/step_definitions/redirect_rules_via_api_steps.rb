@@ -10,8 +10,8 @@ Then /^I should get (\d+)$/ do |code|
   last_response.status.should.to_s == code
 end
 
-When /^I register redirect rule "([^"]*)" "([^"]*)"$/ do |pattern, url|
-  post '/redirects', { pattern: pattern, to: url }
+When /^I register redirect with pattern "([^"]*)" and uri "([^"]*)"$/ do |pattern, uri|
+  post '/redirects', { pattern: pattern, to: uri }
   last_response.should be_ok
 end
 
