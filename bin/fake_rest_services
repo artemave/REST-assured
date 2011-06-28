@@ -1,6 +1,19 @@
 #!/usr/bin/env ruby
 
 $:.push File.expand_path('../../lib', __FILE__)
+
+require 'optparse'
+require 'fake_rest_services/options'
+
+OptionParser.new do |opts|
+  opts.on('-d', '--database FILENAME') do |fname|
+    FakeRestServices::Options.database = fname
+  end
+  opts.on('-p', '--port PORT', Integer) do |port|
+    FakeRestServices::Options.port = port
+  end
+end.parse!
+
 require 'fake_rest_services'
 
 FakeRestServices::Application.run!
