@@ -7,10 +7,10 @@ require 'fake_rest_services/options'
 
 OptionParser.new do |opts|
   opts.on('-d', '--database FILENAME') do |fname|
-    FakeRestServices::Options.database = fname
+    FakeRestServices::Options[:database] = fname
   end
   opts.on('-p', '--port PORT', Integer) do |port|
-    FakeRestServices::Options.port = port
+    FakeRestServices::Options[:port] = port
   end
 end.parse!
 

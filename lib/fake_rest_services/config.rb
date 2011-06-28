@@ -3,7 +3,7 @@ require 'fake_rest_services/options'
 
 ActiveRecord::Base.establish_connection(
   adapter: "sqlite3",
-  database: FakeRestServices::Options.database || ':memory:'
+  database: FakeRestServices::Options[:database]
 )
 
 ActiveRecord::Migrator.migrate(
