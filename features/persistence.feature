@@ -1,4 +1,3 @@
-@wip
 Feature: Persistence
   In order to persist fixtrures/redirects between service restarts
   As a developer

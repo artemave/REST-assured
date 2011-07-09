@@ -1,6 +1,6 @@
 Given /^I (?:re)?start service without \-\-database option$/ do
-  FakeRestServices::Options[:database] = ':memory:' #default value
-  load 'fake_rest_services/config.rb'
+  AppConfig[:database] = ':memory:' #default value
+  load 'fake_rest_services/init.rb'
 end
 
 Then /^I should get "([^""]*)" in response status$/ do |status|
@@ -8,6 +8,6 @@ Then /^I should get "([^""]*)" in response status$/ do |status|
 end
 
 Given /^I (?:re)?start service with \-\-database "([^"]*)" option$/ do |db_path|
-  FakeRestServices::Options[:database] = db_path
-  load 'fake_rest_services/config.rb'
+  AppConfig[:database] = db_path
+  load 'fake_rest_services/init.rb'
 end

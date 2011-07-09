@@ -3,14 +3,14 @@
 $:.push File.expand_path('../../lib', __FILE__)
 
 require 'optparse'
-require 'fake_rest_services/options'
+require 'fake_rest_services/config'
 
 OptionParser.new do |opts|
   opts.on('-d', '--database FILENAME') do |fname|
-    FakeRestServices::Options[:database] = fname
+    AppConfig[:database] = fname
   end
   opts.on('-p', '--port PORT', Integer) do |port|
-    FakeRestServices::Options[:port] = port
+    AppConfig[:port] = port
   end
 end.parse!
 

@@ -1,12 +1,15 @@
 require 'sinatra/base'
-require 'fake_rest_services/config'
+require 'fake_rest_services/init'
 require 'fake_rest_services/models/fixture'
 require 'fake_rest_services/models/redirect'
+require 'fake_rest_services/web_interface'
 
 module FakeRestServices
   class Application < Sinatra::Base
     enable :logging
-    set :port, Options[:port]
+    set :port, AppConfig[:port]
+
+    include WebInterface
 
     post '/fixtures' do
       Fixture.create(url: params['url'], content: params['content'])

@@ -1,11 +1,4 @@
-require 'sinatra/activerecord'
-require 'fake_rest_services/options'
-
-ActiveRecord::Base.establish_connection(
-  adapter: "sqlite3",
-  database: FakeRestServices::Options[:database]
-)
-
-ActiveRecord::Migrator.migrate(
-  File.expand_path('../../../db/migrate', __FILE__)
-)
+AppConfig = {
+  database: ':memory:',
+  port: 4578
+}

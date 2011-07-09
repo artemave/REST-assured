@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+require "irb"
+require 'bundler/setup'
+
+$:.push File.expand_path('../../lib', __FILE__)
+
+require 'fake_rest_services/config'
+AppConfig[:database] = File.expand_path('../../db/development.db', __FILE__)
+
+require 'fake_rest_services'
+
+IRB.start(__FILE__)
