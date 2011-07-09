@@ -1,0 +1,6 @@
+!!!
+%html
+  %head
+    %title= request.path_info.sub(%r{.*/([^/]*)$}, '\\1')
+  %body
+    = yield
