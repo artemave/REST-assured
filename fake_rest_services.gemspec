@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'sinatra'
   s.add_dependency 'haml'
   s.add_dependency 'sass'
-  s.add_dependency 'sinatra-static-assets'
+  #s.add_dependency 'sinatra-static-assets'
   s.add_dependency 'thin'
   s.add_dependency 'activerecord', '~> 3.0.0'
   s.add_dependency 'sinatra-activerecord'

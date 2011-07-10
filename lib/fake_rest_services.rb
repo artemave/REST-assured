@@ -1,4 +1,5 @@
 require 'sinatra/base'
+#require 'sinatra/static_assets'
 require 'fake_rest_services/init'
 require 'fake_rest_services/models/fixture'
 require 'fake_rest_services/models/redirect'
@@ -8,6 +9,9 @@ module FakeRestServices
   class Application < Sinatra::Base
     enable :logging
     set :port, AppConfig[:port]
+    set :public, File.expand_path('../../public', __FILE__)
+
+    #register Sinatra::StaticAssets
 
     include WebInterface
 

@@ -2,5 +2,8 @@
 %html
   %head
     %title= request.path_info.sub(%r{.*/([^/]*)$}, '\\1')
-  %body
+    %link{href: '/css/inuit.css', rel: 'stylesheet'}
+    %link{href: '/css/grid.inuit.css', rel: 'stylesheet'}
+    %link{href: '/css/base.css', rel: 'stylesheet'}
+  %body.wrapper
     = yield

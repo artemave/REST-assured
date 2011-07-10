@@ -1,5 +1,11 @@
 %h1 Fixtures
-.fixtures
+%table
+  %thead
+    %tr
+      %th URL
+      %th Description
+  %tbody
   - @fixtures.each do |f|
-    .url= f.url
-    .description= f.description
+    %tr
+      %td= f.url
+      %td= f.description

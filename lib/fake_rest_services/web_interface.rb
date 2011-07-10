@@ -11,8 +11,8 @@ module FakeRestServices
         haml :'fixtures/index'
       end
 
-      router.get '/stylesheet.css' do
-        scss :stylesheet
+      router.get '/css/base.css' do
+        scss :base
       end
     end
   end
