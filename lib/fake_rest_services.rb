@@ -1,30 +1,27 @@
 require 'sinatra/base'
+require 'haml'
+require 'sass'
 #require 'sinatra/static_assets'
 require 'fake_rest_services/init'
 require 'fake_rest_services/models/fixture'
 require 'fake_rest_services/models/redirect'
-require 'fake_rest_services/web_interface'
+require 'fake_rest_services/routes/fixture'
+require 'fake_rest_services/routes/redirect'
 
 module FakeRestServices
   class Application < Sinatra::Base
     enable :logging
     set :port, AppConfig[:port]
     set :public, File.expand_path('../../public', __FILE__)
+    set :haml, format: :html5
 
     #register Sinatra::StaticAssets
 
-    include WebInterface
+    include FixtureRoutes
+    include RedirectRoutes
 
-    post '/fixtures' do
-      Fixture.create(url: params['url'], content: params['content'])
-    end
-
-    delete '/fixtures/all' do
-      Fixture.delete_all
-    end
-
-    post '/redirects' do
-      Redirect.create(pattern: params['pattern'], to: params['to'])
+    get '/css/base.css' do
+      scss :base
     end
 
     get /.*/ do
