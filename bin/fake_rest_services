@@ -6,6 +6,9 @@ require 'optparse'
 require 'fake_rest_services/config'
 
 OptionParser.new do |opts|
+  opts.on('-e', '--environment production|test|development') do |env|
+    AppConfig[:environment] = env
+  end
   opts.on('-d', '--database FILENAME') do |fname|
     AppConfig[:database] = fname
   end

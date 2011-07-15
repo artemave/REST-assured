@@ -1,5 +1,6 @@
 require 'sinatra/base'
 require 'sinatra/static_assets'
+require 'sinatra/reloader'
 require 'fake_rest_services/init'
 require 'fake_rest_services/models/fixture'
 require 'fake_rest_services/models/redirect'
@@ -7,14 +8,13 @@ require 'fake_rest_services/web_interface'
 
 module FakeRestServices
   class Application < Sinatra::Base
+    set :environment, AppConfig[:environment]
     enable :logging
     set :port, AppConfig[:port]
     register Sinatra::StaticAssets
 
-    include WebInterface
-
-    post '/fixtures' do
-      Fixture.create(url: params['url'], content: params['content'])
+    configure(:development) do
+      register Sinatra::Reloader
     end
 
     delete '/fixtures/all' do

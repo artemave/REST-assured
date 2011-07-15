@@ -6,8 +6,8 @@ Gem::Specification.new do |s|
   s.name                  = "fake_rest_services"
   s.version               = FakeRestServices::VERSION
   s.platform              = Gem::Platform::RUBY
-  s.authors               = ['Artem Avetisyan', 'Jamal Natour']
-  s.email                 = ['artem.avetisyan@bbc.co.uk', 'jamal.natour@bbc.co.uk']
+  s.authors               = ['Artem Avetisyan']
+  s.email                 = ['artem.avetisyan@bbc.co.uk']
   s.homepage              = "https://github.com/artemave/fake_rest_services"
   s.summary               = %q{Sinatra webapp that allows mocking GET to any path with arbitrary content}
   #s.description          = %q{TODO: Write a gem description}
@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
 
   s.files                 = `git ls-files`.split("\n")
   s.test_files            = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables           = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.executables           = ['fake_rest_services']
   s.require_paths         = ['lib']
 
   s.add_development_dependency 'cucumber'
@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'awesome_print'
   s.add_development_dependency 'interactive_editor'
   s.add_dependency 'sinatra'
+  s.add_dependency 'sinatra-reloader'
   s.add_dependency 'haml'
   s.add_dependency 'sass'
   s.add_dependency 'sinatra-static-assets'
@@ -37,5 +38,4 @@ Gem::Specification.new do |s|
   s.add_dependency 'sqlite3'
   s.add_dependency 'rake'
 end
-
 
