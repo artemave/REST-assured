@@ -19,3 +19,27 @@ Then /^I should see existing fixtures:$/ do |fixtures|
     page.should have_content(f.description)
   end
 end
+
+Given /^I am on fixtures page$/ do
+  When "I visit fixtures page"
+end
+
+When /^I choose to create a fixture$/ do
+  find(:xpath, '//a[text()="New fixture"]').click
+end
+
+When /^I enter fixture details:$/ do |details|
+  fixture = details.hashes.first
+
+  fill_in 'Url', with: fixture['url']
+  fill_in 'Content', with: fixture['content']
+  fill_in 'Description', with: fixture['description']
+end
+
+When /^I save it$/ do
+  find('input[type="submit"]').click
+end
+
+Then /^I should see "([^"]*)"$/ do |text|
+  page.should have_content(text)
+end

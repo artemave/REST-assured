@@ -6,8 +6,23 @@ module FakeRestServices
         haml :'fixtures/index'
       end
 
+      router.get '/fixtures/new' do
+        @fixture = Fixture.new
+        haml :'fixtures/new'
+      end
+
       router.post '/fixtures' do
-        Fixture.create(url: params['url'], content: params['content'])
+        @fixture = Fixture.create(url: params['url'], content: params['content'])
+
+        if params['_ui']
+          if @fixture.errors.blank?
+            flash[:notice] = "Fixture created"
+            redirect '/fixtures'
+          else
+            flash[:error] = "Errors!"
+            haml :'fixtures/new'
+          end
+        end
       end
 
       router.delete '/fixtures/all' do

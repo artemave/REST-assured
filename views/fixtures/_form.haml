@@ -1,0 +1,19 @@
+%form{action: '/fixtures', method: 'post'}
+  %input{type: 'hidden', name: '_ui', value: 1}
+
+  %p
+    %label{for: 'fixture_url'} Url
+    %input.wide#fixture_url{type: 'text', name: 'url'}= @fixture.url
+
+  %p
+    %label{for: 'fixture_content'} Content
+    %textarea.wide#fixture_content{name: 'content', rows: 10}= @fixture.content
+
+  %p
+    %label{for: 'fixture_description'} Description
+    %textarea.wide#fixture_description{name: 'description', rows: 3}= @fixture.description
+
+  %p
+    %input{type: 'submit'}
+    |
+    %a{href: 'javascript:history.back()'} back

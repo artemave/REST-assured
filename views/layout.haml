@@ -6,4 +6,9 @@
     = stylesheet_link_tag '/css/grid.inuit.css'
     = stylesheet_link_tag '/css/base.css'
   %body.wrapper
+    - if flash[:notice]
+      .message.success= flash[:notice]
+    - elsif flash[:error]
+      .message.error= flash[:notice]
+
     = yield

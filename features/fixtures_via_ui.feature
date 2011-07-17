@@ -1,9 +1,8 @@
-Feature: manage fixtures via api
+Feature: manage fixtures via ui
   In order to use fixture data in development
   As a developer
-  I want to mock rest services my app is consuming from
+  I want to have a manual interface for managing fixtures
 
-  @wip
   Scenario: view existing fixtures
     Given the following fixtures exist:
       | url       | description  | content      |
@@ -18,12 +17,17 @@ Feature: manage fixtures via api
       | /url2/bbb | geo location |
       | /u/b?c=1  | wikipedia    |
 
-  #Scenario: add new fixture
-    #Given there are no fixtures
-    #When I register "/api/something" as url and "test content" as response content
-    #Then I should see "fixture created"
-    #And there should be one fixture
-    #And I should see "/api/something"
+  @wip
+  Scenario: add new fixture
+    Given I am on fixtures page
+    When I choose to create a fixture
+    And I enter fixture details:
+      | url       | description  | content      |
+      | /url1/aaa | twitter      | test content |
+    And I save it
+    Then I should see "Fixture created"
+    And I should see existing fixtures:
+      | url       | description  |
 
   #Scenario: add new fixture with parameters
     #Given I register "/api/something?p=3&a=5" as url and "test content" as response content

@@ -2,7 +2,9 @@ require 'sinatra/base'
 require 'haml'
 require 'sass'
 require 'sinatra/static_assets'
-require 'sinatra/reloader'
+#require 'sinatra/reloader'
+require 'rack-flash'
+require 'sinatra/partials'
 require 'fake_rest_services/init'
 require 'fake_rest_services/models/fixture'
 require 'fake_rest_services/models/redirect'
@@ -11,16 +13,22 @@ require 'fake_rest_services/routes/redirect'
 
 module FakeRestServices
   class Application < Sinatra::Base
-    set :environment, AppConfig[:environment]
     enable :logging
+
+    enable :sessions
+    use Rack::Flash, sweep: true
+
+    set :environment, AppConfig[:environment]
     set :port, AppConfig[:port]
+
     set :public, File.expand_path('../../public', __FILE__)
     set :haml, format: :html5
+    helpers Sinatra::Partials
     register Sinatra::StaticAssets
 
-    configure(:development) do
-      register Sinatra::Reloader
-    end
+    #configure(:development) do
+      #register Sinatra::Reloader
+    #end
 
     include FixtureRoutes
     include RedirectRoutes
