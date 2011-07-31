@@ -26,10 +26,6 @@ module FakeRestServices
     helpers Sinatra::Partials
     register Sinatra::StaticAssets
 
-    #configure(:development) do
-      #register Sinatra::Reloader
-    #end
-
     include FixtureRoutes
     include RedirectRoutes
 
@@ -40,6 +36,10 @@ module FakeRestServices
     get /.*/ do
       Fixture.where(url: request.fullpath).last.try(:content) or try_redirect(request) or status 404
     end
+
+    #configure(:development) do
+      #register Sinatra::Reloader
+    #end
 
     private
       def try_redirect(request)

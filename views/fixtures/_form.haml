@@ -2,11 +2,11 @@
   %input{type: 'hidden', name: '_ui', value: 1}
 
   %p
-    %label{for: 'fixture_url'} Url
+    %label{for: 'fixture_url'} Url*
     %input.wide#fixture_url{type: 'text', name: 'url'}= @fixture.url
 
   %p
-    %label{for: 'fixture_content'} Content
+    %label{for: 'fixture_content'} Content*
     %textarea.wide#fixture_content{name: 'content', rows: 10}= @fixture.content
 
   %p
