@@ -3,8 +3,8 @@ Given /^I (?:re)?start service without \-\-database option$/ do
   load 'fake_rest_services/init.rb'
 end
 
-Then /^I should get "([^""]*)" in response status$/ do |status|
-  last_response.status.to_s.should == status
+Then /^I should get (#{CAPTURE_A_NUMBER}) in response status$/ do |status|
+  last_response.status.should == status
 end
 
 Given /^I (?:re)?start service with \-\-database "([^"]*)" option$/ do |db_path|

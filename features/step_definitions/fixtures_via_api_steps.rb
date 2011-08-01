@@ -1,3 +1,17 @@
+When /^I create a fixture with "([^"]*)" as url and "([^"]*)" as response content$/ do |url, content|
+  post '/fixtures', { url: url, content: content }
+  last_response.should be_ok
+end
+
+Then /^there should be (#{CAPTURE_A_NUMBER}) fixture with "([^"]*)" as url and "([^"]*)" as response content$/ do |n, url, content|
+  Fixture.count.should == n
+  Fixture.where(url: url, content: content).count.should == 1
+end
+
+Given /^there is fixture with "([^"]*)" as url and "([^"]*)" as response content$/ do |url, content|
+  Fixture.create(url: url, content: content)
+end
+
 Given /^I register "([^"]*)" as url and "([^"]*)" as response content$/ do |url, content|
   post '/fixtures', { url: url, content: content }
   last_response.should be_ok
