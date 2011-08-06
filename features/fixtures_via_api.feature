@@ -1,4 +1,4 @@
-Feature: manage fixtures via api
+Feature: use fixtures via api
   In order to use fixture data in integration tests
   As a developer
   I want to mock rest services my app is consuming from
@@ -33,6 +33,11 @@ Feature: manage fixtures via api
       | url                | content      | content2        |
       | /api/something     | test content | another content |
       | /api/some?a=3&b=dd | more content | some text       |
+
+  Scenario: request url that does not match any fixture
+    Given there are no fixtures
+    When I request "/api/something"
+    Then I should get 404 in response status
 
   Scenario: clear fixtures
     Given there are some fixtures
