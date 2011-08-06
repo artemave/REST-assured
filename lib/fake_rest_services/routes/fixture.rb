@@ -12,7 +12,7 @@ module FakeRestServices
       end
 
       router.post '/fixtures' do
-        @fixture = Fixture.create(url: params['url'], content: params['content'])
+        @fixture = Fixture.create(url: params['url'], content: params['content'], description: params['description'])
 
         if params['_ui']
           if @fixture.errors.blank?

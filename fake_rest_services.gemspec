@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'capybara'
   s.add_development_dependency 'awesome_print'
   s.add_development_dependency 'interactive_editor'
+  s.add_development_dependency 'launchy'
   s.add_dependency 'sinatra'
   s.add_dependency 'rack-flash'
   #s.add_dependency 'sinatra-reloader'

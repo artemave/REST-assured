@@ -14,9 +14,9 @@ Then /^I should see that I am on "([^""]*)" page$/ do |name|
 end
 
 Then /^I should see existing fixtures:$/ do |fixtures|
-  Fixture.all.each do |f|
-    page.should have_content(f.url)
-    page.should have_content(f.description)
+  fixtures.hashes.each do |row|
+    page.should have_content(row[:url])
+    page.should have_content(row[:description])
   end
 end
 
