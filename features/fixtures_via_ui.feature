@@ -29,3 +29,11 @@ Feature: manage fixtures via ui
       | url           | description |
       | /url2/bb?a=b5 | google api  |
 
+  @wip
+  Scenario: choose active fixture
+    Given there are two fixtures for the same url
+    When I visit fixtures page
+    And I make first fixture active
+    Then first fixture should be served
+    When I make second fixture active
+    Then second fixture should be served

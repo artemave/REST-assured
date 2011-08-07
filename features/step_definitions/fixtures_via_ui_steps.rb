@@ -43,3 +43,21 @@ end
 Then /^I should see "([^"]*)"$/ do |text|
   page.should have_content(text)
 end
+
+Given /^there are two fixtures for the same url$/ do
+  @first = Fixture.create url: '/api/something', content: 'some content'
+  @second = Fixture.create url: '/api/something', content: 'other content'
+end
+
+When /^I make (first|second) fixture active$/ do |ord|
+  within "#fixture_row_#{instance_variable_get(?@ + ord).id}" do
+    find('input[type="radio"]').click
+  end
+end
+
+Then /^(first|second) fixture should be served$/ do |ord|
+  f = instance_variable_get(?@ + ord)
+  get f.url
+  last_response.body.should == f.content
+end
+

@@ -5,8 +5,13 @@
     %tr
       %th URL
       %th Description
+      %th Active?
   %tbody
-  - @fixtures.each do |f|
-    %tr
-      %td= f.url
-      %td= f.description
+    - @fixtures.group_by {|f| f.url}.each do |url, fs|
+      - fs.each_with_index do |f, i|
+        %tr{id: "fixture_row_#{f.id}"}
+          - if i == 0
+            %td{rowspan: fs.size}= url
+          %td= f.description
+          %td
+            %input{type: 'radio', name: url, checked: f.active}
