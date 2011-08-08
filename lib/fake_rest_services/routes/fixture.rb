@@ -1,6 +1,10 @@
 module FakeRestServices
   module FixtureRoutes
     def self.included(router)
+      router.get '/' do
+        redirect to('/fixtures')
+      end
+
       router.get '/fixtures' do
         @fixtures = Fixture.all
         haml :'fixtures/index'
