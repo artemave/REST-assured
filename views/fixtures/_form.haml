@@ -1,11 +1,11 @@
 %form{action: '/fixtures', method: 'post'}
   %p
     %label{for: 'fixture_url'} Url*
-    %input.wide#fixture_url{type: 'text', name: 'url'}= @fixture.url
+    %input.wide#fixture_url{type: 'text', name: 'url', value: @fixture.url}
 
   %p
     %label{for: 'fixture_content'} Content*
-    %textarea.wide#fixture_content{name: 'content', rows: 10}= @fixture.content
+    %textarea.wide#fixture_content{name: 'content', rows: 10, value: @fixture.content}
 
   %p
     %label{for: 'fixture_description'} Description

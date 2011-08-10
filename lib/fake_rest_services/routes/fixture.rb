@@ -23,12 +23,12 @@ module FakeRestServices
             flash[:notice] = "Fixture created"
             redirect '/fixtures'
           else
-            flash[:error] = "Errors!"
+            flash[:error] = "Errors! " + @fixture.errors.full_messages.join("; ")
             haml :'fixtures/new'
           end
         else
           if @fixture.errors.present?
-            status 500
+            status 400
             body @fixture.errors.full_messages.join("\n")
           end
         end

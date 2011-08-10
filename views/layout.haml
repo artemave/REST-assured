@@ -9,6 +9,6 @@
     - if flash[:notice]
       .message.success= flash[:notice]
     - elsif flash[:error]
-      .message.error= flash[:notice]
+      .message.error= flash[:error]
 
     = yield
