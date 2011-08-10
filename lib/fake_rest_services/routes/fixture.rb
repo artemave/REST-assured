@@ -18,13 +18,18 @@ module FakeRestServices
       router.post '/fixtures' do
         @fixture = Fixture.create(url: params['url'], content: params['content'], description: params['description'])
 
-        if params['_ui']
+        if browser?
           if @fixture.errors.blank?
             flash[:notice] = "Fixture created"
             redirect '/fixtures'
           else
             flash[:error] = "Errors!"
             haml :'fixtures/new'
+          end
+        else
+          if @fixture.errors.present?
+            status 500
+            body @fixture.errors.full_messages.join("\n")
           end
         end
       end

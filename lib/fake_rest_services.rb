@@ -13,18 +13,25 @@ require 'fake_rest_services/routes/redirect'
 
 module FakeRestServices
   class Application < Sinatra::Base
+    set :environment, AppConfig[:environment]
+    set :port, AppConfig[:port]
+
     enable :logging
 
     enable :sessions
     use Rack::Flash, sweep: true
 
-    set :environment, AppConfig[:environment]
-    set :port, AppConfig[:port]
-
     set :public, File.expand_path('../../public', __FILE__)
     set :haml, format: :html5
+
     helpers Sinatra::Partials
     register Sinatra::StaticAssets
+
+    helpers do
+      def browser?
+        request.user_agent =~ /Safari|Firefox|Opera|MSIE|Chrome/
+      end
+    end
 
     include FixtureRoutes
     include RedirectRoutes

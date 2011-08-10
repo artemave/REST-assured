@@ -1,6 +1,4 @@
 %form{action: '/fixtures', method: 'post'}
-  %input{type: 'hidden', name: '_ui', value: 1}
-
   %p
     %label{for: 'fixture_url'} Url*
     %input.wide#fixture_url{type: 'text', name: 'url'}= @fixture.url

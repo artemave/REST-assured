@@ -1,3 +1,4 @@
+@ui
 Feature: manage fixtures via ui
   In order to use fixture data in development
   As a developer
