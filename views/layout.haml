@@ -5,6 +5,9 @@
     = stylesheet_link_tag '/css/inuit.css'
     = stylesheet_link_tag '/css/grid.inuit.css'
     = stylesheet_link_tag '/css/base.css'
+    = stylesheet_link_tag '/css/jquery.jgrowl.css'
+    = javascript_script_tag 'http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js'
+    = javascript_script_tag '/javascript/jquery.jgrowl_minimized.js'
   %body.wrapper
     - if flash[:notice]
       .message.success= flash[:notice]

@@ -16,6 +16,8 @@ module FakeRestServices
     set :environment, AppConfig[:environment]
     set :port, AppConfig[:port]
 
+    enable :method_override
+
     enable :logging
 
     enable :sessions
@@ -41,7 +43,7 @@ module FakeRestServices
     end
 
     get /.*/ do
-      Fixture.where(url: request.fullpath).last.try(:content) or try_redirect(request) or status 404
+      Fixture.where(url: request.fullpath, active: true).first.try(:content) or try_redirect(request) or status 404
     end
 
     #configure(:development) do

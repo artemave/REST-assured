@@ -13,9 +13,18 @@ end
 
 DatabaseCleaner.strategy = :truncation
 
+module XhrHelpers
+  def xhr(path, params = {})
+    verb = params.delete(:as) || :get
+    send(verb,path, params, "HTTP_X_REQUESTED_WITH" => "XMLHttpRequest")
+  end
+  alias_method :ajax, :xhr
+end
+
 RSpec.configure do |c|
   c.include Capybara::DSL
   c.include Rack::Test::Methods
+  c.include XhrHelpers
 
   c.before(:each) do
     DatabaseCleaner.start

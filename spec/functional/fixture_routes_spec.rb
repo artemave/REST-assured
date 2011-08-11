@@ -26,7 +26,16 @@ describe 'Fixture routes' do
       post '/fixtures', invalid_params
 
       last_response.should be_ok
-      last_response.body.should =~ /Errors!.*Content can't be blank/
+      last_response.body.should =~ /Dude!.*Content can't be blank/
+    end
+
+    it "chooses active fixture" do
+      f = Fixture.create valid_params.merge!(active: false)
+
+      ajax "/fixtures/#{f.id}", as: :put, active: true
+
+      last_response.should be_ok
+      last_response.body.should == 'Changed'
     end
   end
 

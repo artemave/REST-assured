@@ -30,7 +30,7 @@ Feature: manage fixtures via ui
       | url           | description |
       | /url2/bb?a=b5 | google api  |
 
-  @wip
+  @wip @javascript
   Scenario: choose active fixture
     Given there are two fixtures for the same url
     When I visit fixtures page

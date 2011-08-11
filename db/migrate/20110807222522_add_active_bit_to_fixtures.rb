@@ -1,6 +1,6 @@
 class AddActiveBitToFixtures < ActiveRecord::Migration
   def self.up
-    add_column :fixtures, :active, :boolean
+    add_column :fixtures, :active, :boolean, default: true
   end
 
   def self.down

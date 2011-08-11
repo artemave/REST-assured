@@ -23,7 +23,7 @@ module FakeRestServices
             flash[:notice] = "Fixture created"
             redirect '/fixtures'
           else
-            flash[:error] = "Errors! " + @fixture.errors.full_messages.join("; ")
+            flash[:error] = "Dude! " + @fixture.errors.full_messages.join("; ")
             haml :'fixtures/new'
           end
         else
@@ -31,6 +31,17 @@ module FakeRestServices
             status 400
             body @fixture.errors.full_messages.join("\n")
           end
+        end
+      end
+
+      router.put %r{/fixtures/(\d+)} do |id|
+        @fixture = Fixture.find(id)
+
+        if request.xhr? and params['active']
+          @fixture.active = params['active']
+          @fixture.save
+          'Changed'
+        else
         end
       end
 
