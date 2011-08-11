@@ -53,9 +53,6 @@ When /^I make (first|second) fixture active$/ do |ord|
   within "#fixture_row_#{instance_variable_get(?@ + ord).id}" do
     find('input[type="radio"]').click
   end
-
-  # not so much for assertion but to sync with the next step
-  page.should have_content('Changed')
 end
 
 Then /^(first|second) fixture should be served$/ do |ord|

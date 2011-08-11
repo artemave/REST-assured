@@ -1,3 +1,5 @@
+ENV['RACK_ENV'] = 'test'
+
 require_relative '../lib/fake_rest_services'
 require 'rspec'
 require 'shoulda-matchers'

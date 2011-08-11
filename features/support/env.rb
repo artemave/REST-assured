@@ -2,12 +2,14 @@ $:.push File.expand_path('../../../lib', __FILE__)
 require 'rspec/expectations'
 require 'rack/test'
 require 'capybara'
+require 'capybara/firebug'
 require 'capybara/cucumber'
 require 'database_cleaner'
-require 'fake_rest_services'
 require 'logger'
 
 ENV['RACK_ENV'] = 'test'
+
+require 'fake_rest_services'
 
 module RackHeaderHack
   def set_headers(headers)
@@ -43,6 +45,13 @@ def app
   FakeRestServices::Application
 end
 Capybara.app = app
+
+Capybara.register_driver :selenium do |app|
+  profile = Selenium::WebDriver::Firefox::Profile.new
+  profile.enable_firebug
+
+  Capybara::Selenium::Driver.new(app, :browser => :firefox, :profile => profile) 
+end
 
 World(Capybara, Rack::Test::Methods, RackHeaderHack)
 

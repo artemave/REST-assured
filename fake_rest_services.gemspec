@@ -20,15 +20,6 @@ Gem::Specification.new do |s|
   s.executables           = ['fake_rest_services']
   s.require_paths         = ['lib']
 
-  s.add_development_dependency 'cucumber'
-  s.add_development_dependency 'database_cleaner'
-  s.add_development_dependency 'rspec'
-  s.add_development_dependency 'shoulda-matchers'
-  s.add_development_dependency 'rack-test'
-  s.add_development_dependency 'capybara'
-  s.add_development_dependency 'awesome_print'
-  s.add_development_dependency 'interactive_editor'
-  s.add_development_dependency 'launchy'
   s.add_dependency 'sinatra'
   s.add_dependency 'rack-flash'
   #s.add_dependency 'sinatra-reloader'
