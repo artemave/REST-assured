@@ -61,3 +61,14 @@ Then /^(first|second) fixture should be served$/ do |ord|
   last_response.body.should == f.content
 end
 
+Given /^I choose to edit fixture$/ do
+  find('.edit-link a').click
+end
+
+When /^I change "([^"]*)" to "([^"]*)"$/ do |prop, value|
+  fill_in "fixture_#{prop}", with: value
+end
+
+When /^I go back$/ do
+  find(:xpath, "//a[text()='back']").click
+end

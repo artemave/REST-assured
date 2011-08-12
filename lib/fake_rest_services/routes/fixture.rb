@@ -34,6 +34,11 @@ module FakeRestServices
         end
       end
 
+      router.get %r{/fixtures/(\d+)/edit} do |id|
+        @fixture = Fixture.find(id)
+        haml :'fixtures/edit'
+      end
+
       router.put %r{/fixtures/(\d+)} do |id|
         @fixture = Fixture.find(id)
 

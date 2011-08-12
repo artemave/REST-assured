@@ -30,7 +30,7 @@ Feature: manage fixtures via ui
       | url           | description |
       | /url2/bb?a=b5 | google api  |
 
-  @wip @javascript
+  @javascript
   Scenario: choose active fixture
     Given there are two fixtures for the same url
     When I visit fixtures page
@@ -38,3 +38,18 @@ Feature: manage fixtures via ui
     Then first fixture should be served
     When I make second fixture active
     Then second fixture should be served
+
+  @wip
+  Scenario: edit fixture
+    Given the following fixtures exist:
+      | url       | description  | content      |
+      | /url1/aaa | twitter      | test content |
+    And I visit fixtures page
+    And I choose to edit fixture
+    When I change "description" to "google"
+    And I save it
+    And I go back
+    Then I should see that I am on "fixtures" page
+    And I should see existing fixtures:
+      | url       | description  |
+      | /url1/aaa | google       |
