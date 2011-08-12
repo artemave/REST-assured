@@ -16,7 +16,7 @@ module FakeRestServices
       end
 
       router.post '/fixtures' do
-        @fixture = Fixture.create(url: params['url'], content: params['content'], description: params['description'])
+        @fixture = Fixture.create(params['fixture'] || { url: params['url'], content: params['content'], description: params['description'] })
 
         if browser?
           if @fixture.errors.blank?
@@ -42,11 +42,22 @@ module FakeRestServices
       router.put %r{/fixtures/(\d+)} do |id|
         @fixture = Fixture.find(id)
 
-        if request.xhr? and params['active']
-          @fixture.active = params['active']
-          @fixture.save
-          'Changed'
-        else
+        if request.xhr?
+          if params['active']
+            @fixture.active = params['active']
+            @fixture.save
+            'Changed'
+          end
+        elsif params['fixture']
+          @fixture.update_attributes(params['fixture'])
+
+          if @fixture.save
+            flash[:notice] = 'Fixture updated'
+            redirect '/fixtures'
+          else
+            flash[:error] = 'Dude! ' + @fixture.errors.full_messages.join("\n")
+            haml :'fixtures/edit'
+          end
         end
       end
 

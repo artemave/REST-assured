@@ -48,7 +48,6 @@ Feature: manage fixtures via ui
     And I choose to edit fixture
     When I change "description" to "google"
     And I save it
-    And I go back
     Then I should see that I am on "fixtures" page
     And I should see existing fixtures:
       | url       | description  |

@@ -1,11 +1,14 @@
 require_relative '../spec_helper'
 
 describe 'Fixture routes' do
-  let :valid_params do
+  let :fixture do
     { url: '/api/google?a=5', content: 'some awesome content' }
   end
+  let :valid_params do
+    { 'fixture[url]' =>  fixture[:url], 'fixture[content]' => fixture[:content] }
+  end
   let :invalid_params do
-    { url: '/api/google?a=5' }
+    { 'fixture[url]' =>  fixture[:url] }
   end
 
   describe "through ui", ui: true do
@@ -15,11 +18,11 @@ describe 'Fixture routes' do
     end
 
     it "shows list of fixtures" do
-      Fixture.create valid_params
+      f = Fixture.create fixture
 
       visit '/fixtures'
 
-      page.should have_content(valid_params[:url])
+      page.should have_content(f.url)
     end
 
     it "shows form for creating new fixture" do
@@ -35,8 +38,8 @@ describe 'Fixture routes' do
       follow_redirect!
 
       last_request.fullpath.should == '/fixtures'
-      last_response.should be_ok
       last_response.body.should =~ /Fixture created/
+      Fixture.exists?(fixture).should be true
     end
 
     it "reports failure when creating with invalid parameters" do
@@ -47,7 +50,7 @@ describe 'Fixture routes' do
     end
 
     it "brings up fixture edit form" do
-      f = Fixture.create valid_params
+      f = Fixture.create fixture
       visit "/fixtures/#{f.id}/edit"
 
       find('#fixture_url').value.should == f.url
@@ -55,18 +58,18 @@ describe 'Fixture routes' do
     end
 
     it "updates fixture" do
-      f = Fixture.create valid_params
+      f = Fixture.create fixture
 
-      put "/fixtures/#{f.id}", url: '/some/other/api'
+      put "/fixtures/#{f.id}", 'fixture[url]' => '/some/other/api'
       follow_redirect!
       
       last_request.fullpath.should == '/fixtures'
-      last_response.should be_ok
       last_response.body.should =~ /Fixture updated/
+      f.reload.url.should == '/some/other/api'
     end
 
     it "chooses active fixture" do
-      f = Fixture.create valid_params.merge!(active: false)
+      f = Fixture.create fixture.merge!(active: false)
 
       ajax "/fixtures/#{f.id}", as: :put, active: true
 
@@ -77,21 +80,21 @@ describe 'Fixture routes' do
 
   describe "through REST api", ui: false do
     it "creates fixture" do
-      post '/fixtures', valid_params
+      post '/fixtures', fixture
 
       last_response.should be_ok
       Fixture.count.should == 1
     end
 
     it "reports failure when creating with invalid parameters" do
-      post '/fixtures', invalid_params
+      post '/fixtures', fixture.except(:content)
 
       last_response.should_not be_ok
       last_response.body.should =~ /Content can't be blank/
     end
 
     it "deletes all fixtures" do
-      Fixture.create valid_params
+      Fixture.create fixture
 
       delete '/fixtures/all'
 

@@ -69,6 +69,3 @@ When /^I change "([^"]*)" to "([^"]*)"$/ do |prop, value|
   fill_in "fixture_#{prop}", with: value
 end
 
-When /^I go back$/ do
-  find(:xpath, "//a[text()='back']").click
-end

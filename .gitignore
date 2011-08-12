@@ -2,3 +2,6 @@
 .bundle
 Gemfile.lock
 pkg/*
+bundle_bin
+*.db
+.sass-cache
