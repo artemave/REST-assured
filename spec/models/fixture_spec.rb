@@ -33,4 +33,16 @@ describe Fixture do
       f2.reload.active.should be false
     end
   end
+
+  describe 'when destroying' do
+    context 'active fixture' do
+      it "makes another fixture for the same url active" do
+        f1 = Fixture.create valid_params.merge(active: false)
+        f2 = Fixture.create valid_params.merge(active: true)
+
+        f2.destroy
+        f1.reload.active.should be true
+      end
+    end
+  end
 end
