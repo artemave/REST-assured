@@ -40,8 +40,12 @@ When /^I save it$/ do
   find('input[type="submit"]').click
 end
 
-Then /^I should see "([^"]*)"$/ do |text|
-  page.should have_content(text)
+Then /^I should (not)? ?see "([^"]*)"$/ do |see, text|
+  if see == 'not'
+    page.should_not have_content(text)
+  else
+    page.should have_content(text)
+  end
 end
 
 Given /^there are two fixtures for the same url$/ do
@@ -69,3 +73,6 @@ When /^I change "([^"]*)" to "([^"]*)"$/ do |prop, value|
   fill_in "fixture_#{prop}", with: value
 end
 
+Given /^I choose to delete fixture with url "([^"]*)"$/ do |url|
+  find(:xpath, "//tr[td[text()='#{url}']]//a[text()='Delete']").click
+end

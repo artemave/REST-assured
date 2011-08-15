@@ -46,7 +46,7 @@ describe 'Fixture routes' do
       post '/fixtures', invalid_params
 
       last_response.should be_ok
-      last_response.body.should =~ /Dude!.*Content can't be blank/
+      last_response.body.should =~ /Crumps!.*Content can't be blank/
     end
 
     it "brings up fixture edit form" do
@@ -75,6 +75,18 @@ describe 'Fixture routes' do
 
       last_response.should be_ok
       last_response.body.should == 'Changed'
+    end
+
+    it "deletes fixture" do
+      f = Fixture.create fixture
+
+      delete "/fixtures/#{f.id}"
+      follow_redirect!
+
+      last_response.should be_ok
+      last_response.body.should =~ /Fixture deleted/
+      
+      Fixture.exists?(fixture).should be_false
     end
   end
 

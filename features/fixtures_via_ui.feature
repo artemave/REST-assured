@@ -39,7 +39,6 @@ Feature: manage fixtures via ui
     When I make second fixture active
     Then second fixture should be served
 
-  @wip
   Scenario: edit fixture
     Given the following fixtures exist:
       | url       | description  | content      |
@@ -52,3 +51,15 @@ Feature: manage fixtures via ui
     And I should see existing fixtures:
       | url       | description  |
       | /url1/aaa | google       |
+
+  @wip @javascript
+  Scenario: delete fixture
+    Given the following fixtures exist:
+      | url        | description | content       |
+      | /url1/aaa  | twitter     | test content  |
+      | /url/cc/bb | google      | other content |
+    And I visit fixtures page
+    And I choose to delete fixture with url "/url1/aaa"
+    Then I should see "Fixture deleted"
+    And I should not see "/url1/aaa"
+    And I should see "/url/cc/bb"

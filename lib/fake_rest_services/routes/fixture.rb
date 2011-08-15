@@ -23,7 +23,7 @@ module FakeRestServices
             flash[:notice] = "Fixture created"
             redirect '/fixtures'
           else
-            flash[:error] = "Dude! " + @fixture.errors.full_messages.join("; ")
+            flash[:error] = "Crumps! " + @fixture.errors.full_messages.join("; ")
             haml :'fixtures/new'
           end
         else
@@ -55,9 +55,16 @@ module FakeRestServices
             flash[:notice] = 'Fixture updated'
             redirect '/fixtures'
           else
-            flash[:error] = 'Dude! ' + @fixture.errors.full_messages.join("\n")
+            flash[:error] = 'Crumps! ' + @fixture.errors.full_messages.join("\n")
             haml :'fixtures/edit'
           end
+        end
+      end
+
+      router.delete %r{/fixtures/(\d+)} do |id|
+        if Fixture.destroy(id)
+          flash[:notice] = 'Fixture deleted'
+          redirect '/fixtures'
         end
       end
 
