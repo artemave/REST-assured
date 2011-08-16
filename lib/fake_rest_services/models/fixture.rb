@@ -7,7 +7,7 @@ class Fixture < ActiveRecord::Base
   private
     def toggle_active
       if active && Fixture.where(url: url, active: true).exists?
-        Fixture.update_all active: false
+        Fixture.where(url: url).update_all active: false
       end
     end
 
