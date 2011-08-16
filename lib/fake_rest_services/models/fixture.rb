@@ -1,4 +1,6 @@
 class Fixture < ActiveRecord::Base
+  attr_accessible :url, :content, :description
+
   validates_presence_of :url, :content
 
   before_save :toggle_active
