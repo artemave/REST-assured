@@ -60,6 +60,7 @@ Feature: manage fixtures via ui
       | /url/cc/bb | google      | other content |
     And I visit fixtures page
     And I choose to delete fixture with url "/url1/aaa"
-    Then I should see "Fixture deleted"
+    Then I should be asked to confirm delete
+    And I should see "Fixture deleted"
     And I should not see "/url1/aaa"
     And I should see "/url/cc/bb"

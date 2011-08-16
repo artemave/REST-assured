@@ -76,3 +76,7 @@ end
 Given /^I choose to delete fixture with url "([^"]*)"$/ do |url|
   find(:xpath, "//tr[td[text()='#{url}']]//a[text()='Delete']").click
 end
+
+Then /^I should be asked to confirm delete$/ do
+  page.driver.browser.switch_to.alert.accept
+end
