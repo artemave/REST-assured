@@ -1,4 +1,4 @@
-%h1 Edit Fixture
+%h2 Edit Fixture
 %form{action: "/fixtures/#{@fixture.id}", method: 'post'}
   %input{type: 'hidden', name: '_method', value: 'put'}
   = partial :'fixtures/form'

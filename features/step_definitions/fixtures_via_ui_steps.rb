@@ -5,12 +5,12 @@ Given /^the following fixtures exist:$/ do |fixtures|
 end
 
 When /^I visit fixtures page$/ do
-  visit '/fixtures'
+  visit '/'
+  find(:xpath, "//a[text()='Fixtures']").click
 end
 
 Then /^I should see that I am on "([^""]*)" page$/ do |name|
   find('title').text.should =~ /#{name} -/
-  find('h1').text.should == name.capitalize
 end
 
 Then /^I should see existing fixtures:$/ do |fixtures|
