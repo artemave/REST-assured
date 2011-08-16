@@ -1,7 +1,7 @@
 !!!
 %html
   %head
-    %title= request.path_info.sub(%r{.*/([^/]*)$}, '\\1')
+    %title= request.path_info[1..-1] + ' - Fake REST services'
     = stylesheet_link_tag '/css/inuit.css'
     = stylesheet_link_tag '/css/grid.inuit.css'
     = stylesheet_link_tag '/css/base.css'

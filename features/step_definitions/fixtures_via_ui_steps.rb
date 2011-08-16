@@ -9,7 +9,7 @@ When /^I visit fixtures page$/ do
 end
 
 Then /^I should see that I am on "([^""]*)" page$/ do |name|
-  find('title').text.should == name
+  find('title').text.should =~ /#{name} -/
   find('h1').text.should == name.capitalize
 end
 
