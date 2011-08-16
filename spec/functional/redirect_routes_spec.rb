@@ -1,19 +1,19 @@
 require_relative '../spec_helper'
 
 describe 'Redirects routes' do
+  let :redirect do
+    { pattern: '/sdf.*', to: 'http://google.com/api' }
+  end
+
+  let :valid_params do
+    { 'redirect[pattern]' => redirect[:pattern], 'redirect[to]' => redirect[:to] }
+  end
+
+  let :invalid_params do
+    { 'redirect[to]' => redirect[:to] }
+  end
+
   context 'via ui', ui: true do
-    let :redirect do
-      { pattern: '/sdf.*', to: 'http://google.com/api' }
-    end
-
-    let :valid_params do
-      { 'redirect[pattern]' => redirect[:pattern], 'redirect[to]' => redirect[:to] }
-    end
-
-    let :invalid_params do
-      { 'redirect[to]' => redirect[:to] }
-    end
-
     it 'shows list of redirects' do
       r = Redirect.create redirect
 
@@ -59,7 +59,7 @@ describe 'Redirects routes' do
 
       put "/redirects/#{r.id}", 'redirect[to]' => '/some/other/api'
       follow_redirect!
-      
+
       last_request.fullpath.should == '/redirects'
       last_response.body.should =~ /Redirect updated/
       r.reload.to.should == '/some/other/api'
@@ -73,8 +73,24 @@ describe 'Redirects routes' do
 
       last_response.should be_ok
       last_response.body.should =~ /Redirect deleted/
-      
+
       Redirect.exists?(redirect).should be_false
+    end
+  end
+
+  context 'via api', ui: false do
+    it "creates redirect" do
+      post '/redirects', redirect
+
+      last_response.should be_ok
+      Redirect.count.should == 1
+    end
+
+    it "reports failure when creating with invalid parameters" do
+      post '/redirects', redirect.except(:pattern)
+
+      last_response.should_not be_ok
+      last_response.body.should =~ /Pattern can't be blank/
     end
   end
 end
