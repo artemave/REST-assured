@@ -1,0 +1,16 @@
+%h2 Redirect index
+%a= link_to 'New redirect', '/redirects/new'
+%table
+  %thead
+    %tr
+      %th Pattern
+      %th Redirect to
+  %tbody
+    - @redirects.each do |r|
+      %tr
+        %td= r.pattern
+        %td= r.to
+        %td.edit-link.text-center.white-space-nowrap
+          = link_to 'Edit', "/redirects/#{r.id}/edit"
+          |
+          %a.delete_link{href: "/redirects/#{r.id}"} Delete

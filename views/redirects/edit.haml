@@ -1,0 +1,4 @@
+%h2 Edit Redirect
+%form{action: "/redirects/#{@redirect.id}", method: 'post'}
+  %input{type: 'hidden', name: '_method', value: 'put'}
+  = partial :'redirects/form'

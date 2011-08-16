@@ -1,5 +1,9 @@
 # REST api steps
 
+Given /^there are no fixtures$/ do
+  Fixture.destroy_all
+end
+
 When /^I create a fixture with "([^"]*)" as url and "([^"]*)" as response content$/ do |url, content|
   post '/fixtures', { url: url, content: content }
   last_response.should be_ok
@@ -50,11 +54,6 @@ Given /^the following fixtures exist:$/ do |fixtures|
   end
 end
 
-When /^I visit fixtures page$/ do
-  visit '/'
-  find(:xpath, "//a[text()='Fixtures']").click
-end
-
 Then /^I should see that I am on "([^""]*)" page$/ do |name|
   find('title').text.should =~ /#{name} -/
 end
@@ -66,8 +65,8 @@ Then /^I should see existing fixtures:$/ do |fixtures|
   end
 end
 
-Given /^I am on fixtures page$/ do
-  When "I visit fixtures page"
+Given /^I am on "([^"]*)" page$/ do |page|
+  When "I visit \"#{page}\" page"
 end
 
 When /^I choose to create a fixture$/ do
@@ -111,12 +110,12 @@ Then /^(first|second) fixture should be served$/ do |ord|
   last_response.body.should == f.content
 end
 
-Given /^I choose to edit fixture$/ do
+Given /^I choose to edit (?:fixture|redirect)$/ do
   find('.edit-link a').click
 end
 
-When /^I change "([^"]*)" to "([^"]*)"$/ do |prop, value|
-  fill_in "fixture_#{prop}", with: value
+When /^I change "([^"]*)" "([^"]*)" to "([^"]*)"$/ do |obj, prop, value|
+  fill_in "#{obj}_#{prop}", with: value
 end
 
 Given /^I choose to delete fixture with url "([^"]*)"$/ do |url|

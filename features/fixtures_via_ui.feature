@@ -10,7 +10,7 @@ Feature: manage fixtures via ui
       | /url1/aaa | twitter      | test content |
       | /url2/bbb | geo location | more content |
       | /u/b?c=1  | wikipedia    | article      |
-    When I visit fixtures page
+    When I visit "fixtures" page
     Then I should see that I am on "fixtures" page
     And I should see existing fixtures:
       | url       | description  |
@@ -19,7 +19,7 @@ Feature: manage fixtures via ui
       | /u/b?c=1  | wikipedia    |
 
   Scenario: add new fixture
-    Given I am on fixtures page
+    Given I am on "fixtures" page
     When I choose to create a fixture
     And I enter fixture details:
       | url           | description | content      |
@@ -33,7 +33,7 @@ Feature: manage fixtures via ui
   @javascript
   Scenario: choose active fixture
     Given there are two fixtures for the same url
-    When I visit fixtures page
+    When I visit "fixtures" page
     And I make first fixture active
     Then first fixture should be served
     When I make second fixture active
@@ -43,22 +43,22 @@ Feature: manage fixtures via ui
     Given the following fixtures exist:
       | url       | description  | content      |
       | /url1/aaa | twitter      | test content |
-    And I visit fixtures page
+    And I visit "fixtures" page
     And I choose to edit fixture
-    When I change "description" to "google"
+    When I change "fixture" "description" to "google"
     And I save it
     Then I should see that I am on "fixtures" page
     And I should see existing fixtures:
       | url       | description  |
       | /url1/aaa | google       |
 
-  @wip @javascript
+  @javascript
   Scenario: delete fixture
     Given the following fixtures exist:
       | url        | description | content       |
       | /url1/aaa  | twitter     | test content  |
       | /url/cc/bb | google      | other content |
-    And I visit fixtures page
+    And I visit "fixtures" page
     And I choose to delete fixture with url "/url1/aaa"
     Then I should be asked to confirm delete
     And I should see "Fixture deleted"

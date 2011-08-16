@@ -12,6 +12,8 @@
   %body.wrapper
     %ul.nav
       %li= link_to 'Fixtures', '/fixtures'
+      %li &#124;
+      %li= link_to 'Redirects', '/redirects'
 
     - if flash[:notice]
       .message.success= flash[:notice]
