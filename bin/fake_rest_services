@@ -6,14 +6,23 @@ require 'optparse'
 require 'fake_rest_services/config'
 
 OptionParser.new do |opts|
-  opts.on('-e', '--environment production|test|development') do |env|
+  opts.banner = "Usage: fake_rest_services [options]"
+
+  opts.on('-e', '--environment production|test|development', "defaults to production") do |env|
     AppConfig[:environment] = env
   end
-  opts.on('-d', '--database FILENAME') do |fname|
+
+  opts.on('-d', '--database FILENAME', "defaults to ./fake_rest_services.db") do |fname|
     AppConfig[:database] = fname
   end
-  opts.on('-p', '--port PORT', Integer) do |port|
+
+  opts.on('-p', '--port PORT', Integer, "defaults to 4578") do |port|
     AppConfig[:port] = port
+  end
+
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
   end
 end.parse!
 
