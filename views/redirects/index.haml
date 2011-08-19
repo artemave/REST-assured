@@ -1,16 +1,33 @@
 %h2 Redirect index
 %a= link_to 'New redirect', '/redirects/new'
-%table
+%table#redirects
   %thead
     %tr
+      %th D&amp;D to reorder
       %th Pattern
       %th Redirect to
+      %th &nbsp;
   %tbody
     - @redirects.each do |r|
-      %tr
+      %tr{id: "redirect_#{r.id}"}
+        %td.text-center.handle
+          %span.ui-icon.ui-icon-arrowthick-2-n-s
         %td= r.pattern
         %td= r.to
         %td.edit-link.text-center.white-space-nowrap
           = link_to 'Edit', "/redirects/#{r.id}/edit"
           |
           %a.delete_link{href: "/redirects/#{r.id}"} Delete
+
+:javascript
+  $(function() {
+    $('#redirects tbody').sortable({
+      handle: 'td.handle',
+      cursors: 'crosshair',
+      stop: function() {
+        $.post('/redirects/reorder', $(this).sortable('serialize') + '&_method=put', function(data) {
+            $.jGrowl(data);
+        });
+      }
+    });
+  });

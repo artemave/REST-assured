@@ -65,6 +65,18 @@ describe 'Redirects routes' do
       r.reload.to.should == '/some/other/api'
     end
 
+    it "reorders redirects" do
+      r1 = Redirect.create! redirect
+      r2 = Redirect.create! redirect
+
+      put "/redirects/reorder", redirect: [r2.id, r1.id]
+
+      last_response.should be_ok
+      last_response.body.should == 'Changed'
+      r1.reload.position.should == 1
+      r2.reload.position.should == 0
+    end
+
     it "deletes redirect" do
       f = Redirect.create redirect
 

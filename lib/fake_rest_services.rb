@@ -52,7 +52,7 @@ module FakeRestServices
 
     private
       def try_redirect(request)
-        r = Redirect.all.find do |r|
+        r = Redirect.ordered.find do |r|
           request.fullpath =~ /#{r.pattern}/
         end
 

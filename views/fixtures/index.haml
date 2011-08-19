@@ -6,7 +6,7 @@
       %th URL
       %th Description
       %th Active?
-      %th
+      %th &nbsp;
   %tbody
     - @fixtures.group_by {|f| f.url}.each do |url, fs|
       - fs.each_with_index do |f, i|

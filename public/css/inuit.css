@@ -91,7 +91,7 @@ html{
 	font-family:Calibri, "Helvetica Neue", Arial, sans-serif; /* Swap these two lines around to switch between serif and sans */
 	font-family:Cambria, Georgia, "Times New Roman", serif; /* Swap these two lines around to switch between serif and sans */
 	line-height:1.5;
-	background:url(../img/css/baseline.gif) 0 18px #fff;
+	/*background:url(../img/css/baseline.gif) 0 18px #fff;*/
 	color:#333;
 }
 body{

@@ -48,3 +48,17 @@ end
 Given /^I choose to delete redirect with pattern "([^"]*)"$/ do |pattern|
   find(:xpath, "//tr[td[text()='#{pattern}']]//a[text()='Delete']").click
 end
+
+When /^I reorder second redirect to be the first one$/ do
+  handler = find("#redirects #redirect_#{Redirect.last.id} td.handle")
+  target = find('#redirects thead')
+
+  handler.drag_to target
+end
+
+Then /^"([^"]*)" should be redirected to "([^"]*)"$/ do |missing_request, url|
+  get missing_request
+  follow_redirect!
+
+  last_request.url.should == "#{url}#{missing_request}"
+end

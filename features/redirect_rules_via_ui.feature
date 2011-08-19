@@ -41,7 +41,20 @@ Feature: manage redirects via ui
       | pattern  | to                    |
       | /some/remote.* | http://google.com/api |
 
-  @javascript @wip
+  # XXX This does not pass due to Capybara/Selelium broken drag and drop support
+  @javascript @pending
+  Scenario: reorder redirects
+    Given the following redirects exist:
+      | pattern  | to                     |
+      | /api/.*  | http://google.com/api  |
+      | /api/bbb | http://twitter.com/api |
+    And I am on "redirects" page
+    When I reorder second redirect to be the first one
+    Then "/api/bbb" should be redirected to "http://twitter.com/api"
+    When I reorder second redirect to be the first one
+    Then "/api/bbb" should be redirected to "http://google.com/api"
+
+  @javascript
   Scenario: delete redirect
     Given the following redirects exist:
       | pattern   | to                     |

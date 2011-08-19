@@ -2,7 +2,7 @@ module FakeRestServices
   module RedirectRoutes
     def self.included(router)
       router.get '/redirects' do
-        @redirects = Redirect.all
+        @redirects = Redirect.ordered
         haml :'redirects/index'
       end
 
@@ -38,21 +38,23 @@ module FakeRestServices
       router.put %r{/redirects/(\d+)} do |id|
         @redirect = Redirect.find(id)
 
-        if request.xhr?
-          if params['active']
-            @redirect.active = params['active']
-            @redirect.save
-            'Changed'
-          end
-        elsif params['redirect']
-          @redirect.update_attributes(params['redirect'])
+        @redirect.update_attributes(params['redirect'])
 
-          if @redirect.save
-            flash[:notice] = 'Redirect updated'
-            redirect '/redirects'
+        if @redirect.save
+          flash[:notice] = 'Redirect updated'
+          redirect '/redirects'
+        else
+          flash[:error] = 'Crumps! ' + @redirect.errors.full_messages.join("\n")
+          haml :'redirects/edit'
+        end
+      end
+
+      router.put '/redirects/reorder' do
+        if params['redirect']
+          if Redirect.update_order(params['redirect'])
+            'Changed'
           else
-            flash[:error] = 'Crumps! ' + @redirect.errors.full_messages.join("\n")
-            haml :'redirects/edit'
+            'Crumps! It broke'
           end
         end
       end
