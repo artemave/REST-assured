@@ -7,7 +7,7 @@ Then /^I should get (\d+)$/ do |code|
 end
 
 When /^I register redirect with pattern "([^"]*)" and uri "([^"]*)"$/ do |pattern, uri|
-  post '/redirects', { pattern: pattern, to: uri }
+  post '/redirects', { :pattern => pattern, :to => uri }
   last_response.should be_ok
 end
 
@@ -18,7 +18,7 @@ end
 
 Given /^the following redirects exist:$/ do |redirects|
   redirects.hashes.each do |row|
-    Redirect.create(pattern: row['pattern'], to: row['to'])
+    Redirect.create(:pattern => row['pattern'], :to => row['to'])
   end
 end
 
@@ -34,8 +34,8 @@ end
 When /^I enter redirect details:$/ do |details|
   redirect = details.hashes.first
 
-  fill_in 'Pattern', with: redirect['pattern']
-  fill_in 'Redirect to', with: redirect['to']
+  fill_in 'Pattern', :with => redirect['pattern']
+  fill_in 'Redirect to', :with => redirect['to']
 end
 
 Then /^I should see existing redirects:$/ do |redirects|

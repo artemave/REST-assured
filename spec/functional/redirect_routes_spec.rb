@@ -2,7 +2,7 @@ require_relative '../spec_helper'
 
 describe 'Redirects routes' do
   let :redirect do
-    { pattern: '/sdf.*', to: 'http://google.com/api' }
+    { :pattern => '/sdf.*', :to => 'http://google.com/api' }
   end
 
   let :valid_params do
@@ -13,7 +13,7 @@ describe 'Redirects routes' do
     { 'redirect[to]' => redirect[:to] }
   end
 
-  context 'via ui', ui: true do
+  context 'via ui', :ui => true do
     it 'shows list of redirects' do
       r = Redirect.create redirect
 
@@ -69,7 +69,7 @@ describe 'Redirects routes' do
       r1 = Redirect.create! redirect
       r2 = Redirect.create! redirect
 
-      put "/redirects/reorder", redirect: [r2.id, r1.id]
+      put "/redirects/reorder", :redirect => [r2.id, r1.id]
 
       last_response.should be_ok
       last_response.body.should == 'Changed'
@@ -90,7 +90,7 @@ describe 'Redirects routes' do
     end
   end
 
-  context 'via api', ui: false do
+  context 'via api', :ui => false do
     it "creates redirect" do
       post '/redirects', redirect
 

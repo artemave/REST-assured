@@ -2,7 +2,7 @@ require_relative '../spec_helper'
 
 describe 'Fixture routes' do
   let :fixture do
-    { url: '/api/google?a=5', content: 'some awesome content' }
+    { :url => '/api/google?a=5', :content => 'some awesome content' }
   end
   let :valid_params do
     { 'fixture[url]' =>  fixture[:url], 'fixture[content]' => fixture[:content] }
@@ -11,7 +11,7 @@ describe 'Fixture routes' do
     { 'fixture[url]' =>  fixture[:url] }
   end
 
-  describe "through ui", ui: true do
+  describe "through ui", :ui => true do
     it "shows fixtures page by default" do
       visit '/'
       current_path.should == '/fixtures'
@@ -69,9 +69,9 @@ describe 'Fixture routes' do
     end
 
     it "chooses active fixture" do
-      f = Fixture.create fixture.merge!(active: false)
+      f = Fixture.create fixture.merge!(:active => false)
 
-      ajax "/fixtures/#{f.id}", as: :put, active: true
+      ajax "/fixtures/#{f.id}", :as => :put, :active => true
 
       last_response.should be_ok
       last_response.body.should == 'Changed'
@@ -90,7 +90,7 @@ describe 'Fixture routes' do
     end
   end
 
-  describe "through REST api", ui: false do
+  describe "through REST api", :ui => false do
     it "creates fixture" do
       post '/fixtures', fixture
 

@@ -1,6 +1,6 @@
 AppConfig = {
-  port: 4578,
-  environment: ENV['RACK_ENV'] || 'production'
+  :port => 4578,
+  :environment => ENV['RACK_ENV'] || 'production'
 }
 
 AppConfig[:database] = case AppConfig[:environment]

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.authors               = ['Artem Avetisyan']
   s.email                 = ['artem.avetisyan@bbc.co.uk']
   s.homepage              = "https://github.com/artemave/fake_rest_services"
-  s.summary               = %q{Sinatra webapp that allows mocking GET to any path with arbitrary content}
+  s.summary               = %q{A tool for high level mocking HTTP based REST services}
   #s.description          = %q{TODO: Write a gem description}
 
   s.rubyforge_project     = "fake_rest_services"

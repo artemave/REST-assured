@@ -1,5 +1,7 @@
 ENV['RACK_ENV'] = 'test'
 
+require 'rubygems'
+require 'require_relative' if RUBY_VERSION =~ /^1\.8/
 require_relative '../lib/fake_rest_services'
 require 'rspec'
 require 'shoulda-matchers'
@@ -36,11 +38,11 @@ RSpec.configure do |c|
     DatabaseCleaner.clean
   end
 
-  c.before(:each, ui: true) do
+  c.before(:each, :ui => true) do
     header 'User-Agent', 'Firefox'
   end
 
-  c.before(:each, ui: false) do
+  c.before(:each, :ui => false) do
     header 'User-Agent', nil
   end
 end

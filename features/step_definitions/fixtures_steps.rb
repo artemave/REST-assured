@@ -5,21 +5,21 @@ Given /^there are no fixtures$/ do
 end
 
 When /^I create a fixture with "([^"]*)" as url and "([^"]*)" as response content$/ do |url, content|
-  post '/fixtures', { url: url, content: content }
+  post '/fixtures', { :url => url, :content => content }
   last_response.should be_ok
 end
 
 Then /^there should be (#{CAPTURE_A_NUMBER}) fixture with "([^"]*)" as url and "([^"]*)" as response content$/ do |n, url, content|
   Fixture.count.should == n
-  Fixture.where(url: url, content: content).count.should == 1
+  Fixture.where(:url => url, :content => content).count.should == 1
 end
 
 Given /^there is fixture with "([^"]*)" as url and "([^"]*)" as response content$/ do |url, content|
-  Fixture.create(url: url, content: content)
+  Fixture.create(:url => url, :content => content)
 end
 
 Given /^I register "([^"]*)" as url and "([^"]*)" as response content$/ do |url, content|
-  post '/fixtures', { url: url, content: content }
+  post '/fixtures', { :url => url, :content => content }
   last_response.should be_ok
 end
 
@@ -33,7 +33,7 @@ end
 
 Given /^there are some fixtures$/ do
   [['url1', 'content1'], ['url2', 'content2'], ['url3', 'content3']].each do |fixture|
-    Fixture.create(url: fixture[0], content: fixture[1])
+    Fixture.create(:url => fixture[0], :content => fixture[1])
   end
 end
 
@@ -50,7 +50,7 @@ end
 
 Given /^the following fixtures exist:$/ do |fixtures|
   fixtures.hashes.each do |row|
-    Fixture.create(url: row['url'], description: row['description'], content: row['content'])
+    Fixture.create(:url => row['url'], :description => row['description'], :content => row['content'])
   end
 end
 
@@ -76,9 +76,9 @@ end
 When /^I enter fixture details:$/ do |details|
   fixture = details.hashes.first
 
-  fill_in 'Url', with: fixture['url']
-  fill_in 'Content', with: fixture['content']
-  fill_in 'Description', with: fixture['description']
+  fill_in 'Url', :with => fixture['url']
+  fill_in 'Content', :with => fixture['content']
+  fill_in 'Description', :with => fixture['description']
 end
 
 When /^I save it$/ do
@@ -94,8 +94,8 @@ Then /^I should (not)? ?see "([^"]*)"$/ do |see, text|
 end
 
 Given /^there are two fixtures for the same url$/ do
-  @first = Fixture.create url: '/api/something', content: 'some content'
-  @second = Fixture.create url: '/api/something', content: 'other content'
+  @first = Fixture.create :url => '/api/something', :content => 'some content'
+  @second = Fixture.create :url => '/api/something', :content => 'other content'
 end
 
 When /^I make (first|second) fixture active$/ do |ord|
@@ -115,7 +115,7 @@ Given /^I choose to edit (?:fixture|redirect)$/ do
 end
 
 When /^I change "([^"]*)" "([^"]*)" to "([^"]*)"$/ do |obj, prop, value|
-  fill_in "#{obj}_#{prop}", with: value
+  fill_in "#{obj}_#{prop}", :with => value
 end
 
 Given /^I choose to delete fixture with url "([^"]*)"$/ do |url|

@@ -8,13 +8,13 @@ class Fixture < ActiveRecord::Base
 
   private
     def toggle_active
-      if active && Fixture.where(url: url, active: true).exists?
-        Fixture.where(url: url).update_all active: false
+      if active && Fixture.where(:url => url, :active => true).exists?
+        Fixture.where(:url => url).update_all :active => false
       end
     end
 
     def set_active
-      if active && f = Fixture.where(url: url).last
+      if active && f = Fixture.where(:url => url).last
         f.active = true
         f.save
       end

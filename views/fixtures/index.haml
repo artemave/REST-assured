@@ -10,16 +10,16 @@
   %tbody
     - @fixtures.group_by {|f| f.url}.each do |url, fs|
       - fs.each_with_index do |f, i|
-        %tr{id: "fixture_row_#{f.id}"}
+        %tr{:id => "fixture_row_#{f.id}"}
           - if i == 0
-            %td{rowspan: fs.size}= url
+            %td{:rowspan => fs.size}= url
           %td= f.description
           %td.label.text-center
-            %input.active-fixture-toggle{type: 'radio', name: url, checked: f.active, data: { fixture_id: f.id }}
+            %input.active-fixture-toggle{:type => 'radio', :name => url, :checked => f.active, :data => { f:ixture_id => f.id }}
           %td.edit-link.text-center.white-space-nowrap
             = link_to 'Edit', "/fixtures/#{f.id}/edit"
             |
-            %a.delete_link{href: "/fixtures/#{f.id}"} Delete
+            %a.delete_link{:href => "/fixtures/#{f.id}"} Delete
 
 :javascript
   $(function() {

@@ -1,11 +1,11 @@
 %p
-  %label{for: 'redirect_pattern'} Pattern*
-  %input.wide#redirect_pattern{type: 'text', name: 'redirect[pattern]', value: @redirect.pattern}
+  %label{:for => 'redirect_pattern'} Pattern*
+  %input.wide#redirect_pattern{:type => 'text', :name => 'redirect[pattern]', :value => @redirect.pattern}
 %p
-  %label{for: 'redirect_to'} Redirect to*
-  %input.wide#redirect_to{type: 'text', name: 'redirect[to]', value: @redirect.to}
+  %label{:for => 'redirect_to'} Redirect to*
+  %input.wide#redirect_to{:type => 'text', :name => 'redirect[to]', :value => @redirect.to}
 
 %p
-  %input{type: 'submit', value: 'Save'}
+  %input{:type => 'submit', :value => 'Save'}
   |
-  %a{href: 'javascript:history.back()'} back
+  %a{:href => 'javascript:history.back()'} back

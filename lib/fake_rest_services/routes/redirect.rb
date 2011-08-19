@@ -12,7 +12,7 @@ module FakeRestServices
       end
 
       router.post '/redirects' do
-        @redirect = Redirect.create(params['redirect'] || { pattern: params['pattern'], to: params['to'] })
+        @redirect = Redirect.create(params['redirect'] || { :pattern => params['pattern'], :to => params['to'] })
 
         if browser?
           if @redirect.errors.blank?

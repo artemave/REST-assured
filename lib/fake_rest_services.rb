@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'sinatra/base'
 require 'haml'
 require 'sass'
@@ -21,10 +22,10 @@ module FakeRestServices
     enable :logging
 
     enable :sessions
-    use Rack::Flash, sweep: true
+    use Rack::Flash, :sweep => true
 
     set :public, File.expand_path('../../public', __FILE__)
-    set :haml, format: :html5
+    set :haml, :format => :html5
 
     helpers Sinatra::Partials
     register Sinatra::StaticAssets
@@ -43,7 +44,7 @@ module FakeRestServices
     end
 
     get /.*/ do
-      Fixture.where(url: request.fullpath, active: true).first.try(:content) or try_redirect(request) or status 404
+      Fixture.where(:url => request.fullpath, :active => true).first.try(:content) or try_redirect(request) or status 404
     end
 
     #configure(:development) do

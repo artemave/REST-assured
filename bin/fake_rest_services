@@ -2,6 +2,7 @@
 
 $:.push File.expand_path('../../lib', __FILE__)
 
+require 'rubygems'
 require 'optparse'
 require 'fake_rest_services/config'
 

@@ -2,7 +2,7 @@ class Redirect < ActiveRecord::Base
   attr_accessible :pattern, :to
 
   validates_presence_of :pattern, :to
-  validates_uniqueness_of :position, allow_blank: true
+  validates_uniqueness_of :position, :allow_blank => true
 
   scope :ordered, order('position')
 
@@ -13,7 +13,7 @@ class Redirect < ActiveRecord::Base
 
     transaction do
       begin
-        update_all position: nil
+        update_all :position => nil
 
         ordered_redirect_ids.each_with_index do |r_id, idx|
           r = find(r_id)

@@ -9,7 +9,7 @@
       %th &nbsp;
   %tbody
     - @redirects.each do |r|
-      %tr{id: "redirect_#{r.id}"}
+      %tr{:id => "redirect_#{r.id}"}
         %td.text-center.handle
           %span.ui-icon.ui-icon-arrowthick-2-n-s
         %td= r.pattern
@@ -17,7 +17,7 @@
         %td.edit-link.text-center.white-space-nowrap
           = link_to 'Edit', "/redirects/#{r.id}/edit"
           |
-          %a.delete_link{href: "/redirects/#{r.id}"} Delete
+          %a.delete_link{:href => "/redirects/#{r.id}"} Delete
 
 :javascript
   $(function() {
