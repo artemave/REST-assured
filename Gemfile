@@ -14,5 +14,4 @@ gem RUBY_VERSION =~ /^1\.8/ ? 'ruby-debug' : 'ruby-debug19'
 gem 'awesome_print'
 gem 'interactive_editor'
 gem 'launchy'
-gem 'rbx-require-relative' if RUBY_VERSION =~ /^1\.8/
 #gem 'akephalos', git: 'https://github.com/Nerian/akephalos.git'

@@ -1,4 +1,4 @@
-require_relative '../spec_helper'
+require File.expand_path('../../spec_helper', __FILE__)
 
 describe Redirect do
   # this is solely to get through 'Can't find first XXX' shoulda crap

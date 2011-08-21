@@ -15,7 +15,7 @@
             %td{:rowspan => fs.size}= url
           %td= f.description
           %td.label.text-center
-            %input.active-fixture-toggle{:type => 'radio', :name => url, :checked => f.active, :data => { f:ixture_id => f.id }}
+            %input.active-fixture-toggle{:type => 'radio', :name => url, :checked => f.active, :data => { :fixture_id => f.id }}
           %td.edit-link.text-center.white-space-nowrap
             = link_to 'Edit', "/fixtures/#{f.id}/edit"
             |

@@ -1,8 +1,7 @@
 ENV['RACK_ENV'] = 'test'
 
 require 'rubygems'
-require 'require_relative' if RUBY_VERSION =~ /^1\.8/
-require_relative '../lib/fake_rest_services'
+require File.expand_path('../../lib/fake_rest_services', __FILE__)
 require 'rspec'
 require 'shoulda-matchers'
 require 'capybara/rspec'
