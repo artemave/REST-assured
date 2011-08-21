@@ -9,15 +9,11 @@ require 'fake_rest_services/config'
 OptionParser.new do |opts|
   opts.banner = "Usage: fake_rest_services [options]"
 
-  opts.on('-e', '--environment production|test|development', "defaults to production") do |env|
-    AppConfig[:environment] = env
-  end
-
-  opts.on('-d', '--database FILENAME', "defaults to ./fake_rest_services.db") do |fname|
+  opts.on('-d', '--database FILENAME', "Path to database file. Defaults to ./fake_rest_services.db. There is a special value ':memory:' for in memory database.") do |fname|
     AppConfig[:database] = fname
   end
 
-  opts.on('-p', '--port PORT', Integer, "defaults to 4578") do |port|
+  opts.on('-p', '--port PORT', Integer, "Server port. Defaults to 4578") do |port|
     AppConfig[:port] = port
   end
 
