@@ -1,4 +1,5 @@
 require 'sinatra/activerecord'
+require 'meta_where'
 require 'fake_rest_services/config'
 
 ActiveRecord::Base.establish_connection(

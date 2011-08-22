@@ -31,5 +31,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'sinatra-activerecord'
   s.add_dependency 'sqlite3'
   s.add_dependency 'rake'
+  s.add_dependency 'meta_where'
 end
 

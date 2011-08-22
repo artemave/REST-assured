@@ -8,8 +8,8 @@ class Fixture < ActiveRecord::Base
 
   private
     def toggle_active
-      if active && Fixture.where(:url => url, :active => true).exists?
-        Fixture.where(:url => url).update_all :active => false
+      if active && Fixture.where(:url => url, :active => true, :id.ne => id).exists?
+        Fixture.where(:url => url, :id.ne => id).update_all :active => false
       end
     end
 
