@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   #s.description          = %q{TODO: Write a gem description}
 
   s.rubyforge_project     = "fake_rest_services"
-  s.required_ruby_version = '>= 1.9.0'
+  s.required_ruby_version = '>= 1.8.7'
 
   s.files                 = `git ls-files`.split("\n")
   s.test_files            = `git ls-files -- {test,spec,features}/*`.split("\n")
