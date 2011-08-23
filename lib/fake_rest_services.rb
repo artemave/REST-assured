@@ -25,6 +25,7 @@ module FakeRestServices
     use Rack::Flash, :sweep => true
 
     set :public, File.expand_path('../../public', __FILE__)
+    set :views, File.expand_path('../../views', __FILE__)
     set :haml, :format => :html5
 
     helpers Sinatra::Partials
