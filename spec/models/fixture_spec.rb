@@ -2,11 +2,17 @@ require File.expand_path('../../spec_helper', __FILE__)
 
 describe Fixture do
   let :valid_params do
-    { :url => '/some/api', :content => 'some content' }
+    { :url => '/some/api', :content => 'some content', :method => 'GET' }
   end
 
   it { should validate_presence_of(:url) }
   it { should validate_presence_of(:content) }
+  #it { should ensure_inclusion_of(:method).in(Fixture::METHODS) }
+
+  it "defaults method to GET" do
+    f = Fixture.create valid_params.except(:method)
+    f.method.should == 'GET'
+  end
 
   it "makes fixture active by default" do
     f = Fixture.create valid_params.except(:active)

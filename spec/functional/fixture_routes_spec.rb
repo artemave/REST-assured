@@ -2,10 +2,10 @@ require File.expand_path('../../spec_helper', __FILE__)
 
 describe 'Fixture routes' do
   let :fixture do
-    { :url => '/api/google?a=5', :content => 'some awesome content' }
+    { :url => '/api/google?a=5', :content => 'some awesome content', :method => 'POST' }
   end
   let :valid_params do
-    { 'fixture[url]' =>  fixture[:url], 'fixture[content]' => fixture[:content] }
+    { 'fixture[url]' =>  fixture[:url], 'fixture[content]' => fixture[:content], 'fixture[method]' => fixture[:method] }
   end
   let :invalid_params do
     { 'fixture[url]' =>  fixture[:url] }
@@ -95,7 +95,7 @@ describe 'Fixture routes' do
       post '/fixtures', fixture
 
       last_response.should be_ok
-      Fixture.count.should == 1
+      Fixture.exists?(fixture).should be_true
     end
 
     it "reports failure when creating with invalid parameters" do

@@ -9,13 +9,25 @@ When /^I create a fixture with "([^"]*)" as url and "([^"]*)" as response conten
   last_response.should be_ok
 end
 
+When /^I create a fixture with "([^"]*)" as url, "([^"]*)" as response content and "([^"]*)" as request method$/ do |url, content, method|
+  post '/fixtures', { :url => url, :content => content, :method => method }
+  last_response.should be_ok
+end
+
 Then /^there should be (#{CAPTURE_A_NUMBER}) fixture with "([^"]*)" as url and "([^"]*)" as response content$/ do |n, url, content|
-  Fixture.count.should == n
   Fixture.where(:url => url, :content => content).count.should == 1
+end
+
+Then /^there should be (#{CAPTURE_A_NUMBER}) fixture with "([^"]*)" as url, "([^"]*)" as response content and "([^"]*)" as request method$/ do |n, url, content, method|
+  Fixture.where(:url => url, :content => content, :method => method).count.should == n
 end
 
 Given /^there is fixture with "([^"]*)" as url and "([^"]*)" as response content$/ do |url, content|
   Fixture.create(:url => url, :content => content)
+end
+
+Given /^there is fixture with "([^"]*)" as url, "([^"]*)" as response content and "([^"]*)" as request method$/ do |url, content, method|
+  Fixture.create(:url => url, :content => content, :method => method)
 end
 
 Given /^I register "([^"]*)" as url and "([^"]*)" as response content$/ do |url, content|
@@ -25,6 +37,10 @@ end
 
 When /^I request "([^"]*)"$/ do |url|
   get url
+end
+
+When /^I "([^"]*)" "([^"]*)"$/ do |method, url|
+  send(method.downcase, url)
 end
 
 Then /^I should get "([^"]*)" in response content$/ do |content|
