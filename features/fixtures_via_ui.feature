@@ -6,14 +6,14 @@ Feature: manage fixtures via ui
 
   Scenario: view existing fixtures
     Given the following fixtures exist:
-      | url       | description  | content      |
+      | fullpath       | description  | content      |
       | /url1/aaa | twitter      | test content |
       | /url2/bbb | geo location | more content |
       | /u/b?c=1  | wikipedia    | article      |
     When I visit "fixtures" page
     Then I should see that I am on "fixtures" page
     And I should see existing fixtures:
-      | url       | description  |
+      | fullpath       | description  |
       | /url1/aaa | twitter      |
       | /url2/bbb | geo location |
       | /u/b?c=1  | wikipedia    |
@@ -22,17 +22,17 @@ Feature: manage fixtures via ui
     Given I am on "fixtures" page
     When I choose to create a fixture
     And I enter fixture details:
-      | url           | description | content      |
+      | fullpath           | description | content      |
       | /url2/bb?a=b5 | google api  | test content |
     And I save it
     Then I should see "Fixture created"
     And I should see existing fixtures:
-      | url           | description |
+      | fullpath           | description |
       | /url2/bb?a=b5 | google api  |
 
   @javascript
   Scenario: choose active fixture
-    Given there are two fixtures for the same url
+    Given there are two fixtures for the same fullpath
     When I visit "fixtures" page
     And I make first fixture active
     Then first fixture should be served
@@ -41,7 +41,7 @@ Feature: manage fixtures via ui
 
   Scenario: edit fixture
     Given the following fixtures exist:
-      | url       | description  | content      |
+      | fullpath       | description  | content      |
       | /url1/aaa | twitter      | test content |
     And I visit "fixtures" page
     And I choose to edit fixture
@@ -49,17 +49,17 @@ Feature: manage fixtures via ui
     And I save it
     Then I should see that I am on "fixtures" page
     And I should see existing fixtures:
-      | url       | description  |
+      | fullpath       | description  |
       | /url1/aaa | google       |
 
   @javascript
   Scenario: delete fixture
     Given the following fixtures exist:
-      | url        | description | content       |
+      | fullpath        | description | content       |
       | /url1/aaa  | twitter     | test content  |
       | /url/cc/bb | google      | other content |
     And I visit "fixtures" page
-    And I choose to delete fixture with url "/url1/aaa"
+    And I choose to delete fixture with fullpath "/url1/aaa"
     Then I should be asked to confirm delete
     And I should see "Fixture deleted"
     And I should not see "/url1/aaa"

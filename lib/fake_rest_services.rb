@@ -46,7 +46,7 @@ module FakeRestServices
 
     %w{get post put delete}.each do |method|
       send method, /.*/ do
-        Fixture.where(:url => request.fullpath, :active => true, :method => method.upcase).first.try(:content) or try_redirect(request) or status 404
+        Fixture.where(:fullpath => request.fullpath, :active => true, :method => method.upcase).first.try(:content) or try_redirect(request) or status 404
       end
     end
 

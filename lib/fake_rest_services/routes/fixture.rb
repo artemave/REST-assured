@@ -16,7 +16,7 @@ module FakeRestServices
       end
 
       router.post '/fixtures' do
-        f = { :url => params['url'], :content => params['content'], :description => params['description'], :method => params['method'] }
+        f = { :fullpath => params['fullpath'], :content => params['content'], :description => params['description'], :method => params['method'] }
         @fixture = Fixture.create(params['fixture'] || f)
 
         if browser?

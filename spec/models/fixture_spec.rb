@@ -2,10 +2,10 @@ require File.expand_path('../../spec_helper', __FILE__)
 
 describe Fixture do
   let :valid_params do
-    { :url => '/some/api', :content => 'some content', :method => 'GET' }
+    { :fullpath => '/some/api', :content => 'some content', :method => 'GET' }
   end
 
-  it { should validate_presence_of(:url) }
+  it { should validate_presence_of(:fullpath) }
   it { should validate_presence_of(:content) }
   #it { should ensure_inclusion_of(:method).in(Fixture::METHODS) }
 
@@ -20,10 +20,10 @@ describe Fixture do
   end
 
   describe 'when created' do
-    it "toggles active fixture for the same url" do
+    it "toggles active fixture for the same fullpath" do
       f1 = Fixture.create valid_params
       f2 = Fixture.create valid_params
-      f3 = Fixture.create valid_params.merge(:url => '/some/other/api')
+      f3 = Fixture.create valid_params.merge(:fullpath => '/some/other/api')
 
       f1.reload.active.should be false
       f3.reload.active.should be true
@@ -31,10 +31,10 @@ describe Fixture do
   end
 
   describe 'when saved' do
-    it "toggles active fixture for the same url" do
+    it "toggles active fixture for the same fullpath" do
       f1 = Fixture.create valid_params
       f2 = Fixture.create valid_params
-      f3 = Fixture.create valid_params.merge(:url => '/some/other/api')
+      f3 = Fixture.create valid_params.merge(:fullpath => '/some/other/api')
 
       f1.active = true
       f1.save
@@ -46,7 +46,7 @@ describe Fixture do
     it "makes other fixtures inactive only when active bit set to true" do
       f1 = Fixture.create valid_params
       f2 = Fixture.create valid_params
-      f3 = Fixture.create valid_params.merge(:url => '/some/other/api')
+      f3 = Fixture.create valid_params.merge(:fullpath => '/some/other/api')
 
       f1.reload.save
       f2.reload.save
@@ -59,10 +59,10 @@ describe Fixture do
 
   describe 'when destroying' do
     context 'active fixture' do
-      it "makes another fixture for the same url active" do
+      it "makes another fixture for the same fullpath active" do
         f1 = Fixture.create valid_params
         f2 = Fixture.create valid_params
-        f3 = Fixture.create valid_params.merge(:url => '/some/other/api')
+        f3 = Fixture.create valid_params.merge(:fullpath => '/some/other/api')
 
         f2.destroy
         f1.reload.active.should be true

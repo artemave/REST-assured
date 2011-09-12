@@ -1,7 +1,7 @@
 Feature: manage redirect rules
   In order to be able to mock only part of api
   As a developer
-  I want to redirect to real api if there are no fixtures for requested url
+  I want to redirect to real api if there are no fixtures for requested fullpath
 
   Background:
     Given there are no redirect rules

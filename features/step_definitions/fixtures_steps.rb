@@ -4,43 +4,43 @@ Given /^there are no fixtures$/ do
   Fixture.destroy_all
 end
 
-When /^I create a fixture with "([^"]*)" as url and "([^"]*)" as response content$/ do |url, content|
-  post '/fixtures', { :url => url, :content => content }
+When /^I create a fixture with "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |fullpath, content|
+  post '/fixtures', { :fullpath => fullpath, :content => content }
   last_response.should be_ok
 end
 
-When /^I create a fixture with "([^"]*)" as url, "([^"]*)" as response content and "([^"]*)" as request method$/ do |url, content, method|
-  post '/fixtures', { :url => url, :content => content, :method => method }
+When /^I create a fixture with "([^"]*)" as fullpath, "([^"]*)" as response content and "([^"]*)" as request method$/ do |fullpath, content, method|
+  post '/fixtures', { :fullpath => fullpath, :content => content, :method => method }
   last_response.should be_ok
 end
 
-Then /^there should be (#{CAPTURE_A_NUMBER}) fixture with "([^"]*)" as url and "([^"]*)" as response content$/ do |n, url, content|
-  Fixture.where(:url => url, :content => content).count.should == 1
+Then /^there should be (#{CAPTURE_A_NUMBER}) fixture with "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |n, fullpath, content|
+  Fixture.where(:fullpath => fullpath, :content => content).count.should == 1
 end
 
-Then /^there should be (#{CAPTURE_A_NUMBER}) fixture with "([^"]*)" as url, "([^"]*)" as response content and "([^"]*)" as request method$/ do |n, url, content, method|
-  Fixture.where(:url => url, :content => content, :method => method).count.should == n
+Then /^there should be (#{CAPTURE_A_NUMBER}) fixture with "([^"]*)" as fullpath, "([^"]*)" as response content and "([^"]*)" as request method$/ do |n, fullpath, content, method|
+  Fixture.where(:fullpath => fullpath, :content => content, :method => method).count.should == n
 end
 
-Given /^there is fixture with "([^"]*)" as url and "([^"]*)" as response content$/ do |url, content|
-  Fixture.create(:url => url, :content => content)
+Given /^there is fixture with "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |fullpath, content|
+  Fixture.create(:fullpath => fullpath, :content => content)
 end
 
-Given /^there is fixture with "([^"]*)" as url, "([^"]*)" as response content and "([^"]*)" as request method$/ do |url, content, method|
-  Fixture.create(:url => url, :content => content, :method => method)
+Given /^there is fixture with "([^"]*)" as fullpath, "([^"]*)" as response content and "([^"]*)" as request method$/ do |fullpath, content, method|
+  Fixture.create(:fullpath => fullpath, :content => content, :method => method)
 end
 
-Given /^I register "([^"]*)" as url and "([^"]*)" as response content$/ do |url, content|
-  post '/fixtures', { :url => url, :content => content }
+Given /^I register "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |fullpath, content|
+  post '/fixtures', { :fullpath => fullpath, :content => content }
   last_response.should be_ok
 end
 
-When /^I request "([^"]*)"$/ do |url|
-  get url
+When /^I request "([^"]*)"$/ do |fullpath|
+  get fullpath
 end
 
-When /^I "([^"]*)" "([^"]*)"$/ do |method, url|
-  send(method.downcase, url)
+When /^I "([^"]*)" "([^"]*)"$/ do |method, fullpath|
+  send(method.downcase, fullpath)
 end
 
 Then /^I should get "([^"]*)" in response content$/ do |content|
@@ -48,8 +48,8 @@ Then /^I should get "([^"]*)" in response content$/ do |content|
 end
 
 Given /^there are some fixtures$/ do
-  [['url1', 'content1'], ['url2', 'content2'], ['url3', 'content3']].each do |fixture|
-    Fixture.create(:url => fixture[0], :content => fixture[1])
+  [['fullpath1', 'content1'], ['fullpath2', 'content2'], ['fullpath3', 'content3']].each do |fixture|
+    Fixture.create(:fullpath => fixture[0], :content => fixture[1])
   end
 end
 
@@ -66,7 +66,7 @@ end
 
 Given /^the following fixtures exist:$/ do |fixtures|
   fixtures.hashes.each do |row|
-    Fixture.create(:url => row['url'], :description => row['description'], :content => row['content'])
+    Fixture.create(:fullpath => row['fullpath'], :description => row['description'], :content => row['content'])
   end
 end
 
@@ -76,7 +76,7 @@ end
 
 Then /^I should see existing fixtures:$/ do |fixtures|
   fixtures.hashes.each do |row|
-    page.should have_content(row[:url])
+    page.should have_content(row[:fullpath])
     page.should have_content(row[:description])
   end
 end
@@ -92,7 +92,7 @@ end
 When /^I enter fixture details:$/ do |details|
   fixture = details.hashes.first
 
-  fill_in 'Url', :with => fixture['url']
+  fill_in 'Request fullpath', :with => fixture['fullpath']
   fill_in 'Content', :with => fixture['content']
   fill_in 'Description', :with => fixture['description']
 end
@@ -109,9 +109,9 @@ Then /^I should (not)? ?see "([^"]*)"$/ do |see, text|
   end
 end
 
-Given /^there are two fixtures for the same url$/ do
-  @first = Fixture.create :url => '/api/something', :content => 'some content'
-  @second = Fixture.create :url => '/api/something', :content => 'other content'
+Given /^there are two fixtures for the same fullpath$/ do
+  @first = Fixture.create :fullpath => '/api/something', :content => 'some content'
+  @second = Fixture.create :fullpath => '/api/something', :content => 'other content'
 end
 
 When /^I make (first|second) fixture active$/ do |ord|
@@ -122,7 +122,7 @@ end
 
 Then /^(first|second) fixture should be served$/ do |ord|
   f = instance_variable_get('@' + ord)
-  get f.url
+  get f.fullpath
   last_response.body.should == f.content
 end
 
@@ -134,8 +134,8 @@ When /^I change "([^"]*)" "([^"]*)" to "([^"]*)"$/ do |obj, prop, value|
   fill_in "#{obj}_#{prop}", :with => value
 end
 
-Given /^I choose to delete fixture with url "([^"]*)"$/ do |url|
-  find(:xpath, "//tr[td[text()='#{url}']]//a[text()='Delete']").click
+Given /^I choose to delete fixture with fullpath "([^"]*)"$/ do |fullpath|
+  find(:xpath, "//tr[td[text()='#{fullpath}']]//a[text()='Delete']").click
 end
 
 Then /^I should be asked to confirm delete$/ do

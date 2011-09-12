@@ -1,9 +1,9 @@
 class Fixture < ActiveRecord::Base
-  attr_accessible :url, :content, :description, :method
+  attr_accessible :fullpath, :content, :description, :method
 
   METHODS = %w{GET POST PUT DELETE}
 
-  validates_presence_of :url, :content
+  validates_presence_of :fullpath, :content
   validates_inclusion_of :method, :in => METHODS
 
   before_save :toggle_active
@@ -12,8 +12,8 @@ class Fixture < ActiveRecord::Base
 
   private
     def toggle_active
-      if active && Fixture.where(:url => url, :active => true, :id.ne => id).exists?
-        Fixture.where(:url => url, :id.ne => id).update_all :active => false
+      if active && Fixture.where(:fullpath => fullpath, :active => true, :id.ne => id).exists?
+        Fixture.where(:fullpath => fullpath, :id.ne => id).update_all :active => false
       end
     end
 
@@ -22,7 +22,7 @@ class Fixture < ActiveRecord::Base
     end
 
     def set_active
-      if active && f = Fixture.where(:url => url).last
+      if active && f = Fixture.where(:fullpath => fullpath).last
         f.active = true
         f.save
       end

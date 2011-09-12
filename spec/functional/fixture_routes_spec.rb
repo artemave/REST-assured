@@ -2,13 +2,13 @@ require File.expand_path('../../spec_helper', __FILE__)
 
 describe 'Fixture routes' do
   let :fixture do
-    { :url => '/api/google?a=5', :content => 'some awesome content', :method => 'POST' }
+    { :fullpath => '/api/google?a=5', :content => 'some awesome content', :method => 'POST' }
   end
   let :valid_params do
-    { 'fixture[url]' =>  fixture[:url], 'fixture[content]' => fixture[:content], 'fixture[method]' => fixture[:method] }
+    { 'fixture[fullpath]' =>  fixture[:fullpath], 'fixture[content]' => fixture[:content], 'fixture[method]' => fixture[:method] }
   end
   let :invalid_params do
-    { 'fixture[url]' =>  fixture[:url] }
+    { 'fixture[fullpath]' =>  fixture[:fullpath] }
   end
 
   describe "through ui", :ui => true do
@@ -22,13 +22,13 @@ describe 'Fixture routes' do
 
       visit '/fixtures'
 
-      page.should have_content(f.url)
+      page.should have_content(f.fullpath)
     end
 
     it "shows form for creating new fixture" do
       visit '/fixtures/new'
 
-      page.should have_css('#fixture_url')
+      page.should have_css('#fixture_fullpath')
       page.should have_css('#fixture_content')
       page.should have_css('#fixture_description')
     end
@@ -53,19 +53,19 @@ describe 'Fixture routes' do
       f = Fixture.create fixture
       visit "/fixtures/#{f.id}/edit"
 
-      find('#fixture_url').value.should == f.url
+      find('#fixture_fullpath').value.should == f.fullpath
       find('#fixture_content').value.should == f.content
     end
 
     it "updates fixture" do
       f = Fixture.create fixture
 
-      put "/fixtures/#{f.id}", 'fixture[url]' => '/some/other/api'
+      put "/fixtures/#{f.id}", 'fixture[fullpath]' => '/some/other/api'
       follow_redirect!
       
       last_request.fullpath.should == '/fixtures'
       last_response.body.should =~ /Fixture updated/
-      f.reload.url.should == '/some/other/api'
+      f.reload.fullpath.should == '/some/other/api'
     end
 
     it "chooses active fixture" do

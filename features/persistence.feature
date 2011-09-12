@@ -5,14 +5,14 @@ Feature: Persistence
 
   Scenario: default storage
     Given I start service without --database option
-    And I register "/api/something" as url and "content" as response content
+    And I register "/api/something" as fullpath and "content" as response content
     And I restart service without --database option
     When I request "/api/something"
     Then I should get 404 in response status
 
   Scenario Outline: specify storage
     Given I start service with --database "<db>" option
-    And I register "/api/something" as url and "content" as response content
+    And I register "/api/something" as fullpath and "content" as response content
     And I restart service with --database "<db2>" option
     When I request "/api/something"
     Then I should get <status> in response status
