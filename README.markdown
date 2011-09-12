@@ -27,7 +27,7 @@ This starts an instance of rest-doubles on port 4578 (changable with --port opti
 
 Double is a stub/mock of a particular external call. There is the following rest API for setting up doubles:
 
-* `POST '/doubles', { request\_fullpath: path, content: content, method: method }`
+* `POST '/doubles', { request_fullpath: path, content: content, method: method }`
   Creates double with the following parameters:
 
   - __request_fullpath__ - e.g., `/some/api/object`, or with parameters in query string (useful for doubling GETs) - `/some/other/api/object?a=2&b=c`. Mandatory.
@@ -60,6 +60,10 @@ It is sometimes desirable to only double certain calls whilst letting others thr
 
   Now request (any method) to http://localhost:4578/auth/something/useful will get redirected to https://myserver.com/api/something/useful. Provided of course there is no double matched for that fullpath and method.
   Much like rewrite rules, redirects are evaluated in order (of creation). In UI you can manually rearrange the order.
+
+### Storage
+
+By default when you start rest-doubles it creates (unless already exists) sqlite database and stores it into file in the current directory. This is good for using it for development - when you want doubles/redirects to persist across restarts - but may not be so desirable for using with tests, where you want each test run to start from blank slate. For that reason, you can specify `--database :memory:` so that database is kept in memory.
 
 ## TODO
 
