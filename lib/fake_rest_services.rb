@@ -7,9 +7,9 @@ require 'sinatra/static_assets'
 require 'rack-flash'
 require 'sinatra/partials'
 require 'fake_rest_services/init'
-require 'fake_rest_services/models/fixture'
+require 'fake_rest_services/models/double'
 require 'fake_rest_services/models/redirect'
-require 'fake_rest_services/routes/fixture'
+require 'fake_rest_services/routes/double'
 require 'fake_rest_services/routes/redirect'
 
 module FakeRestServices
@@ -37,7 +37,7 @@ module FakeRestServices
       end
     end
 
-    include FixtureRoutes
+    include DoubleRoutes
     include RedirectRoutes
 
     get '/css/base.css' do
@@ -46,7 +46,7 @@ module FakeRestServices
 
     %w{get post put delete}.each do |method|
       send method, /.*/ do
-        Fixture.where(:fullpath => request.fullpath, :active => true, :method => method.upcase).first.try(:content) or try_redirect(request) or status 404
+        Double.where(:fullpath => request.fullpath, :active => true, :method => method.upcase).first.try(:content) or try_redirect(request) or status 404
       end
     end
 

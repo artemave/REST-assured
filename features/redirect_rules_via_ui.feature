@@ -1,6 +1,6 @@
 @ui
 Feature: manage redirects via ui
-  In order to set up 'pass through' for requests that don't match any fixture
+  In order to set up 'pass through' for requests that don't match any double
   As a developer
   I want to have a ui to set up redirects
 

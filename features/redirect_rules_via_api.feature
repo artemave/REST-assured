@@ -1,11 +1,11 @@
 Feature: manage redirect rules
   In order to be able to mock only part of api
   As a developer
-  I want to redirect to real api if there are no fixtures for requested fullpath
+  I want to redirect to real api if there are no doubles for requested fullpath
 
   Background:
     Given there are no redirect rules
-    And there are no fixtures
+    And there are no doubles
 
   Scenario: no redirect rules
     When I request "/api/something"

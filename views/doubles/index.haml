@@ -1,5 +1,5 @@
-%h2 Fixture index
-%a= link_to 'New fixture', '/fixtures/new'
+%h2 Double index
+%a= link_to 'New double', '/doubles/new'
 %table
   %thead
     %tr
@@ -8,18 +8,18 @@
       %th Active?
       %th &nbsp;
   %tbody
-    - @fixtures.group_by {|f| f.fullpath}.each do |fullpath, fs|
+    - @doubles.group_by {|f| f.fullpath}.each do |fullpath, fs|
       - fs.each_with_index do |f, i|
-        %tr{:id => "fixture_row_#{f.id}"}
+        %tr{:id => "double_row_#{f.id}"}
           - if i == 0
             %td{:rowspan => fs.size}= fullpath
           %td= f.description
           %td.label.text-center
-            %input.active-fixture-toggle{:type => 'radio', :name => fullpath, :checked => f.active, :data => { :fixture_id => f.id }}
+            %input.active-double-toggle{:type => 'radio', :name => fullpath, :checked => f.active, :data => { :double_id => f.id }}
           %td.edit-link.text-center.white-space-nowrap
-            = link_to 'Edit', "/fixtures/#{f.id}/edit"
+            = link_to 'Edit', "/doubles/#{f.id}/edit"
             |
-            %a.delete_link{:href => "/fixtures/#{f.id}"} Delete
+            %a.delete_link{:href => "/doubles/#{f.id}"} Delete
 
 :javascript
   $(function() {
@@ -27,11 +27,11 @@
         $('input', this).click();
     });
 
-    $('input.active-fixture-toggle').click(function(e) {
+    $('input.active-double-toggle').click(function(e) {
         e.stopPropagation();
 
         $.post(
-          '/fixtures/' + this.getAttribute('data-fixture_id'),
+          '/doubles/' + this.getAttribute('data-double_id'),
           { _method: 'put', active: 't' },
           function(data) {
             $.jGrowl(data);

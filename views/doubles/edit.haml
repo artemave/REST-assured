@@ -1,0 +1,4 @@
+%h2 Edit Double
+%form{:action => "/doubles/#{@double.id}", :method => 'post'}
+  %input{:type => 'hidden', :name => '_method', :value => 'put'}
+  = partial :'doubles/form'

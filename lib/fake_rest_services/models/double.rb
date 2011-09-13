@@ -1,4 +1,4 @@
-class Fixture < ActiveRecord::Base
+class Double < ActiveRecord::Base
   attr_accessible :fullpath, :content, :description, :method
 
   METHODS = %w{GET POST PUT DELETE}
@@ -12,8 +12,8 @@ class Fixture < ActiveRecord::Base
 
   private
     def toggle_active
-      if active && Fixture.where(:fullpath => fullpath, :active => true, :id.ne => id).exists?
-        Fixture.where(:fullpath => fullpath, :id.ne => id).update_all :active => false
+      if active && Double.where(:fullpath => fullpath, :active => true, :id.ne => id).exists?
+        Double.where(:fullpath => fullpath, :id.ne => id).update_all :active => false
       end
     end
 
@@ -22,7 +22,7 @@ class Fixture < ActiveRecord::Base
     end
 
     def set_active
-      if active && f = Fixture.where(:fullpath => fullpath).last
+      if active && f = Double.where(:fullpath => fullpath).last
         f.active = true
         f.save
       end

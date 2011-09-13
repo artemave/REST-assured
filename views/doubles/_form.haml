@@ -1,0 +1,16 @@
+%p
+  %label{:for => 'double_fullpath'} Request fullpath*
+  %input.wide#double_fullpath{:type => 'text', :name => 'double[fullpath]', :value => @double.fullpath}
+
+%p
+  %label{:for => 'double_content'} Content*
+  %textarea.wide#double_content{:name => 'double[content]', :rows => 10}= @double.content
+
+%p
+  %label{:for => 'double_description'} Description
+  %textarea.wide#double_description{:name => 'double[description]', :rows => 3}= @double.description
+
+%p
+  %input{:type => 'submit', :value => 'Save'}
+  |
+  %a{:href => 'javascript:history.back()'} back
