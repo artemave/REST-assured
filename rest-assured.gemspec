@@ -1,23 +1,23 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require 'fake_rest_services/version'
+require 'rest-assured/version'
 
 Gem::Specification.new do |s|
-  s.name                  = "fake_rest_services"
-  s.version               = FakeRestServices::VERSION
+  s.name                  = "rest-assured"
+  s.version               = RestAssured::VERSION
   s.platform              = Gem::Platform::RUBY
   s.authors               = ['Artem Avetisyan']
   s.email                 = ['artem.avetisyan@bbc.co.uk']
-  s.homepage              = "https://github.com/artemave/fake_rest_services"
-  s.summary               = %q{A tool for high level mocking HTTP based REST services}
+  s.homepage              = "https://github.com/BBC/rest-assured"
+  s.summary               = %q{A tool for high level mocking/stubbing HTTP based REST services}
   #s.description          = %q{TODO: Write a gem description}
 
-  s.rubyforge_project     = "fake_rest_services"
+  s.rubyforge_project     = "rest-assured"
   s.required_ruby_version = '>= 1.8.7'
 
   s.files                 = `git ls-files`.split("\n")
   s.test_files            = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables           = ['fake_rest_services']
+  s.executables           = ['rest-assured']
   s.require_paths         = ['lib']
 
   s.add_dependency 'sinatra'

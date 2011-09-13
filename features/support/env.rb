@@ -9,7 +9,7 @@ require 'logger'
 
 ENV['RACK_ENV'] = 'test'
 
-require 'fake_rest_services'
+require 'rest-assured'
 
 module RackHeaderHack
   def set_headers(headers)
@@ -32,7 +32,7 @@ def setup_logger
   logger = Logger.new(File.expand_path("../../../test.log", __FILE__))
   logger.level = Logger::DEBUG
 
-  FakeRestServices::Application.class_eval do
+  RestAssured::Application.class_eval do
     use Rack::CommonLogger, logger
   end
 
@@ -42,7 +42,7 @@ end
 setup_logger
 
 def app
-  FakeRestServices::Application
+  RestAssured::Application
 end
 Capybara.app = app
 

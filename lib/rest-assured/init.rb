@@ -1,6 +1,6 @@
 require 'sinatra/activerecord'
 require 'meta_where'
-require 'fake_rest_services/config'
+require 'rest-assured/config'
 
 ActiveRecord::Base.establish_connection(
   :adapter => "sqlite3",

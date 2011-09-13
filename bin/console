@@ -4,9 +4,9 @@ require 'bundler/setup'
 
 $:.push File.expand_path('../../lib', __FILE__)
 
-require 'fake_rest_services/config'
+require 'rest-assured/config'
 AppConfig[:database] = ENV['FRS_DB'] || File.expand_path('../../db/development.db', __FILE__)
 
-require 'fake_rest_services'
+require 'rest-assured'
 
 IRB.start(__FILE__)

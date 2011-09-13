@@ -1,4 +1,4 @@
-# REST doubles
+# REST assured
 
 ## Overview
 
@@ -13,15 +13,15 @@ There are three main use cases:
 
 You are going to need ruby >= 1.8.7. Install gem and run:
 
-    sudo gem install rest-doubles # omit sudo if using rvm
-    rest-doubles &
+    sudo gem install rest-assured # omit sudo if using rvm
+    rest-assured &
 
 Or clone from github and run:
 
-    git clone git@github.com:BBC/rest-doubles.git
-    ./rest-doubles/bin/rest-doubles &
+    git clone git@github.com:BBC/rest-assured.git
+    ./rest-assured/bin/rest-assured &
 
-This starts an instance of rest-doubles on port 4578 (changable with --port option) and creates rest-doubles.db (changable with --database option) in the current directory. You can now access it via rest or web interfaces on http://localhost:4578
+This starts an instance of rest-assured on port 4578 (changable with --port option) and creates rest-assured.db (changable with --database option) in the current directory. You can now access it via REST or web interfaces on http://localhost:4578
 
 ### Doubles
 
@@ -47,7 +47,7 @@ Double is a stub/mock of a particular external call. There is the following rest
 
 ### Redirects
 
-It is sometimes desirable to only double certain calls whilst letting others through to the 'real' services. Meet Redirects. Kind of "rewrite rules" for requests that didn't match any double. Here is the resp API for managing redirects:
+It is sometimes desirable to only double certain calls while letting others through to the 'real' services. Meet Redirects. Kind of "rewrite rules" for requests that didn't match any double. Here is the resp API for managing redirects:
 
 * `POST '/redirects', { pattern: pattern, to: uri }` Creates redirect with the following parameters:
 
@@ -58,18 +58,20 @@ It is sometimes desirable to only double certain calls whilst letting others thr
 
     RestClient.post 'http://localhost:4578/redirects', { pattern: '^/auth', to: 'https://myserver.com/api' }
 
-  Now request (any method) to http://localhost:4578/auth/something/useful will get redirected to https://myserver.com/api/something/useful. Provided of course there is no double matched for that fullpath and method.
+  Now request (any method) to http://localhost:4578/auth/services/1 will get redirected to https://myserver.com/api/auth/services/1. Provided of course there is no double matched for that fullpath and method.
   Much like rewrite rules, redirects are evaluated in order (of creation). In UI you can manually rearrange the order.
 
 ### Storage
 
-By default when you start rest-doubles it creates (unless already exists) sqlite database and stores it into file in the current directory. This is good for using it for development - when you want doubles/redirects to persist across restarts - but may not be so desirable for using with tests, where you want each test run to start from blank slate. For that reason, you can specify `--database :memory:` so that database is kept in memory.
+By default when you start rest-assured it creates (unless already exists) sqlite database and stores it into file in the current directory. This is good for using it for development - when you want doubles/redirects to persist across restarts - but may not be so desirable for using with tests, where you want each test run to start from blank slate. For that reason, you can specify `--database :memory:` so that database is kept in memory.
 
 ## TODO
 
 * Implement expectations
 * Support headers (extends previous point)
 * Ruby client library
+* Support methods in UI (at the moment it is always GET)
+* Don't allow to double internal routes. Just in case
 
 ## Author
 

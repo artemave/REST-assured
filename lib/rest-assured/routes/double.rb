@@ -1,4 +1,4 @@
-module FakeRestServices
+module RestAssured
   module DoubleRoutes
     def self.included(router)
       router.get '/' do

@@ -1,4 +1,4 @@
-module FakeRestServices
+module RestAssured
   module RedirectRoutes
     def self.included(router)
       router.get '/redirects' do

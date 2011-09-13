@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-# Specify your gem's dependencies in fake_rest_services.gemspec
+# Specify your gem's dependencies in rest-assured.gemspec
 gemspec
 
 gem 'cucumber'

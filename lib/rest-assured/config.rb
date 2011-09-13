@@ -5,7 +5,7 @@ AppConfig = {
 
 AppConfig[:database] = case AppConfig[:environment]
                        when 'production'
-                         './fake_rest_services.db'
+                         './rest-assured.db'
                        else
                          File.expand_path("../../../db/#{AppConfig[:environment]}.db", __FILE__)
                        end

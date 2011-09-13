@@ -6,13 +6,13 @@ require 'sinatra/static_assets'
 #require 'sinatra/reloader'
 require 'rack-flash'
 require 'sinatra/partials'
-require 'fake_rest_services/init'
-require 'fake_rest_services/models/double'
-require 'fake_rest_services/models/redirect'
-require 'fake_rest_services/routes/double'
-require 'fake_rest_services/routes/redirect'
+require 'rest-assured/init'
+require 'rest-assured/models/double'
+require 'rest-assured/models/redirect'
+require 'rest-assured/routes/double'
+require 'rest-assured/routes/redirect'
 
-module FakeRestServices
+module RestAssured
   class Application < Sinatra::Base
     set :environment, AppConfig[:environment]
     set :port, AppConfig[:port]

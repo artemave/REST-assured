@@ -1,17 +1,17 @@
 ENV['RACK_ENV'] = 'test'
 
 require 'rubygems'
-require File.expand_path('../../lib/fake_rest_services', __FILE__)
+require File.expand_path('../../lib/rest-assured', __FILE__)
 require 'rspec'
 require 'shoulda-matchers'
 require 'capybara/rspec'
 require 'rack/test'
 require 'database_cleaner'
 
-Capybara.app = FakeRestServices::Application
+Capybara.app = RestAssured::Application
 
 def app
-  FakeRestServices::Application
+  RestAssured::Application
 end
 
 DatabaseCleaner.strategy = :truncation
