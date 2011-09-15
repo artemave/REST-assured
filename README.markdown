@@ -13,13 +13,14 @@ There are three main use cases:
 
 You are going to need ruby >= 1.8.7. Install gem and run:
 
-    sudo gem install rest-assured # omit sudo if using rvm
-    rest-assured &
+    avetia01:~% sudo gem install rest-assured # omit sudo if using rvm
+    avetia01:~% rest-assured &
 
 Or clone from github and run:
 
-    git clone git@github.com:BBC/rest-assured.git
-    ./rest-assured/bin/rest-assured &
+    avetia01:~% git clone git@github.com:BBC/rest-assured.git
+    avetia01:~% cd rest-assured && bundle install # `gem install bundler` if command not found
+    avetia01:~% ./bin/rest-assured &
 
 This starts an instance of rest-assured on port 4578 (changable with --port option) and creates rest-assured.db (changable with --database option) in the current directory. You can now access it via REST or web interfaces on http://localhost:4578
 
@@ -47,7 +48,7 @@ Double is a stub/mock of a particular external call. There is the following rest
 
 ### Redirects
 
-It is sometimes desirable to only double certain calls while letting others through to the 'real' services. Meet Redirects. Kind of "rewrite rules" for requests that didn't match any double. Here is the resp API for managing redirects:
+It is sometimes desirable to only double certain calls while letting others through to the 'real' services. Meet Redirects. Kind of "rewrite rules" for requests that didn't match any double. Here is the rest API for managing redirects:
 
 * `POST '/redirects', { pattern: pattern, to: uri }` Creates redirect with the following parameters:
 
