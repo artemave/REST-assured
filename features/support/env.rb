@@ -5,7 +5,6 @@ require 'capybara'
 require 'capybara/firebug'
 require 'capybara/cucumber'
 require 'database_cleaner'
-require 'logger'
 
 ENV['RACK_ENV'] = 'test'
 
@@ -23,23 +22,6 @@ module RackHeaderHack
     browser.env = headers
   end
 end
-
-def setup_logger
-  Logger.class_eval do
-     alias_method :write, :<<
-  end
-
-  logger = Logger.new(File.expand_path("../../../test.log", __FILE__))
-  logger.level = Logger::DEBUG
-
-  RestAssured::Application.class_eval do
-    use Rack::CommonLogger, logger
-  end
-
-  ActiveRecord::Base.logger = logger
-end
-
-setup_logger
 
 def app
   RestAssured::Application

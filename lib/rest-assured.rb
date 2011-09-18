@@ -19,7 +19,11 @@ module RestAssured
 
     enable :method_override
 
+    Logger.class_eval do
+      alias_method :write, :<<
+    end
     enable :logging
+    use Rack::CommonLogger, $app_logger
 
     enable :sessions
     use Rack::Flash, :sweep => true

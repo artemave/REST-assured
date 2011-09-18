@@ -1,5 +1,5 @@
 class Redirect < ActiveRecord::Base
-  attr_accessible :pattern, :to
+  attr_accessible :pattern, :to, :position
 
   validates_presence_of :pattern, :to
   validates_uniqueness_of :position, :allow_blank => true
