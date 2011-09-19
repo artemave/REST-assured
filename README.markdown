@@ -66,6 +66,10 @@ It is sometimes desirable to only double certain calls while letting others thro
 
 By default when you start rest-assured it creates (unless already exists) sqlite database and stores it into file in the current directory. This is good for using it for development - when you want doubles/redirects to persist across restarts - but may not be so desirable for using with tests, where you want each test run to start from blank slate. For that reason, you can specify `--database :memory:` so that database is kept in memory.
 
+### Logging
+
+It is sometimes useful to see what requests rest-assured is being hit. Either to explore what requests your app is making or to check that test setup is right and doubles indeed get returned. By default, when started, rest-assured creates log file in the current directory. This is configurable with `--logfile` option.
+
 ## TODO
 
 * Implement expectations

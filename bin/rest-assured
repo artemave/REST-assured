@@ -17,6 +17,10 @@ OptionParser.new do |opts|
     AppConfig[:port] = port
   end
 
+  opts.on('-l', '--logfile FILENAME', "Path to logfile. Defaults to ./rest-assured.log") do |log_file|
+    AppConfig[:log_file] = log_file
+  end
+
   opts.on_tail("-h", "--help", "Show this message") do
     puts opts
     exit

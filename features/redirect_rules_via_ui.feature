@@ -41,8 +41,7 @@ Feature: manage redirects via ui
       | pattern  | to                    |
       | /some/remote.* | http://google.com/api |
 
-  # XXX This does not pass due to Capybara/Selelium broken drag and drop support
-  @javascript @pending
+  @javascript
   Scenario: reorder redirects
     Given the following redirects exist:
       | pattern  | to                     |
