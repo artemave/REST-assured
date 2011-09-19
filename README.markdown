@@ -13,14 +13,14 @@ There are three main use cases:
 
 You are going to need ruby >= 1.8.7. Install gem and run:
 
-    avetia01:~% sudo gem install rest-assured # omit sudo if using rvm
-    avetia01:~% rest-assured &
+    bash$ sudo gem install rest-assured # omit sudo if using rvm
+    bash$ rest-assured &
 
 Or clone from github and run:
 
-    avetia01:~% git clone git@github.com:BBC/rest-assured.git
-    avetia01:~% cd rest-assured && bundle install # `gem install bundler` if command not found
-    avetia01:~% ./bin/rest-assured &
+    bash$ git clone git@github.com:BBC/rest-assured.git
+    bash$ cd rest-assured && bundle install # `gem install bundler` if command not found
+    bash$ ./bin/rest-assured &
 
 This starts an instance of rest-assured on port 4578 (changable with --port option) and creates rest-assured.db (changable with --database option) in the current directory. You can now access it via REST or web interfaces on http://localhost:4578
 
@@ -28,10 +28,10 @@ This starts an instance of rest-assured on port 4578 (changable with --port opti
 
 Double is a stub/mock of a particular external call. There is the following rest API for setting up doubles:
 
-* `POST '/doubles', { request_fullpath: path, content: content, method: method }`
+* `POST '/doubles', { fullpath: path, content: content, method: method }`
   Creates double with the following parameters:
 
-  - __request_fullpath__ - e.g., `/some/api/object`, or with parameters in query string (useful for doubling GETs) - `/some/other/api/object?a=2&b=c`. Mandatory.
+  - __fullpath__ - e.g., `/some/api/object`, or with parameters in query string (useful for doubling GETs) - `/some/other/api/object?a=2&b=c`. Mandatory.
   - __content__ - whatever you want this double to respond with. Mandatory.
   - __method__ - one of http the following http verbs: GET, POST, PUT, DELETE. Optional. GET is default.
 
