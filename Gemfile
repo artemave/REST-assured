@@ -14,4 +14,6 @@ gem RUBY_VERSION =~ /^1\.8/ ? 'ruby-debug' : 'ruby-debug19'
 gem 'awesome_print'
 gem 'interactive_editor'
 gem 'launchy'
-#gem 'akephalos', git: 'https://github.com/Nerian/akephalos.git'
+gem 'rake'
+gem "spork", "> 0.9.0.rc"
+gem "guard-spork"

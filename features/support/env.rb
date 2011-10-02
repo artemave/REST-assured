@@ -1,53 +1,61 @@
 $:.push File.expand_path('../../../lib', __FILE__)
-require 'rspec/expectations'
-require 'rack/test'
-require 'capybara'
-require 'capybara/firebug'
-require 'capybara/cucumber'
-require 'database_cleaner'
+require 'rubygems'
+require 'spork'
 
-ENV['RACK_ENV'] = 'test'
+Spork.prefork do
+  require 'rspec/expectations'
+  require 'rack/test'
+  require 'capybara'
+  require 'capybara/firebug'
+  require 'capybara/cucumber'
+  require 'database_cleaner'
 
-require 'rest-assured'
+  ENV['RACK_ENV'] = 'test'
 
-module RackHeaderHack
-  def set_headers(headers)
-    browser = page.driver.browser
-    def browser.env
-      @env.merge(super)
+  module RackHeaderHack
+    def set_headers(headers)
+      browser = page.driver.browser
+      def browser.env
+        @env.merge(super)
+      end
+      def browser.env=(env)
+        @env = env
+      end
+      browser.env = headers
     end
-    def browser.env=(env)
-      @env = env
-    end
-    browser.env = headers
   end
+
+  Capybara.register_driver :selenium do |app|
+    profile = Selenium::WebDriver::Firefox::Profile.new
+    profile.enable_firebug
+
+    Capybara::Selenium::Driver.new(app, :browser => :firefox, :profile => profile) 
+  end
+
+  World(Capybara, Rack::Test::Methods, RackHeaderHack)
 end
 
-def app
-  RestAssured::Application
-end
-Capybara.app = app
 
-Capybara.register_driver :selenium do |app|
-  profile = Selenium::WebDriver::Firefox::Profile.new
-  profile.enable_firebug
+Spork.each_run do
+  require 'rest-assured'
 
-  Capybara::Selenium::Driver.new(app, :browser => :firefox, :profile => profile) 
-end
+  def app
+    RestAssured::Application
+  end
+  Capybara.app = app
 
-World(Capybara, Rack::Test::Methods, RackHeaderHack)
+  DatabaseCleaner.strategy = :truncation
 
-DatabaseCleaner.strategy = :truncation
+  Before do
+    DatabaseCleaner.start
+  end
 
-Before do
-  DatabaseCleaner.start
-end
+  Before "@ui" do
+    set_headers "HTTP_USER_AGENT" => 'Firefox'
+  end
 
-Before "@ui" do
-  set_headers "HTTP_USER_AGENT" => 'Firefox'
-end
-
-After do
-  DatabaseCleaner.clean
+  After do
+    DatabaseCleaner.clean
+  end
 end
 
