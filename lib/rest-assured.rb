@@ -2,7 +2,6 @@ require 'rubygems'
 require 'sinatra/base'
 require 'haml'
 require 'sass'
-require 'sinatra/static_assets'
 #require 'sinatra/reloader'
 require 'rack-flash'
 require 'sinatra/partials'
@@ -28,12 +27,11 @@ module RestAssured
     enable :sessions
     use Rack::Flash, :sweep => true
 
-    set :public, File.expand_path('../../public', __FILE__)
+    set :public_folder, File.expand_path('../../public', __FILE__)
     set :views, File.expand_path('../../views', __FILE__)
     set :haml, :format => :html5
 
     helpers Sinatra::Partials
-    register Sinatra::StaticAssets
 
     helpers do
       def browser?

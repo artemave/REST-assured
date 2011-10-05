@@ -15,7 +15,8 @@ ActiveRecord::Base.logger = if AppConfig[:environment] == 'production'
 
 ActiveRecord::Base.establish_connection(
   :adapter => "sqlite3",
-  :database => AppConfig[:database]
+  :database => AppConfig[:database],
+  :timeout => 10000
 )
 
 ActiveRecord::Migrator.migrate(

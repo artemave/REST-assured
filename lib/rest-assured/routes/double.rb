@@ -70,7 +70,7 @@ module RestAssured
       end
 
       router.delete '/doubles/all' do
-        Double.delete_all
+        status Double.delete_all ? 200 : 500
       end
     end
   end

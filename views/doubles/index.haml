@@ -1,5 +1,5 @@
 %h2 Doubles index
-%a= link_to 'New double', '/doubles/new'
+%a{:href => '/doubles/new'} New double
 %table
   %thead
     %tr
@@ -17,7 +17,7 @@
           %td.label.text-center
             %input.active-double-toggle{:type => 'radio', :name => fullpath, :checked => f.active, :data => { :double_id => f.id }}
           %td.edit-link.text-center.white-space-nowrap
-            = link_to 'Edit', "/doubles/#{f.id}/edit"
+            %a{:href => "/doubles/#{f.id}/edit"} Edit
             |
             %a.delete_link{:href => "/doubles/#{f.id}"} Delete
 

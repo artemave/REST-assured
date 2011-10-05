@@ -2,20 +2,22 @@
 %html
   %head
     %title= request.path_info[1..-1] + ' - REST assured'
-    = stylesheet_link_tag '/css/inuit.css'
-    = stylesheet_link_tag '/css/grid.inuit.css'
-    = stylesheet_link_tag '/css/base.css'
-    = stylesheet_link_tag '/css/jquery.jgrowl.css'
-    = stylesheet_link_tag 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/themes/base/jquery-ui.css'
-    = javascript_script_tag 'http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js'
-    = javascript_script_tag 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js'
-    = javascript_script_tag '/javascript/jquery.jgrowl_minimized.js'
-    = javascript_script_tag '/javascript/application.js'
+    %link{:rel => 'stylesheet', :href => url('/css/inuit.css'), :type => 'text/css'}
+    %link{:rel => 'stylesheet', :href => url('/css/grid.inuit.css'), :type => 'text/css'}
+    %link{:rel => 'stylesheet', :href => url('/css/base.css'), :type => 'text/css'}
+    %link{:rel => 'stylesheet', :href => url('/css/jquery.jgrowl.css'), :type => 'text/css'}
+    %link{:rel => 'stylesheet', :href => 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/themes/base/jquery-ui.css', :type => 'text/css'}
+    %script{:src => 'http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js', :type => 'text/javascript'}
+    %script{:src => 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js', :type => 'text/javascript'}
+    %script{:src => url('/javascript/jquery.jgrowl_minimized.js'), :type => 'text/javascript'}
+    %script{:src => url('/javascript/application.js'), :type => 'text/javascript'}
   %body.wrapper
     %ul.nav
-      %li= link_to 'Doubles', '/doubles'
+      %li
+        %a{:href => '/doubles'} Doubles
       %li &#124;
-      %li= link_to 'Redirects', '/redirects'
+      %li
+        %a{:href => '/redirects'} Redirects
 
     - if flash[:notice]
       .message.success= flash[:notice]

@@ -1,5 +1,5 @@
 %h2 Redirects index
-%a= link_to 'New redirect', '/redirects/new'
+%a{:href => '/redirects/new'} New redirect
 %table#redirects
   %thead
     %tr
@@ -15,7 +15,7 @@
         %td= r.pattern
         %td= r.to
         %td.edit-link.text-center.white-space-nowrap
-          = link_to 'Edit', "/redirects/#{r.id}/edit"
+          %a{:href => "/redirects/#{r.id}/edit"} Edit
           |
           %a.delete_link{:href => "/redirects/#{r.id}"} Delete
 
