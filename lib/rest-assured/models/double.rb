@@ -12,8 +12,10 @@ class Double < ActiveRecord::Base
 
   private
     def toggle_active
-      if active && Double.where(:fullpath => fullpath, :active => true, :id.ne => id).exists?
-        Double.where(:fullpath => fullpath, :id.ne => id).update_all :active => false
+      ne = id ? '!=' : 'IS NOT'
+
+      if active && Double.where("fullpath = ? AND active = ? AND id #{ne} ?", fullpath, true, id).exists?
+        Double.where("fullpath = ? AND id #{ne} ?", fullpath, id).update_all :active => false
       end
     end
 

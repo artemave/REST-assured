@@ -1,6 +1,6 @@
-require 'sinatra/activerecord'
-require 'meta_where'
+require 'active_record'
 require 'rest-assured/config'
+require 'logger'
 
 $app_logger = Logger.new(AppConfig[:log_file])
 $app_logger.level = Logger::DEBUG

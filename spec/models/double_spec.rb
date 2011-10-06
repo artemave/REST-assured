@@ -26,6 +26,7 @@ describe Double do
       f3 = Double.create valid_params.merge(:fullpath => '/some/other/api')
 
       f1.reload.active.should be false
+      f2.reload.active.should be true
       f3.reload.active.should be true
     end
   end
