@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   #s.add_dependency 'sinatra-reloader'
   s.add_dependency 'haml', '>= 3.1.3'
   s.add_dependency 'sass', '>= 3.1.8'
-  s.add_dependency 'activerecord', '~> 3.0.0'
+  s.add_dependency 'activerecord', '~> 3.1.0'
   s.add_dependency 'sqlite3', '>= 1.3.4'
 end
 
