@@ -6,9 +6,9 @@ Feature: ruby client
   #TODO if it is already started
   @wip
   Scenario: start rest-assured server
-    Given rest-assured is not up
-    When I start rest-assured
-    Then rest-assured should be up
+    Given rest-assured server is not running
+    When I start rest-assured server via client library
+    Then rest-assured server should be running
 
   Scenario: wait for rest-assured server to come up
 
