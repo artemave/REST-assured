@@ -1,4 +1,5 @@
 require 'active_record'
+require 'active_record/leak_connection_patch'
 require 'rest-assured/config'
 require 'logger'
 
