@@ -1,6 +1,8 @@
 require 'rubygems'
 require 'spork'
 
+$:.unshift(File.expand_path('../../lib'), __FILE__)
+
 Spork.prefork do
   require 'capybara/rspec'
   require 'rack/test'
@@ -40,7 +42,8 @@ Spork.prefork do
 end
 
 Spork.each_run do
-  require File.expand_path('../../lib/rest-assured', __FILE__)
+  require 'rest-assured'
+  require 'rest-assured/client'
   require 'shoulda-matchers'
 
   DatabaseCleaner.strategy = :truncation

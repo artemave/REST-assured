@@ -1,5 +1,9 @@
 # REST api steps
 
+Given /^there is a double$/ do
+  @double = Resource::Double.create(:fullpath => '/some/path', :content => 'some conetent')
+end
+
 Given /^there are no doubles$/ do
   Double.destroy_all
 end
