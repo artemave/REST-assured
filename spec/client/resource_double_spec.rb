@@ -7,7 +7,7 @@ module RestAssured::Client
 
     it 'should know where rest-assured server is' do
       RestAssured::Client.config.server_address = 'http://localhost:1234'
-      subject.class.site.should == URI.parse('http://localhost:1234')
+      Double.site.should == URI.parse('http://localhost:1234')
     end
   end
 end

@@ -9,6 +9,7 @@ Spork.prefork do
   require 'capybara/firebug'
   require 'capybara/cucumber'
   require 'database_cleaner'
+  require File.expand_path('../test-server', __FILE__)
 
   ENV['RACK_ENV'] = 'test'
 
@@ -33,11 +34,25 @@ Spork.prefork do
   end
 
   World(Capybara, Rack::Test::Methods, RackHeaderHack)
+
+  #at_exit do
+    #TestServer.stop
+  #end
+
+  TestServer.start(:port => 9876)
+
+  while not TestServer.up?
+    puts 'Waiting for TestServer to come up...'
+    sleep 1
+  end
 end
 
 
 Spork.each_run do
   require 'rest-assured'
+  require 'rest-assured/client'
+
+  RestAssured::Client.config.server_address = 'http://localhost:9876'
 
   def app
     RestAssured::Application
