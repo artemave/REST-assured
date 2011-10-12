@@ -37,7 +37,7 @@ Double is a stub/mock of a particular external call. There is the following rest
 
   Example (using ruby RestClient):
   
-    RestClient.post 'http://localhost:4578:/doubles', { request_fullpath: '/api/v2/products?type=fresh', method: 'GET', content: 'this is list of products' }
+    RestClient.post 'http://localhost:4578/doubles', { fullpath: '/api/v2/products?type=fresh', method: 'GET', content: 'this is list of products' }
 
   Now GETting http://localhost:4578/api/v2/products?type=fresh (in browser for instance) should return "this is list of products".
 
