@@ -102,7 +102,7 @@ describe 'Double routes' do
       post '/doubles', test_double.except(:content)
 
       last_response.should_not be_ok
-      last_response.body.should =~ /Content can't be blank/
+      last_response.body.should =~ /\{"content":\["can't be blank"\]\}/
     end
 
     it "deletes all doubles" do
@@ -112,6 +112,37 @@ describe 'Double routes' do
 
       last_response.should be_ok
       Double.count.should == 0
+    end
+  end
+
+  describe 'through REST (ActiveResource compatible) json api', :ui => false do
+    it "creates double as AR resource" do
+      post '/doubles.json', { :double => test_double }.to_json, 'CONTENT_TYPE' => 'Application/json'
+
+      last_response.should be_ok
+      Double.exists?(test_double).should be_true
+      last_response.body.should == Double.where(test_double).first.to_json
+    end
+
+    it "reports failure when creating with invalid parameters" do
+      post '/doubles.json', { :double => test_double.except(:content) }.to_json, 'CONTENT_TYPE' => 'Application/json'
+
+      last_response.should_not be_ok
+      last_response.body.should =~ /\{"content":\["can't be blank"\]\}/
+    end
+
+    it 'loads double as AR resource' do
+      d = Double.create test_double
+      get "/doubles/#{d.id}.json", 'CONTENT_TYPE' => 'Application/json'
+
+      last_response.should be_ok
+      last_response.body.should == d.to_json
+    end
+
+    it '404s if double is not found' do
+      get "/doubles/345345.json", 'CONTENT_TYPE' => 'Application/json'
+      
+      last_response.status.should == 404
     end
   end
 end

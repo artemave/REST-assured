@@ -1,7 +1,7 @@
 # REST api steps
 
 Given /^there is a double$/ do
-  @double = RestAssured::Client::Double.create(:fullpath => '/some/path', :content => 'some conetent')
+  @double = RestAssured::Client::Double.create(:fullpath => '/some/path', :content => 'some content')
 end
 
 Given /^there are no doubles$/ do

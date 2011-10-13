@@ -1,3 +1,5 @@
+require 'json'
+
 module RestAssured
   module DoubleRoutes
     def self.included(router)
@@ -15,9 +17,19 @@ module RestAssured
         haml :'doubles/new'
       end
 
-      router.post '/doubles' do
+      router.get '/doubles/:id.json' do |id|
+        begin
+          double = Double.find(id)
+          body double.to_json
+        rescue ActiveRecord::RecordNotFound
+          status 404
+        end
+      end
+
+      router.post /^\/doubles(\.json)?$/ do |passes_json|
         f = { :fullpath => params['fullpath'], :content => params['content'], :description => params['description'], :method => params['method'] }
-        @double = Double.create(params['double'] || f)
+
+        @double = Double.create(passes_json ? JSON.parse(request.body.read)['double'] : ( params['double'] || f )) 
 
         if browser?
           if @double.errors.blank?
@@ -29,8 +41,10 @@ module RestAssured
           end
         else
           if @double.errors.present?
-            status 400
-            body @double.errors.full_messages.join("\n")
+            status 422
+            body @double.errors.to_json
+          else
+            body @double.to_json
           end
         end
       end
