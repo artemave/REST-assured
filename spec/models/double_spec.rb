@@ -8,6 +8,7 @@ describe Double do
   it { should validate_presence_of(:fullpath) }
   it { should validate_presence_of(:content) }
   #it { should ensure_inclusion_of(:method).in(Double::METHODS) }
+  it { should have_many(:requests) }
 
   it "defaults method to GET" do
     f = Double.create valid_params.except(:method)

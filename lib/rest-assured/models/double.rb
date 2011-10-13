@@ -10,6 +10,8 @@ class Double < ActiveRecord::Base
   before_validation :set_method
   after_destroy :set_active
 
+  has_many :requests
+
   private
     def toggle_active
       ne = id ? '!=' : 'IS NOT'
