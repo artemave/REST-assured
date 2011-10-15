@@ -133,10 +133,11 @@ describe 'Double routes' do
 
     it 'loads double as AR resource' do
       d = Double.create test_double
+
       get "/doubles/#{d.id}.json", 'CONTENT_TYPE' => 'Application/json'
 
       last_response.should be_ok
-      last_response.body.should == d.to_json
+      last_response.body.should == d.to_json(:include => :requests)
     end
 
     it '404s if double is not found' do

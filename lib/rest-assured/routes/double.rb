@@ -20,7 +20,7 @@ module RestAssured
       router.get '/doubles/:id.json' do |id|
         begin
           double = Double.find(id)
-          body double.to_json
+          body double.to_json(:include => :requests)
         rescue ActiveRecord::RecordNotFound
           status 404
         end

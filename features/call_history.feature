@@ -3,7 +3,6 @@ Feature: check double's call history
   As test developer
   I want to be able to get double 'call history' 
 
-  @wip
   Scenario: no calls made to double
     Given there is a double
     When I request call history for that double
