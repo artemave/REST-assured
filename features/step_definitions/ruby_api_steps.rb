@@ -2,6 +2,7 @@ Given /^rest\-assured is running locally:$/ do |code|
   eval code
 end
 
+<<<<<<< HEAD
 When /^that double gets requested:$/ do |code|
   eval code
 end
@@ -41,6 +42,18 @@ When /^I wait for (\d+) requests:$/ do |num, string|
       eval string
     rescue RestAssured::MoreRequestsExpected => e
       @more_reqs_exc = e
+=======
+When /^I start rest\-assured server via client library$/ do
+  @server_proc = RestAssured::Server.start
+end
+
+Then /^rest\-assured server should be running$/ do
+  60.times do
+    if `ps a | grep rest-assured`[/#{@server_proc.psname}/]
+      break
+    else
+      sleep 1
+>>>>>>> RestAssured::Server#start spec wip
     end
   end
 end
