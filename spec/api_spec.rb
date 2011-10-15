@@ -1,48 +1,40 @@
+require 'slave'
 require File.expand_path('../spec_helper', __FILE__)
 require File.expand_path('../../lib/rest-assured/api', __FILE__)
-require File.expand_path('../../lib/rest-assured/port_explorer', __FILE__)
-require File.expand_path('../../lib/rest-assured/satellite_process', __FILE__)
 
 describe 'ruby api' do
   describe RestAssured::Server do
-    let(:server) { RestAssured::Server.new(port_explorer) }
-    let(:port_explorer) { PortExplorer.new }
-
-    before do
-      port_explorer.stub(:free_tcp_port => 1234)
-
-      Kernel.stub(:system)
-      SatelliteProcess.stub(:new) do |to_process|
-        to_process.call
-      end
-    end
-
     context 'when starts' do
-      it 'launches rest-assured executable' do
-        Kernel.should_receive(:system).with(/^bundle exec rest-assured/)
-        server.start
+      it 'spawns new slave process' do
+        Slave.should_receive(:new).with(:object => an_instance_of(RestAssured::Server)).and_return(double.as_null_object)
+        RestAssured::Server.start
       end
 
-      it 'uses free port' do
-        Kernel.should_receive(:system).with(/ -p 1234/)
-        server.start
+      it 'starts RestAssured::Application' do
+        app_class = mock
+        server = RestAssured::Server.new(app_class)
+        Slave.stub(:new).and_return(double(:object => server))
+
+        app_class.should_receive(:run!)
+        RestAssured::Server.start
       end
 
-      it 'uses inmemory database' do
-        Kernel.should_receive(:system).with(/ -d :memory:/)
-        server.start
-      end
+      #it 'runs RestAssured::Application' do
+        #RestAssured::Application.should_receive(:run!)
+        #RestAssured::Server.new
+      #end
 
-      it 'spawns satellite process (check out satellite_process_spec for what it is)' do
-        SatelliteProcess.should_receive(:new)
-        server.start
-      end
-    end
+      #it 'uses free port' do
+        #tcp_port = double('tcp_port', :allocate => 1234)
+        #AppConfig.should_receive(:[]).with(:port, 1234)
 
-    it 'knows what port it is running on' do
-      server.port.should be nil
-      server.start
-      server.port.should == 1234
+        #RestAssured::Server.new(tcp_port)
+      #end
+
+      #it 'uses inmemory database' do
+        #AppConfig.should_receive(:[]).with(:database, ':memory:')
+        #RestAssured::Server.new
+      #end
     end
 
   end
