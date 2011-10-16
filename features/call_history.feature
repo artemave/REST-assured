@@ -7,3 +7,10 @@ Feature: check double's call history
     Given there is a double
     When I request call history for that double
     Then it should be empty
+
+  @now
+  Scenario: some calls made to double
+    Given there is a double
+    When that double gets requested
+    And I request call history for that double
+    Then I should see history records for those requests

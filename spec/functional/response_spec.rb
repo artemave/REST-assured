@@ -10,8 +10,16 @@ describe Response do
     end
   end
 
-  let(:request) { double('Request', :request_method => 'GET', :fullpath => '/api') }
-  let(:rest_assured_app) { double('App', :request => request) }
+  let(:request) {
+    double('Request',
+           :request_method => 'GET',
+           :fullpath => '/api',
+           :env => stub(:to_json => 'env'),
+           :body => stub(:read => 'body').as_null_object,
+           :params => stub(:to_json => 'params')
+          )
+  }
+  let(:rest_assured_app) { double('App', :request => request).as_null_object }
 
   it "returns double content if an active one found with the same fullpath and the same method as request" do
     d = Double.create :fullpath => '/some/path', :content => 'content' 
@@ -34,6 +42,15 @@ describe Response do
   it "returns 404 if neither double nor redirect matches the request" do
     rest_assured_app.should_receive(:status).with(404)
     
+    Response.perform(rest_assured_app)
+  end
+
+  it 'records request if double matches' do
+    requests = double
+    Double.stub_chain('where.first').and_return(double(:requests => requests).as_null_object)
+
+    requests.should_receive(:create!).with(:rack_env => 'env', :body => 'body', :params => 'params')
+
     Response.perform(rest_assured_app)
   end
 end

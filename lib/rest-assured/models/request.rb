@@ -1,7 +1,7 @@
 class Request < ActiveRecord::Base
   belongs_to :double
 
-  validates_presence_of :body, :headers
+  validates_presence_of :rack_env
 
   after_create :save_created_at
 

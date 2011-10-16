@@ -2,8 +2,9 @@ class CreateRequests < ActiveRecord::Migration
   def self.up
     create_table :requests do |t|
       t.integer :double_id
-      t.string :body
-      t.string :headers
+      t.text :params
+      t.text :body
+      t.text :rack_env
       t.datetime :created_at
     end
   end

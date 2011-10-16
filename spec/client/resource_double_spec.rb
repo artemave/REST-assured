@@ -31,11 +31,14 @@ module RestAssured::Client
 
     it 'shows request history' do
       d = ::Double.create :fullpath => '/some/api', :content => 'content'
-      d.requests << Request.create(:headers => 'headers json', :body => 'body')
-      d.requests << Request.create(:headers => 'different headers', :body => 'other body')
+      d.requests << Request.create(:rack_env => 'rack_env json', :body => 'body', :params => 'params')
+      d.requests << Request.create(:rack_env => 'different rack_env', :body => 'other body', :params => 'more params')
 
-      Double.find(d.id).requests.first.headers.should == 'headers json'
-      Double.find(d.id).requests.last.body.should == 'other body'
+      dd = Double.find(d.id)
+      dd.requests.size.should == 2
+      dd.requests.first.rack_env.should == 'rack_env json'
+      dd.requests.first.params.should == 'params'
+      dd.requests.last.body.should == 'other body'
     end
   end
 end
