@@ -27,7 +27,7 @@ module RestAssured
       end
 
       router.post /^\/doubles(\.json)?$/ do |passes_json|
-        f = { :fullpath => params['fullpath'], :content => params['content'], :description => params['description'], :method => params['method'] }
+        f = { :fullpath => params['fullpath'], :content => params['content'], :description => params['description'], :verb => params['verb'] }
 
         @double = Double.create(passes_json ? JSON.parse(request.body.read)['double'] : ( params['double'] || f )) 
 

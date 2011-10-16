@@ -47,8 +47,8 @@ module RestAssured
       scss :base
     end
 
-    %w{get post put delete}.each do |method|
-      send method, /.*/ do
+    %w{get post put delete}.each do |verb|
+      send verb, /.*/ do
         Response.perform(self)
       end
     end

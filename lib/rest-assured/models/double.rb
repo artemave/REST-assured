@@ -1,13 +1,13 @@
 class Double < ActiveRecord::Base
-  attr_accessible :fullpath, :content, :description, :method
+  attr_accessible :fullpath, :content, :description, :verb
 
   METHODS = %w{GET POST PUT DELETE}
 
   validates_presence_of :fullpath, :content
-  validates_inclusion_of :method, :in => METHODS
+  validates_inclusion_of :verb, :in => METHODS
 
   before_save :toggle_active
-  before_validation :set_method
+  before_validation :set_verb
   after_destroy :set_active
 
   has_many :requests
@@ -21,8 +21,8 @@ class Double < ActiveRecord::Base
       end
     end
 
-    def set_method
-      self.method = 'GET' unless method.present?
+    def set_verb
+      self.verb = 'GET' unless verb.present?
     end
 
     def set_active

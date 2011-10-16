@@ -2,10 +2,10 @@ require File.expand_path('../../spec_helper', __FILE__)
 
 describe 'Double routes' do
   let :test_double do
-    { :fullpath => '/api/google?a=5', :content => 'some awesome content', :method => 'POST' }
+    { :fullpath => '/api/google?a=5', :content => 'some awesome content', :verb => 'POST' }
   end
   let :valid_params do
-    { 'double[fullpath]' =>  test_double[:fullpath], 'double[content]' => test_double[:content], 'double[method]' => test_double[:method] }
+    { 'double[fullpath]' =>  test_double[:fullpath], 'double[content]' => test_double[:content], 'double[verb]' => test_double[:verb] }
   end
   let :invalid_params do
     { 'double[fullpath]' =>  test_double[:fullpath] }

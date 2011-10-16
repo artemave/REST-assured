@@ -1,9 +1,5 @@
 # REST api steps
 
-Given /^there is a double$/ do
-  @double = RestAssured::Client::Double.create(:fullpath => '/some/path', :content => 'some content')
-end
-
 Given /^there are no doubles$/ do
   Double.destroy_all
 end
@@ -13,8 +9,8 @@ When /^I create a double with "([^"]*)" as fullpath and "([^"]*)" as response co
   last_response.should be_ok
 end
 
-When /^I create a double with "([^"]*)" as fullpath, "([^"]*)" as response content and "([^"]*)" as request method$/ do |fullpath, content, method|
-  post '/doubles', { :fullpath => fullpath, :content => content, :method => method }
+When /^I create a double with "([^"]*)" as fullpath, "([^"]*)" as response content and "([^"]*)" as request verb$/ do |fullpath, content, verb|
+  post '/doubles', { :fullpath => fullpath, :content => content, :verb => verb }
   last_response.should be_ok
 end
 
@@ -22,16 +18,16 @@ Then /^there should be (#{CAPTURE_A_NUMBER}) double with "([^"]*)" as fullpath a
   Double.where(:fullpath => fullpath, :content => content).count.should == 1
 end
 
-Then /^there should be (#{CAPTURE_A_NUMBER}) double with "([^"]*)" as fullpath, "([^"]*)" as response content and "([^"]*)" as request method$/ do |n, fullpath, content, method|
-  Double.where(:fullpath => fullpath, :content => content, :method => method).count.should == n
+Then /^there should be (#{CAPTURE_A_NUMBER}) double with "([^"]*)" as fullpath, "([^"]*)" as response content and "([^"]*)" as request verb$/ do |n, fullpath, content, verb|
+  Double.where(:fullpath => fullpath, :content => content, :verb => verb).count.should == n
 end
 
 Given /^there is double with "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |fullpath, content|
   Double.create(:fullpath => fullpath, :content => content)
 end
 
-Given /^there is double with "([^"]*)" as fullpath, "([^"]*)" as response content and "([^"]*)" as request method$/ do |fullpath, content, method|
-  Double.create(:fullpath => fullpath, :content => content, :method => method)
+Given /^there is double with "([^"]*)" as fullpath, "([^"]*)" as response content and "([^"]*)" as request verb$/ do |fullpath, content, verb|
+  Double.create(:fullpath => fullpath, :content => content, :verb => verb)
 end
 
 Given /^I register "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |fullpath, content|
@@ -43,8 +39,8 @@ When /^I request "([^"]*)"$/ do |fullpath|
   get fullpath
 end
 
-When /^I "([^"]*)" "([^"]*)"$/ do |method, fullpath|
-  send(method.downcase, fullpath)
+When /^I "([^"]*)" "([^"]*)"$/ do |verb, fullpath|
+  send(verb.downcase, fullpath)
 end
 
 Then /^I should get "([^"]*)" in response content$/ do |content|
@@ -145,3 +141,4 @@ end
 Then /^I should be asked to confirm delete$/ do
   page.driver.browser.switch_to.alert.accept
 end
+

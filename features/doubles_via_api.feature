@@ -4,11 +4,11 @@ Feature: use doubles via api
   I want to mock rest services my app is consuming from
 
   Scenario Outline: create double
-    When I create a double with "<fullpath>" as fullpath, "<content>" as response content and "<method>" as request method
-    Then there should be 1 double with "<fullpath>" as fullpath, "<content>" as response content and "<result_method>" as request method
+    When I create a double with "<fullpath>" as fullpath, "<content>" as response content and "<verb>" as request verb
+    Then there should be 1 double with "<fullpath>" as fullpath, "<content>" as response content and "<result_verb>" as request verb
 
     Examples:
-      | fullpath           | content      | method | result_method |
+      | fullpath           | content      | verb | result_verb |
       | /api/something     | created      | POST   | POST          |
       | /api/sss           | changed      | PUT    | PUT           |
       | /api/asdfsf        | removed      | DELETE | DELETE        |
@@ -16,12 +16,12 @@ Feature: use doubles via api
       | /api/some?a=3&b=dd | more content |        | GET           |
 
   Scenario Outline: request fullpath that matches double
-    Given there is double with "<fullpath>" as fullpath, "<content>" as response content and "<method>" as request method
-    When I "<method>" "<fullpath>"
+    Given there is double with "<fullpath>" as fullpath, "<content>" as response content and "<verb>" as request verb
+    When I "<verb>" "<fullpath>"
     Then I should get "<content>" in response content
 
     Examples:
-      | fullpath           | content      | method |
+      | fullpath           | content      | verb |
       | /api/something     | created      | POST   |
       | /api/sss           | changed      | PUT    |
       | /api/asdfsf        | removed      | DELETE |

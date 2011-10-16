@@ -28,20 +28,20 @@ This starts an instance of rest-assured on port 4578 (changable with --port opti
 
 Double is a stub/mock of a particular external call. There is the following rest API for setting up doubles:
 
-* `POST '/doubles', { fullpath: path, content: content, method: method }`
+* `POST '/doubles', { fullpath: path, content: content, verb: verb }`
   Creates double with the following parameters:
 
   - __fullpath__ - e.g., `/some/api/object`, or with parameters in query string (useful for doubling GETs) - `/some/other/api/object?a=2&b=c`. Mandatory.
   - __content__ - whatever you want this double to respond with. Mandatory.
-  - __method__ - one of http the following http verbs: GET, POST, PUT, DELETE. Optional. GET is default.
+  - __verb__ - one of http the following http verbs: GET, POST, PUT, DELETE. Optional. GET is default.
 
   Example (using ruby RestClient):
   
-    RestClient.post 'http://localhost:4578/doubles', { fullpath: '/api/v2/products?type=fresh', method: 'GET', content: 'this is list of products' }
+    RestClient.post 'http://localhost:4578/doubles', { fullpath: '/api/v2/products?type=fresh', verb: 'GET', content: 'this is list of products' }
 
   Now GETting http://localhost:4578/api/v2/products?type=fresh (in browser for instance) should return "this is list of products".
 
-  If there is more than one double for the same request\_fullpath and method, the last created one gets served. In UI you can manually control which double is 'active' (gets served).
+  If there is more than one double for the same request\_fullpath and verb, the last created one gets served. In UI you can manually control which double is 'active' (gets served).
 
 * `DELETE '/doubles/all'`
   Deletes all doubles.
@@ -59,7 +59,7 @@ It is sometimes desirable to only double certain calls while letting others thro
 
     RestClient.post 'http://localhost:4578/redirects', { pattern: '^/auth', to: 'https://myserver.com/api' }
 
-  Now request (any method) to http://localhost:4578/auth/services/1 will get redirected to https://myserver.com/api/auth/services/1. Provided of course there is no double matched for that fullpath and method.
+  Now request (any verb) to http://localhost:4578/auth/services/1 will get redirected to https://myserver.com/api/auth/services/1. Provided of course there is no double matched for that fullpath and verb.
   Much like rewrite rules, redirects are evaluated in order (of creation). In UI you can manually rearrange the order.
 
 ### Storage
@@ -75,7 +75,7 @@ It is sometimes useful to see what requests rest-assured is being hit. Either to
 * Implement expectations
 * Support headers (extends previous point)
 * Ruby client library
-* Support methods in UI (at the moment it is always GET)
+* Support verbs in UI (at the moment it is always GET)
 * Don't allow to double internal routes. Just in case
 
 ## Author
