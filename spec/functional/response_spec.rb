@@ -59,7 +59,7 @@ describe Response do
     requests = double.as_null_object
     Double.stub_chain('where.first').and_return(double(:requests => requests).as_null_object)
 
-    env.should_receive(:except).with('rack.input', 'rack.errors')
+    env.should_receive(:except).with('rack.input', 'rack.errors', 'rack.logger')
 
     Response.perform(rest_assured_app)
   end

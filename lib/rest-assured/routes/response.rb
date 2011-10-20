@@ -5,7 +5,7 @@ class Response
     if d = Double.where(:fullpath => request.fullpath, :active => true, :verb => request.request_method).first
       request.body.rewind
       body   = request.body.read #without temp variable ':body = > body' is always nil. mistery
-      env    = request.env.except('rack.input', 'rack.errors')
+      env    = request.env.except('rack.input', 'rack.errors', 'rack.logger')
 
       d.requests.create!(:rack_env => env.to_json, :body => body, :params => request.params.to_json)
 
