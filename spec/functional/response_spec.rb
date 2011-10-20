@@ -10,11 +10,12 @@ describe Response do
     end
   end
 
+  let(:env) { stub(:to_json => 'env').as_null_object }
   let(:request) {
     double('Request',
            :request_method => 'GET',
            :fullpath => '/api',
-           :env => stub(:to_json => 'env'),
+           :env => env,
            :body => stub(:read => 'body').as_null_object,
            :params => stub(:to_json => 'params')
           )
@@ -53,4 +54,14 @@ describe Response do
 
     Response.perform(rest_assured_app)
   end
+
+  it 'excludes "rack.input" and "rack.errors" as they break with "IOError - not opened for reading:" on consequent #to_json (as they are IO and StringIO)' do
+    requests = double.as_null_object
+    Double.stub_chain('where.first').and_return(double(:requests => requests).as_null_object)
+
+    env.should_receive(:except).with('rack.input', 'rack.errors')
+
+    Response.perform(rest_assured_app)
+  end
+
 end
