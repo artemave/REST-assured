@@ -3,29 +3,32 @@ Feature: use doubles via api
   As a developer
   I want to mock rest services my app is consuming from
 
+  @now
   Scenario Outline: create double
-    When I create a double with "<fullpath>" as fullpath, "<content>" as response content and "<verb>" as request verb
-    Then there should be 1 double with "<fullpath>" as fullpath, "<content>" as response content and "<result_verb>" as request verb
+    When I create a double with "<fullpath>" as fullpath, "<content>" as response content, "<verb>" as request verb and status as "<status>"
+    Then there should be 1 double with "<fullpath>" as fullpath, "<content>" as response content, "<result_verb>" as request verb and status as "<result_status>"
 
     Examples:
-      | fullpath           | content      | verb | result_verb |
-      | /api/something     | created      | POST   | POST          |
-      | /api/sss           | changed      | PUT    | PUT           |
-      | /api/asdfsf        | removed      | DELETE | DELETE        |
-      | /api/some          | text content | GET    | GET           |
-      | /api/some?a=3&b=dd | more content |        | GET           |
+      | fullpath           | content      | verb   | result_verb | status | result_status |
+      | /api/something     | created      | POST   | POST        | 200    | 200           |
+      | /api/sss           | changed      | PUT    | PUT         | 201    | 201           |
+      | /api/asdfsf        | removed      | DELETE | DELETE      | 300    | 300           |
+      | /api/some          | text content | GET    | GET         | 303    | 303           |
+      | /api/some?a=3&b=dd | more content |        | GET         |        | 200           |
+      | /api/empty         |              | POST   | POST        |        | 200           |
 
   Scenario Outline: request fullpath that matches double
-    Given there is double with "<fullpath>" as fullpath, "<content>" as response content and "<verb>" as request verb
+    Given there is double with "<fullpath>" as fullpath, "<content>" as response content, "<verb>" as request verb and "<status>" as status
     When I "<verb>" "<fullpath>"
-    Then I should get "<content>" in response content
+    Then I should get "<status>" as response status and "<content>" in response content
 
     Examples:
-      | fullpath           | content      | verb |
-      | /api/something     | created      | POST   |
-      | /api/sss           | changed      | PUT    |
-      | /api/asdfsf        | removed      | DELETE |
-      | /api/some?a=3&b=dd | more content | GET    |
+      | fullpath           | content      | verb   | status |
+      | /api/something     | created      | POST   | 200    |
+      | /api/sss           | changed      | PUT    | 201    |
+      | /api/asdfsf        | removed      | DELETE | 202    |
+      | /api/some?a=3&b=dd | more content | GET    | 203    |
+      | /other/api         |              | GET    | 303    |
 
   # current rule: last added double gets picked
   Scenario Outline: request fullpath that matches multiple doubles

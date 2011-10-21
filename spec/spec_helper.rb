@@ -7,6 +7,7 @@ Spork.prefork do
   require 'capybara/rspec'
   require 'rack/test'
   require 'database_cleaner'
+  require File.expand_path('../custom_matchers', __FILE__)
 
   ENV['RACK_ENV'] = 'test'
 

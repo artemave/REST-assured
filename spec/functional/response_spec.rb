@@ -22,12 +22,32 @@ describe Response do
   }
   let(:rest_assured_app) { double('App', :request => request).as_null_object }
 
-  it "returns double content if an active one found with the same fullpath and the same method as request" do
-    d = Double.create :fullpath => '/some/path', :content => 'content' 
-    request.stub(:fullpath).and_return(d.fullpath)
+  context 'when double matches request' do
+    before do
+      @double = Double.create :fullpath => '/some/path', :content => 'content', :status => 201
+      request.stub(:fullpath).and_return(@double.fullpath)
+    end
 
-    rest_assured_app.should_receive(:body).with(d.content)
-    Response.perform(rest_assured_app)
+    it "returns double content" do
+      rest_assured_app.should_receive(:body).with(@double.content)
+
+      Response.perform(rest_assured_app)
+    end
+
+    it 'sets response status to the one from double' do
+      rest_assured_app.should_receive(:status).with(@double.status)
+
+      Response.perform(rest_assured_app)
+    end
+
+    it 'records request' do
+      requests = double
+      Double.stub_chain('where.first').and_return(double(:requests => requests).as_null_object)
+
+      requests.should_receive(:create!).with(:rack_env => 'env', :body => 'body', :params => 'params')
+
+      Response.perform(rest_assured_app)
+    end
   end
 
   it "redirects if double not hit but there is redirect that matches request" do
@@ -43,15 +63,6 @@ describe Response do
   it "returns 404 if neither double nor redirect matches the request" do
     rest_assured_app.should_receive(:status).with(404)
     
-    Response.perform(rest_assured_app)
-  end
-
-  it 'records request if double matches' do
-    requests = double
-    Double.stub_chain('where.first').and_return(double(:requests => requests).as_null_object)
-
-    requests.should_receive(:create!).with(:rack_env => 'env', :body => 'body', :params => 'params')
-
     Response.perform(rest_assured_app)
   end
 

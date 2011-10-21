@@ -10,6 +10,7 @@ class Response
       d.requests.create!(:rack_env => env.to_json, :body => body, :params => request.params.to_json)
 
       app.body d.content
+      app.status d.status
     elsif r = Redirect.ordered.find { |r| request.fullpath =~ /#{r.pattern}/ }
       app.redirect( "#{r.to}#{request.fullpath}" )
     else

@@ -9,25 +9,25 @@ When /^I create a double with "([^"]*)" as fullpath and "([^"]*)" as response co
   last_response.should be_ok
 end
 
-When /^I create a double with "([^"]*)" as fullpath, "([^"]*)" as response content and "([^"]*)" as request verb$/ do |fullpath, content, verb|
-  post '/doubles', { :fullpath => fullpath, :content => content, :verb => verb }
+When /^I create a double with "([^""]*)" as fullpath, "([^""]*)" as response content, "([^""]*)" as request verb and status as "([^""]*)"$/ do |fullpath, content, verb, status|
+  post '/doubles', { :fullpath => fullpath, :content => content, :verb => verb, :status => status }
   last_response.should be_ok
 end
 
 Then /^there should be (#{CAPTURE_A_NUMBER}) double with "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |n, fullpath, content|
-  Double.where(:fullpath => fullpath, :content => content).count.should == 1
+  Double.where(:fullpath => fullpath, :content => content).count.should == n
 end
 
-Then /^there should be (#{CAPTURE_A_NUMBER}) double with "([^"]*)" as fullpath, "([^"]*)" as response content and "([^"]*)" as request verb$/ do |n, fullpath, content, verb|
-  Double.where(:fullpath => fullpath, :content => content, :verb => verb).count.should == n
+Then /^there should be (#{CAPTURE_A_NUMBER}) double with "([^""]*)" as fullpath, "([^""]*)" as response content, "([^""]*)" as request verb and status as "(#{CAPTURE_A_NUMBER})"$/ do |n, fullpath, content, verb, status|
+  Double.where(:fullpath => fullpath, :content => content, :verb => verb, :status => status).count.should == n
 end
 
 Given /^there is double with "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |fullpath, content|
   Double.create(:fullpath => fullpath, :content => content)
 end
 
-Given /^there is double with "([^"]*)" as fullpath, "([^"]*)" as response content and "([^"]*)" as request verb$/ do |fullpath, content, verb|
-  Double.create(:fullpath => fullpath, :content => content, :verb => verb)
+Given /^there is double with "([^"]*)" as fullpath, "([^"]*)" as response content, "([^"]*)" as request verb and "([^"]*)" as status$/ do |fullpath, content, verb, status|
+  Double.create(:fullpath => fullpath, :content => content, :verb => verb, :status => status)
 end
 
 Given /^I register "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |fullpath, content|
@@ -43,7 +43,8 @@ When /^I "([^"]*)" "([^"]*)"$/ do |verb, fullpath|
   send(verb.downcase, fullpath)
 end
 
-Then /^I should get "([^"]*)" in response content$/ do |content|
+Then /^I should get (?:"(#{CAPTURE_A_NUMBER})" as response status and )?"([^"]*)" in response content$/ do |status, content|
+  last_response.status.should == status if status.present?
   last_response.body.should == content
 end
 

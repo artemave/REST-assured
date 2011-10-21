@@ -8,6 +8,9 @@ describe Redirect do
 
   it { should validate_presence_of(:pattern) }
   it { should validate_presence_of(:to) }
+  it { should allow_mass_assignment_of(:pattern) }
+  it { should allow_mass_assignment_of(:to) }
+  it { should allow_mass_assignment_of(:position) }
   # commented out since it doesn't work with :allow_blank => true
   #it { should validate_uniqueness_of(:position) }
 

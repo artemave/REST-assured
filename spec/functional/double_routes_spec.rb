@@ -2,13 +2,13 @@ require File.expand_path('../../spec_helper', __FILE__)
 
 describe 'Double routes' do
   let :test_double do
-    { :fullpath => '/api/google?a=5', :content => 'some awesome content', :verb => 'POST' }
+    { :fullpath => '/api/google?a=5', :content => 'some awesome content', :verb => 'POST', :status => '201' }
   end
   let :valid_params do
-    { 'double[fullpath]' =>  test_double[:fullpath], 'double[content]' => test_double[:content], 'double[verb]' => test_double[:verb] }
+    { 'double[fullpath]' =>  test_double[:fullpath], 'double[content]' => test_double[:content], 'double[verb]' => test_double[:verb], 'double[status]' => test_double[:status] }
   end
   let :invalid_params do
-    { 'double[fullpath]' =>  test_double[:fullpath] }
+    valid_params.except('double[fullpath]')
   end
 
   describe "through ui", :ui => true do
@@ -46,7 +46,7 @@ describe 'Double routes' do
       post '/doubles', invalid_params
 
       last_response.should be_ok
-      last_response.body.should =~ /Crumps!.*Content can't be blank/
+      last_response.body.should =~ /Crumps!.*Fullpath can't be blank/
     end
 
     it "brings up double edit form" do
@@ -99,10 +99,10 @@ describe 'Double routes' do
     end
 
     it "reports failure when creating with invalid parameters" do
-      post '/doubles', test_double.except(:content)
+      post '/doubles', test_double.except(:fullpath)
 
       last_response.should_not be_ok
-      last_response.body.should =~ /\{"content":\["can't be blank"\]\}/
+      last_response.body.should =~ /\{"fullpath":\["can't be blank"\]\}/
     end
 
     it "deletes all doubles" do
@@ -125,10 +125,10 @@ describe 'Double routes' do
     end
 
     it "reports failure when creating with invalid parameters" do
-      post '/doubles.json', { :double => test_double.except(:content) }.to_json, 'CONTENT_TYPE' => 'Application/json'
+      post '/doubles.json', { :double => test_double.except(:fullpath) }.to_json, 'CONTENT_TYPE' => 'Application/json'
 
       last_response.should_not be_ok
-      last_response.body.should =~ /\{"content":\["can't be blank"\]\}/
+      last_response.body.should =~ /\{"fullpath":\["can't be blank"\]\}/
     end
 
     it 'loads double as AR resource' do

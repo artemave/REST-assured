@@ -2,17 +2,32 @@ require File.expand_path('../../spec_helper', __FILE__)
 
 describe Double do
   let :valid_params do
-    { :fullpath => '/some/api', :content => 'some content', :verb => 'GET' }
+    { :fullpath => '/some/api', :content => 'some content', :verb => 'GET', :status => '303' }
   end
 
   it { should validate_presence_of(:fullpath) }
-  it { should validate_presence_of(:content) }
-  #it { should ensure_inclusion_of(:verb).in(Double::METHODS) }
+  it { should validate_inclusion_of(:verb, Double::VERBS) }
+  it { should validate_inclusion_of(:status, Double::STATUSES) }
+  it { should allow_mass_assignment_of(:fullpath) }
+  it { should allow_mass_assignment_of(:content) }
+  it { should allow_mass_assignment_of(:verb) }
+  it { should allow_mass_assignment_of(:status) }
+
   it { should have_many(:requests) }
+
+  it 'creates double with valid params' do
+    d = Double.new valid_params
+    d.should be_valid
+  end
 
   it "defaults verb to GET" do
     f = Double.create valid_params.except(:verb)
     f.verb.should == 'GET'
+  end
+
+  it "defaults status to 200" do
+    f = Double.create valid_params.except(:status)
+    f.status.should == 200
   end
 
   it "makes double active by default" do

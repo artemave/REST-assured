@@ -1,13 +1,18 @@
+require 'net/http'
+
 class Double < ActiveRecord::Base
-  attr_accessible :fullpath, :content, :description, :verb
+  attr_accessible :fullpath, :content, :description, :verb, :status
 
-  METHODS = %w{GET POST PUT DELETE}
+  VERBS = %w{GET POST PUT DELETE}
+  STATUSES = Net::HTTPResponse::CODE_TO_OBJ.keys.map(&:to_i)
 
-  validates_presence_of :fullpath, :content
-  validates_inclusion_of :verb, :in => METHODS
+  validates_presence_of :fullpath
+  validates_inclusion_of :verb, :in => VERBS
+  validates_inclusion_of :status, :in => STATUSES
 
   before_save :toggle_active
   before_validation :set_verb
+  before_validation :set_status
   after_destroy :set_active
 
   has_many :requests
@@ -23,6 +28,10 @@ class Double < ActiveRecord::Base
 
     def set_verb
       self.verb = 'GET' unless verb.present?
+    end
+
+    def set_status
+      self.status = 200 unless status.present?
     end
 
     def set_active
