@@ -1,3 +1,5 @@
+require 'rest-assured/client/resources'
+
 module RestAssured
   module Client
     class Config
@@ -13,5 +15,3 @@ module RestAssured
     end
   end
 end
-
-require 'rest-assured/client/resources'

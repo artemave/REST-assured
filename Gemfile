@@ -17,4 +17,5 @@ gem 'launchy'
 gem 'rake'
 gem "spork", "> 0.9.0.rc"
 gem "guard-spork"
+gem 'rb-fsevent' if RUBY_PLATFORM =~ /darwin/
 gem 'sinatra-activerecord'
