@@ -38,6 +38,9 @@ end
 
 
 Spork.each_run do
+  require 'rest-assured/config'
+  AppConfig[:adapter] = 'mysql'
+
   require 'rest-assured'
   require 'rest-assured/client'
   require File.expand_path('../test-server', __FILE__)
@@ -71,6 +74,7 @@ Spork.each_run do
   end
 
   After do
+    sleep 0.1
     DatabaseCleaner.clean
   end
 end

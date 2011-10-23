@@ -3,7 +3,6 @@ Feature: use doubles via api
   As a developer
   I want to mock rest services my app is consuming from
 
-  @now
   Scenario Outline: create double
     When I create a double with "<fullpath>" as fullpath, "<content>" as response content, "<verb>" as request verb and status as "<status>"
     Then there should be 1 double with "<fullpath>" as fullpath, "<content>" as response content, "<result_verb>" as request verb and status as "<result_status>"

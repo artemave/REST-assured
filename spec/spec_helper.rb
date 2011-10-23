@@ -43,6 +43,9 @@ Spork.prefork do
 end
 
 Spork.each_run do
+  require 'rest-assured/config'
+  AppConfig[:adapter] = 'mysql'
+
   require 'rest-assured'
   require 'rest-assured/client'
   require 'shoulda-matchers'

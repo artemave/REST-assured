@@ -9,8 +9,20 @@ require 'rest-assured/config'
 OptionParser.new do |opts|
   opts.banner = "Usage: rest-assured [options]"
 
+  opts.on('-a', '--adapter mysql|sqlite') do |adapter|
+    AppConfig[:adapter] = adapter
+  end
+
   opts.on('-d', '--database FILENAME', "Path to database file. Defaults to ./rest-assured.db. There is a special value ':memory:' for in memory database.") do |fname|
     AppConfig[:database] = fname
+  end
+
+  opts.on('--user', "Db username") do |uname|
+    AppConfig[:db_user] = uname
+  end
+
+  opts.on('--password', 'Db password') do |password|
+    AppConfig[:db_password] = password
   end
 
   opts.on('-p', '--port PORT', Integer, "Server port. Defaults to 4578") do |port|

@@ -15,7 +15,7 @@ class Double < ActiveRecord::Base
   before_validation :set_status
   after_destroy :set_active
 
-  has_many :requests
+  has_many :requests, :dependent => :destroy
 
   private
     def toggle_active

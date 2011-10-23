@@ -20,13 +20,16 @@ module RestAssured::Client
 
     it 'creates new double' do
       d = Double.create :fullpath => '/some/api', :content => 'content'
-      ::Double.where(:id => d.id).should exist
+      ::Double.where(:fullpath => d.fullpath, :content => d.content).should exist
     end
 
     it 'finds exising double' do
       d = ::Double.create :fullpath => '/some/api', :content => 'content'
 
-      Double.find(d.id).id.should be d.id
+      dd = Double.find(d.id)
+
+      dd.fullpath.should == d.fullpath
+      dd.content.should == d.content
     end
 
     it 'shows request history' do

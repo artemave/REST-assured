@@ -11,8 +11,6 @@ describe Redirect do
   it { should allow_mass_assignment_of(:pattern) }
   it { should allow_mass_assignment_of(:to) }
   it { should allow_mass_assignment_of(:position) }
-  # commented out since it doesn't work with :allow_blank => true
-  #it { should validate_uniqueness_of(:position) }
 
   it 'assigns incremental position on create' do
     r1 = Redirect.create :pattern => '.*', :to => 'someurl'

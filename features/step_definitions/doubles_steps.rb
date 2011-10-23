@@ -122,6 +122,7 @@ When /^I make (first|second) double active$/ do |ord|
 end
 
 Then /^(first|second) double should be served$/ do |ord|
+  sleep 0.1 # allow time for change to end up in the db
   f = instance_variable_get('@' + ord)
   get f.fullpath
   last_response.body.should == f.content

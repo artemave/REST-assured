@@ -4,6 +4,7 @@ require 'haml'
 require 'sass'
 require 'rack-flash'
 require 'sinatra/partials'
+require 'active_record'
 require 'rest-assured/init'
 require 'rest-assured/models/double'
 require 'rest-assured/models/redirect'
@@ -42,6 +43,11 @@ module RestAssured
 
     include DoubleRoutes
     include RedirectRoutes
+
+    #before do
+      #ActiveRecord::Base.clear_reloadable_connections!
+      #ActiveRecord::Base.clear_cache! 
+    #end
 
     get '/css/base.css' do
       scss :base
