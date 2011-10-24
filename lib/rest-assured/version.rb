@@ -1,3 +1,3 @@
 module RestAssured
-  VERSION = '0.2.0.rc5'
+  VERSION = '0.2.0.rc6'
 end

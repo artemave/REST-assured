@@ -32,7 +32,6 @@ module RestAssured
                                      'rest_assured'
                                    end
           AppConfig[:db_user] ||= 'root'
-          AppConfig[:db_password] ||= 'root'
 
           {
             :adapter => 'mysql',
