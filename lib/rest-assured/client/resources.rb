@@ -1,6 +1,8 @@
 require 'active_resource'
 
-module RestAssured::Client
-  class Double < ActiveResource::Base
+module RestAssured
+  module Client
+    class Double < ActiveResource::Base
+    end
   end
 end
