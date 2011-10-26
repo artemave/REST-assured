@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'sinatra/base'
 require 'haml'
-require 'sass'
 require 'rack-flash'
 require 'sinatra/partials'
 require 'active_record'
@@ -48,10 +47,6 @@ module RestAssured
       #ActiveRecord::Base.clear_reloadable_connections!
       #ActiveRecord::Base.clear_cache! 
     #end
-
-    get '/css/base.css' do
-      scss :base
-    end
 
     %w{get post put delete}.each do |verb|
       send verb, /.*/ do
