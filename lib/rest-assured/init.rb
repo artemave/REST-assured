@@ -61,7 +61,7 @@ module RestAssured
       end
 
       def self.setup_logger
-        $app_logger = Logger.new(AppConfig[:log_file])
+        $app_logger = Logger.new(AppConfig[:logfile])
         $app_logger.level = Logger::DEBUG
 
         # active record logging is purely internal
