@@ -23,13 +23,30 @@ Feature: command line options
       | --logfile ./test.log     | ./test.log            |
       |                          | ./rest-assured.log    |
 
-  @now
   Scenario Outline: sqlite options
     When I start rest-assured with <options>
-    Then database adapter should be <adapter> and db file should be <dbfile>
+    Then database adapter should be sqlite and db file should be <dbfile>
 
     Examples:
-      | options                  | adapter | dbfile            |
-      |                          | sqlite  | ./rest-assured.db |
-      | -d /tmp/ratest.db        | sqlite  | /tmp/ratest.db    |
-      | --database /tmp/resta.db | sqlite  | /tmp/resta.db     |
+      | options                  | dbfile            |
+      |                          | ./rest-assured.db |
+      | -d /tmp/ratest.db        | /tmp/ratest.db    |
+      | --database /tmp/resta.db | /tmp/resta.db     |
+
+  @now
+  Scenario Outline: mysql options
+    When I start rest-assured with -a mysql <options>
+    Then database adapter should be mysql, db name should be "<dbname>", db user should be "<dbuser>", user password should be "<dbpass>" and db host should be "<dbhost>"
+
+    Examples:
+      | options          | dbname       | dbuser | dbpass | dbhost    |
+      |                  | rest_assured | root   |        | localhost |
+      | -d resta         | resta        | root   |        | localhost |
+      | --database resta | resta        | root   |        | localhost |
+      | -u bob           | rest_assured | bob    |        | localhost |
+      | --user bob       | rest_assured | bob    |        | localhost |
+      | -p pswd          | rest_assured | root   | pswd   | localhost |
+      | --password pswd  | rest_assured | root   | pswd   | localhost |
+      | -h remote        | rest_assured | root   |        | remote    |
+      | --host remote    | rest_assured | root   |        | remote    |
+

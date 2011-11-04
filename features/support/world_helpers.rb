@@ -17,9 +17,11 @@ module WorldHelpers
 
     `chmod +x #{new_exec}`
 
-    config_yaml = `#{new_exec} #{options}`
+    puts "#{new_exec} #{options}"
+    stdout_str, stderr_str, status = Open3.capture3({'RACK_ENV' => 'production'}, cmd... [, opts])
+    puts "CONF: #{config_yaml}"
 
-    `rm #{new_exec}`
+    #`rm #{new_exec}`
 
     YAML.load(config_yaml)
   end

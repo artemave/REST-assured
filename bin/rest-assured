@@ -33,7 +33,7 @@ OptionParser.new do |opts|
     AppConfig[:logfile] = log_file
   end
 
-  opts.on_tail("-h", "--help", "Show this message") do
+  opts.on_tail("--help", "Show this message") do
     puts opts
     exit
   end
