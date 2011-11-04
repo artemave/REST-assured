@@ -9,6 +9,7 @@ Spork.prefork do
   require 'capybara/firebug'
   require 'capybara/cucumber'
   require 'database_cleaner'
+  require File.dirname(__FILE__) + '/world_helpers'
 
   ENV['RACK_ENV'] = 'test'
 
@@ -32,7 +33,7 @@ Spork.prefork do
     Capybara::Selenium::Driver.new(app, :browser => :firefox, :profile => profile) 
   end
 
-  World(Capybara, Rack::Test::Methods, RackHeaderHack)
+  World(Capybara, Rack::Test::Methods, RackHeaderHack, WorldHelpers)
 
 end
 

@@ -18,11 +18,11 @@ OptionParser.new do |opts|
   end
 
   opts.on('--user', "Db username") do |uname|
-    AppConfig[:db_user] = uname
+    AppConfig[:user] = uname
   end
 
   opts.on('--password', 'Db password') do |password|
-    AppConfig[:db_password] = password
+    AppConfig[:password] = password
   end
 
   opts.on('-p', '--port PORT', Integer, "Server port. Defaults to 4578") do |port|

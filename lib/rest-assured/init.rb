@@ -31,13 +31,13 @@ module RestAssured
                                    else
                                      'rest_assured'
                                    end
-          AppConfig[:db_user] ||= 'root'
+          AppConfig[:user] ||= 'root'
 
           {
             :adapter => 'mysql',
             :reconnect => true,
-            :user => AppConfig[:db_user],
-            :password => AppConfig[:db_password],
+            :user => AppConfig[:user],
+            :password => AppConfig[:password],
             :database => AppConfig[:database]
           }
         else

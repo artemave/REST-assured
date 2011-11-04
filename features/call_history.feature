@@ -8,7 +8,6 @@ Feature: check double's call history
     When I request call history for that double
     Then it should be empty
 
-  @now
   Scenario: some calls made to double
     Given there is a double
     When that double gets requested
