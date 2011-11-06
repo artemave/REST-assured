@@ -3,8 +3,7 @@ require 'sinatra/base'
 require 'haml'
 require 'rack-flash'
 require 'sinatra/partials'
-require 'active_record'
-require 'rest-assured/init'
+require 'rest-assured/config'
 require 'rest-assured/models/double'
 require 'rest-assured/models/redirect'
 require 'rest-assured/models/request'
@@ -14,16 +13,10 @@ require 'rest-assured/routes/response'
 
 module RestAssured
   class Application < Sinatra::Base
-    set :environment, AppConfig[:environment]
-    set :port, AppConfig[:port]
+
+    include RestAssured::Config
 
     enable :method_override
-
-    Logger.class_eval do
-      alias_method :write, :<<
-    end
-    enable :logging
-    use Rack::CommonLogger, $app_logger
 
     enable :sessions
     use Rack::Flash, :sweep => true
@@ -42,11 +35,6 @@ module RestAssured
 
     include DoubleRoutes
     include RedirectRoutes
-
-    #before do
-      #ActiveRecord::Base.clear_reloadable_connections!
-      #ActiveRecord::Base.clear_cache! 
-    #end
 
     %w{get post put delete}.each do |verb|
       send verb, /.*/ do

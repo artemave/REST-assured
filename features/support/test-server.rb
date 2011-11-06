@@ -13,7 +13,7 @@ class TestServer
       if get_pid
         print "\nPrevious TestServer instance appears to be running. Will be using it."
       else
-        Process.exec("bundle exec rest-assured -p #{@server_port} -a mysql")
+        Process.exec("bundle exec rest-assured -P #{@server_port} -a mysql")
       end
     end
 

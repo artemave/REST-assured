@@ -6,31 +6,37 @@ require 'rubygems'
 require 'optparse'
 require 'rest-assured/config'
 
+user_opts = {}
+
 OptionParser.new do |opts|
   opts.banner = "Usage: rest-assured [options]"
 
   opts.on('-a', '--adapter mysql|sqlite') do |adapter|
-    AppConfig[:adapter] = adapter
+    user_opts[:adapter] = adapter
   end
 
   opts.on('-d', '--database FILENAME', "Either path to database file (sqlite, defaults to ./rest-assured.db) or db name (defaults to rest_assured)") do |fname|
-    AppConfig[:database] = fname
+    user_opts[:database] = fname
   end
 
-  opts.on('--user', "Db username") do |uname|
-    AppConfig[:user] = uname
+  opts.on('-u', '--user DBUSER', "Db username") do |user|
+    user_opts[:user] = user
   end
 
-  opts.on('--password', 'Db password') do |password|
-    AppConfig[:password] = password
+  opts.on('-p', '--password DBPASSWORD', 'Db password') do |password|
+    user_opts[:password] = password
   end
 
-  opts.on('-p', '--port PORT', Integer, "Server port. Defaults to 4578") do |port|
-    AppConfig[:port] = port
+  opts.on('-h', '--host DBHOST', 'Db host') do |host|
+    user_opts[:host] = host
   end
 
-  opts.on('-l', '--logfile FILENAME', "Path to logfile. Defaults to ./rest-assured.log") do |log_file|
-    AppConfig[:logfile] = log_file
+  opts.on('-P', '--port PORT', Integer, "Server port. Defaults to 4578") do |port|
+    user_opts[:port] = port
+  end
+
+  opts.on('-l', '--logfile FILENAME', "Path to logfile. Defaults to ./rest-assured.log") do |logfile|
+    user_opts[:logfile] = logfile
   end
 
   opts.on_tail("--help", "Show this message") do
@@ -39,6 +45,7 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-require 'rest-assured'
+RestAssured::Config.build(user_opts)
 
+require 'rest-assured'
 RestAssured::Application.run!

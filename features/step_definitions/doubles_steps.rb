@@ -14,6 +14,10 @@ When /^I create a double with "([^""]*)" as fullpath, "([^""]*)" as response con
   last_response.should be_ok
 end
 
+Then /^I should get (#{CAPTURE_A_NUMBER}) in response status$/ do |status|
+  last_response.status.should == status
+end
+
 Then /^there should be (#{CAPTURE_A_NUMBER}) double with "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |n, fullpath, content|
   Double.where(:fullpath => fullpath, :content => content).count.should == n
 end

@@ -1,13 +1,12 @@
 require 'yaml'
+require 'open3'
 
 module WorldHelpers
   def fake_start_rest_assured(options)
     rest_assured_exec = File.expand_path '../../../bin/rest-assured', __FILE__
     code = File.read rest_assured_exec
 
-    code.sub! /.*/ do |shebang|
-      shebang + "\nENV['RACK_ENV'] = 'production'"
-    end
+    code.sub!(/require 'rest-assured'/, '')
     code.sub!(/RestAssured::Application.run!/, 'puts AppConfig.to_yaml')
 
     new_exec = "#{rest_assured_exec}_temp"
@@ -17,11 +16,9 @@ module WorldHelpers
 
     `chmod +x #{new_exec}`
 
-    puts "#{new_exec} #{options}"
-    stdout_str, stderr_str, status = Open3.capture3({'RACK_ENV' => 'production'}, cmd... [, opts])
-    puts "CONF: #{config_yaml}"
+    config_yaml, stderr_str, status = Open3.capture3({'RACK_ENV' => 'production'}, new_exec, *options.split(' '))
 
-    #`rm #{new_exec}`
+    `rm #{new_exec}`
 
     YAML.load(config_yaml)
   end

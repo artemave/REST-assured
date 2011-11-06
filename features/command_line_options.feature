@@ -9,7 +9,7 @@ Feature: command line options
 
     Examples:
       | option      | port |
-      | -p 1234     | 1234 |
+      | -P 1234     | 1234 |
       | --port 1235 | 1235 |
       |             | 4578 |
 
