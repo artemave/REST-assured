@@ -1,11 +1,10 @@
 #!/usr/bin/env ruby
 require "irb"
-require 'bundler/setup'
 
 $:.push File.expand_path('../../lib', __FILE__)
 
 require 'rest-assured/config'
-AppConfig[:database] = ENV['FRS_DB'] || File.expand_path('../../db/development.db', __FILE__)
+RestAssured::Config.build :database => ( ENV['FRS_DB'] || File.expand_path('../../db/development.db', __FILE__) )
 
 require 'rest-assured'
 
