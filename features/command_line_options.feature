@@ -9,7 +9,7 @@ Feature: command line options
 
     Examples:
       | option      | port |
-      | -P 1234     | 1234 |
+      | -p 1234     | 1234 |
       | --port 1235 | 1235 |
       |             | 4578 |
 
@@ -36,17 +36,20 @@ Feature: command line options
   @now
   Scenario Outline: mysql options
     When I start rest-assured with -a mysql <options>
-    Then database adapter should be mysql, db name should be "<dbname>", db user should be "<dbuser>", user password should be "<dbpass>" and db host should be "<dbhost>"
+    Then database options should be:
+      | dbname   | dbuser   | dbpass   | dbhost   | dbport   | dbencoding   | dbsocket   |
+      | <dbname> | <dbuser> | <dbpass> | <dbhost> | <dbport> | <dbencoding> | <dbsocket> |
 
     Examples:
-      | options          | dbname       | dbuser | dbpass | dbhost    |
-      |                  | rest_assured | root   |        | localhost |
-      | -d resta         | resta        | root   |        | localhost |
-      | --database resta | resta        | root   |        | localhost |
-      | -u bob           | rest_assured | bob    |        | localhost |
-      | --user bob       | rest_assured | bob    |        | localhost |
-      | -p pswd          | rest_assured | root   | pswd   | localhost |
-      | --password pswd  | rest_assured | root   | pswd   | localhost |
-      | -h remote        | rest_assured | root   |        | remote    |
-      | --host remote    | rest_assured | root   |        | remote    |
+      | options                    | dbname       | dbuser | dbpass | dbhost | dbport | dbencoding | dbsocket        |
+      |                            | rest_assured | root   |        |        |        |            |                 |
+      | -d resta                   | resta        | root   |        |        |        |            |                 |
+      | --database resta           | resta        | root   |        |        |        |            |                 |
+      | -u bob                     | rest_assured | bob    |        |        |        |            |                 |
+      | --dbuser bob               | rest_assured | bob    |        |        |        |            |                 |
+      | --dbpass pswd              | rest_assured | root   | pswd   |        |        |            |                 |
+      | --dbhost remote            | rest_assured | root   |        | remote |        |            |                 |
+      | --dbport 5555              | rest_assured | root   |        |        | 5555   |            |                 |
+      | --dbencoding utf16le       | rest_assured | root   |        |        |        | utf16le    |                 |
+      | --dbsocket /tmp/mysql.sock | rest_assured | root   |        |        |        |            | /tmp/mysql.sock |
 

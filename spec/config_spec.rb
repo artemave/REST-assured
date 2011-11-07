@@ -2,9 +2,8 @@ require File.expand_path('../../lib/rest-assured/config', __FILE__)
 require 'rack'
 
 describe RestAssured::Config do
-  it 'builds config from user options' do
-    pending "this is thoroughly covered in cucumber (since there it also serves documentation purposes)"
-  end
+  #this is thoroughly covered in cucumber (since there it also serves documentation purposes)
+  #it 'builds config from user options'
 
   it 'initializes logger' do
     logger = double(:logger).as_null_object

@@ -115,14 +115,19 @@ module RestAssured
                                                      'rest_assured'
                                                    end
 
-                                {
+                                opts = {
                                   :adapter => 'mysql',
                                   :reconnect => true,
                                   :user => AppConfig.user || 'root',
-                                  :password => AppConfig.password,
-                                  :host => AppConfig.host || 'localhost',
                                   :database => AppConfig.database || default_database
                                 }
+
+                                opts[:password] = AppConfig.dbpass if AppConfig.dbpass
+                                opts[:host] = AppConfig.dbhost if AppConfig.dbhost
+                                opts[:port] = AppConfig.dbport if AppConfig.dbport
+                                opts[:encoding] = AppConfig.dbencoding if AppConfig.dbencoding
+                                opts[:socket] = AppConfig.dbsocket if AppConfig.dbsocket
+                                opts
                               else
                                 raise "Unsupported db adapter '#{AppConfig.adapter}'. Valid adapters are sqlite and mysql"
                               end

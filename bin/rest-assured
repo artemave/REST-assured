@@ -19,19 +19,31 @@ OptionParser.new do |opts|
     user_opts[:database] = fname
   end
 
-  opts.on('-u', '--user DBUSER', "Db username") do |user|
+  opts.on('-u', '--dbuser DBUSER', "Db username (mysql only)") do |user|
     user_opts[:user] = user
   end
 
-  opts.on('-p', '--password DBPASSWORD', 'Db password') do |password|
-    user_opts[:password] = password
+  opts.on('--dbpass DBPASSWORD', 'Db password (mysql only). Defaults to empty') do |password|
+    user_opts[:dbpass] = password
   end
 
-  opts.on('-h', '--host DBHOST', 'Db host') do |host|
-    user_opts[:host] = host
+  opts.on('--dbhost DBHOST', 'Db host (mysql only). Defaults to mysql default host (localhost)') do |dbhost|
+    user_opts[:dbhost] = dbhost
   end
 
-  opts.on('-P', '--port PORT', Integer, "Server port. Defaults to 4578") do |port|
+  opts.on('--dbport DBPORT', Integer, 'Db port (mysql only). Defaults to mysql default port (3306)') do |dbport|
+    user_opts[:dbport] = dbport
+  end
+
+  opts.on('--dbencoding DBENCODING', 'Db encoding (mysql only). Defaults to mysql default encoding') do |dbencoding|
+    user_opts[:dbencoding] = dbencoding
+  end
+
+  opts.on('--dbsocket DBSOCKET', 'Db socket (mysql only). Defaults to mysql default socket') do |dbsocket|
+    user_opts[:dbsocket] = dbsocket
+  end
+
+  opts.on('-p', '--port PORT', Integer, "Server port. Defaults to 4578") do |port|
     user_opts[:port] = port
   end
 
