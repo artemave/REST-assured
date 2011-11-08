@@ -32,44 +32,84 @@ This starts an instance of rest-assured on port 4578 (changable with --port opti
 
 NOTE that although sqlite is an option, I found it locking under any non-trivial load. Mysql feels much more reliable. But may be that is me sqliting it wrong.
 
-### Plain REST API
+### REST API
 
 #### Doubles
 
-If your tests are in ruby (e.g. cucumber) then skip this section and check out Ruby Client API instead.
+Double is a stub/mock of a particular external call.
 
-Double is a stub/mock of a particular external call. There is the following rest API for setting up doubles:
+##### Ruby Client API
 
-* `POST '/doubles.json', { fullpath: path, content: content, verb: verb, status: status }`
-  Creates double with the following parameters:
+Rest-assured provides client library which partially implements ActiveResource (create and get). To make it available put the following in your test setup code (e.g. env.rb)
+
+```ruby
+require 'rest-assured/client'
+
+RestAssured::Client.config.server_address = 'http://localhost:4578' # or wherever your rest-assured is
+```
+
+You can then create doubles in your tests
+
+```ruby
+RestAssured::Client::Double.create(fullpath: '/products', content: 'this is content')
+```
+
+Or, in case you need verifications, create double in a Given part
+
+```ruby
+@double = RestAssured::Client::Double.create(fullpath: '/products', verb: 'POST')
+```
+
+And verify requests happened on that double in a Then part
+
+```ruby
+@double.reload
+
+@double.requests.count.should == 1
+
+req = @double.requests.first
+
+req.body.should == expected_payload
+JSON.parse(req.params).should == expected_params_hash
+JSON.parse(req.rack_env)['ACCEPT'].should == 'Application/json'
+```
+
+##### Plain REST API
+
+###### Create double 
+  HTTP POST to '/doubles.json' creates double and returns its json representation.
+  The following options can be passed as request parameters:
 
   - __fullpath__ - e.g., `/some/api/object`, or with parameters in query string (useful for doubling GETs) - `/some/other/api/object?a=2&b=c`. Mandatory.
-  - __content__ - whatever you want this double to respond with. Mandatory.
+  - __content__ - whatever you want this double to respond with. Optional.
   - __verb__ - one of http the following http verbs: GET, POST, PUT, DELETE. Optional. GET is default.
   - __status__ - status returned when double is requested. Optional. 200 is default.
 
   Example (using ruby RestClient):
   
-    RestClient.post 'http://localhost:4578/doubles', { fullpath: '/api/v2/products?type=fresh', verb: 'GET', content: 'this is list of products', status: 200 }
+```ruby
+response = RestClient.post 'http://localhost:4578/doubles', { fullpath: '/api/v2/products?type=fresh', verb: 'GET', content: 'this is list of products', status: 200 }
+puts response.body
+```
+  Produces:
+
+    "{\"double\":{\"fullpath\":\"/api/v2/products?type=fresh\",\"verb\":\"GET\",\"id\":123,\"content\":\"this is list of products\",\"description\":null,\"status\":null,\"active\":true}}"
 
   And then GETting http://localhost:4578/api/v2/products?type=fresh (in browser for instance) should return "this is list of products".
 
   If there is more than one double for the same fullpath and verb, the last created one gets served. In UI you can manually control which double is 'active' (gets served).
 
-  Returns json representation of a created double:
-
-    "{\"double\":{\"fullpath\":\"/api/v2/products?type=fresh\",\"verb\":\"GET\",\"id\":123,\"content\":\"this is list of products\",\"description\":null,\"status\":null,\"active\":true}}"
-
-  You can then use id from that json to make verification calls on that double.
-
-* `GET '/double/:id.json'`
-  Gets double current state. Use id from create json as :id.
+###### Get double state
+  HTTP GET to '/double/:id.json' returns json with double current state. Use id from create json as :id.
 
   Example (using ruby RestClient):
 
-    RestClient.get 'http://localhost:4578/doubles/123.json'
+```ruby
+response = RestClient.get 'http://localhost:4578/doubles/123.json'
+puts response.body
+```
 
-  Assuming the above double has been requested once, this call would return
+  Assuming the above double has been requested once, this call would produce
 
     "{\"double\":{\"fullpath\":\"/api/v2/products?type=fresh\",\"verb\":\"GET\",\"id\":123,\"requests\":[{\"rack_env\":\"LOOK FOR YOUR HEADERS HERE\",\"created_at\":\"2011-11-07T18:34:21+00:00\",\"body\":\"\",\"params\":\"{}\"}],\"content\":\"this is list of products\",\"description\":null,\"status\":null,\"active\":true}}"
 
@@ -80,40 +120,35 @@ Double is a stub/mock of a particular external call. There is the following rest
   - __created_at__ - request timestamp
   - __rack_env__ - raw request dump (key value pairs). Including request headers
 
-* `DELETE '/doubles/all'`
-  Deletes all doubles.
+###### Delete all doubles
+  HTTP DELETE to '/doubles/all' deletes all doubles. Useful for cleaning up between tests.
 
-### Redirects
+#### Redirects
 
 It is sometimes desirable to only double certain calls while letting others through to the 'real' services. Meet Redirects. Kind of "rewrite rules" for requests that didn't match any double. Here is the rest API for managing redirects:
 
-* `POST '/redirects', { pattern: pattern, to: uri }` Creates redirect with the following parameters:
+##### Create redirect
+  HTTP POST to '/redirects' creates redirect.
+  The following options can be passed as request parameters:
 
   - __pattern__ - regex (perl5 style) tested against request fullpath. Mandatory
-  - __to__ - url base e.g., `https://myserver:8787/api`. Mandatory
+  - __to__ - url base e.g., 'https://myserver:8787/api'. Mandatory
 
   Example (using ruby RestClient):
 
-    RestClient.post 'http://localhost:4578/redirects', { pattern: '^/auth', to: 'https://myserver.com/api' }
+```ruby
+RestClient.post 'http://localhost:4578/redirects', { pattern: '^/auth', to: 'https://myserver.com/api' }
+```
 
   Now request (any verb) to http://localhost:4578/auth/services/1 will get redirected to https://myserver.com/api/auth/services/1. Provided of course there is no double matched for that fullpath and verb.
   Much like rewrite rules, redirects are evaluated in order (of creation). In UI you can manually rearrange the order.
 
-### Storage
-
-By default when you start rest-assured it creates (unless already exists) sqlite database and stores it into file in the current directory. This is good for using it for development - when you want doubles/redirects to persist across restarts - but may not be so desirable for using with tests, where you want each test run to start from blank slate. For that reason, you can specify `--database :memory:` so that database is kept in memory.
-
-### Logging
-
-It is sometimes useful to see what requests rest-assured is being hit. Either to explore what requests your app is making or to check that test setup is right and doubles indeed get returned. By default, when started, rest-assured creates log file in the current directory. This is configurable with `--logfile` option.
-
 ## TODO
 
-* Implement expectations
-* Support headers (extends previous point)
-* Ruby client library
-* Support verbs in UI (at the moment it is always GET)
-* Don't allow to double internal routes. Just in case
+* Hide wiring rest-assured into ruby project behind client api
+* Bring UI upto date with rest-api (add verbs, statuses, request history)
+* Add delete all redirects to rest api
+* Add wait_for_requests()
 
 ## Author
 
