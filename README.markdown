@@ -11,7 +11,9 @@ There are three main use cases:
 
 ## Usage
 
-You are going to need ruby >= 1.8.7. Make sure database adapter present:
+You are going to need ruby >= 1.8.7.
+
+First make sure database adapter present:
 
     bash$ gem install mysql # or sqlite
 
@@ -28,17 +30,17 @@ Or clone from github and run:
     bash$ cd rest-assured && bundle install
     bash$ ./bin/rest-assured -a mysql &
 
-This starts an instance of rest-assured on port 4578 (changable with --port option). You can now access it via REST or web interfaces on http://localhost:4578
+This starts an instance of rest-assured on port 4578 (changable with --port option). You can now access it via REST or web interfaces on 'http://localhost:4578'
 
 NOTE that although sqlite is an option, I found it locking under any non-trivial load. Mysql feels much more reliable. But may be that is me sqliting it wrong.
 
-### REST API
+## REST API
 
-#### Doubles
+### Doubles
 
 Double is a stub/mock of a particular external call.
 
-##### Ruby Client API
+#### Ruby Client API
 
 Rest-assured provides client library which partially implements ActiveResource (create and get). To make it available put the following in your test setup code (e.g. env.rb)
 
@@ -74,13 +76,13 @@ JSON.parse(req.params).should == expected_params_hash
 JSON.parse(req.rack_env)['ACCEPT'].should == 'Application/json'
 ```
 
-##### Plain REST API
+#### Plain REST API
 
-###### Create double 
+##### Create double 
   HTTP POST to '/doubles.json' creates double and returns its json representation.
   The following options can be passed as request parameters:
 
-  - __fullpath__ - e.g., `/some/api/object`, or with parameters in query string (useful for doubling GETs) - `/some/other/api/object?a=2&b=c`. Mandatory.
+  - __fullpath__ - e.g., '/some/api/object', or with parameters in query string (useful for doubling GETs) - '/some/other/api/object?a=2&b=c'. Mandatory.
   - __content__ - whatever you want this double to respond with. Optional.
   - __verb__ - one of http the following http verbs: GET, POST, PUT, DELETE. Optional. GET is default.
   - __status__ - status returned when double is requested. Optional. 200 is default.
@@ -95,11 +97,11 @@ puts response.body
 
     "{\"double\":{\"fullpath\":\"/api/v2/products?type=fresh\",\"verb\":\"GET\",\"id\":123,\"content\":\"this is list of products\",\"description\":null,\"status\":null,\"active\":true}}"
 
-  And then GETting http://localhost:4578/api/v2/products?type=fresh (in browser for instance) should return "this is list of products".
+  And then GETting 'http://localhost:4578/api/v2/products?type=fresh' (in browser for instance) should return "this is list of products".
 
   If there is more than one double for the same fullpath and verb, the last created one gets served. In UI you can manually control which double is 'active' (gets served).
 
-###### Get double state
+##### Get double state
   HTTP GET to '/double/:id.json' returns json with double current state. Use id from create json as :id.
 
   Example (using ruby RestClient):
@@ -120,14 +122,14 @@ puts response.body
   - __created_at__ - request timestamp
   - __rack_env__ - raw request dump (key value pairs). Including request headers
 
-###### Delete all doubles
+##### Delete all doubles
   HTTP DELETE to '/doubles/all' deletes all doubles. Useful for cleaning up between tests.
 
-#### Redirects
+### Redirects
 
 It is sometimes desirable to only double certain calls while letting others through to the 'real' services. Meet Redirects. Kind of "rewrite rules" for requests that didn't match any double. Here is the rest API for managing redirects:
 
-##### Create redirect
+#### Create redirect
   HTTP POST to '/redirects' creates redirect.
   The following options can be passed as request parameters:
 
@@ -140,7 +142,7 @@ It is sometimes desirable to only double certain calls while letting others thro
 RestClient.post 'http://localhost:4578/redirects', { pattern: '^/auth', to: 'https://myserver.com/api' }
 ```
 
-  Now request (any verb) to http://localhost:4578/auth/services/1 will get redirected to https://myserver.com/api/auth/services/1. Provided of course there is no double matched for that fullpath and verb.
+  Now request (any verb) to 'http://localhost:4578/auth/services/1' will get redirected to 'https://myserver.com/api/auth/services/1.' Provided of course there is no double matched for that fullpath and verb.
   Much like rewrite rules, redirects are evaluated in order (of creation). In UI you can manually rearrange the order.
 
 ## TODO
@@ -149,6 +151,7 @@ RestClient.post 'http://localhost:4578/redirects', { pattern: '^/auth', to: 'htt
 * Bring UI upto date with rest-api (add verbs, statuses, request history)
 * Add delete all redirects to rest api
 * Add wait_for_requests()
+* Add custom response headers
 
 ## Author
 
