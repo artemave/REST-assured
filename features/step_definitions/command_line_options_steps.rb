@@ -33,3 +33,15 @@ Then /^database options should be:$/ do |table|
   @app_config[:db_config][:encoding].should == empty_to_nil[res['dbencoding']]
   @app_config[:db_config][:socket].should == empty_to_nil[res['dbsocket']]
 end
+
+Then /^ssl certificate used should be "([^"]*)" and ssl key should be "([^"]*)"$/ do |ssl_cert, ssl_key|
+  ssl_cert = File.expand_path('../../../ssl/localhost.crt', __FILE__) if ssl_cert == 'DEFAULT_CERT'
+  ssl_key = File.expand_path('../../../ssl/localhost.key', __FILE__) if ssl_key == 'DEFAULT_KEY'
+
+  @app_config[:ssl_cert].should == ssl_cert
+  @app_config[:ssl_key].should == ssl_key
+end
+
+Then /^rest\-assured should "([^"]*)"$/ do |use|
+  @app_config[:use_ssl].to_s.should == use
+end

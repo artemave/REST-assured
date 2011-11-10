@@ -1,5 +1,7 @@
 require File.expand_path('../../lib/rest-assured/config', __FILE__)
 require 'rack'
+require 'openssl'
+require 'webrick'
 
 describe RestAssured::Config do
   #this is thoroughly covered in cucumber (since there it also serves documentation purposes)
@@ -94,5 +96,38 @@ describe RestAssured::Config do
       RestAssured::Config.included(app)
     end
 
+    context 'when ssl true' do
+      before do
+        AppConfig.stub(:use_ssl).and_return(true)
+      end
+
+      it 'makes sure only webrick can be used' do
+        app.should_receive(:set).with(:server, %[webrick])
+        RestAssured::Config.included(app)
+      end
+
+      it 'sets up webrick ssl' do
+        OpenSSL::X509::Certificate.stub(:new).with( File.read( AppConfig.ssl_cert ) ).and_return('ssl_cert')
+        OpenSSL::PKey::RSA.stub(:new).with( File.read( AppConfig.ssl_key ) ).and_return('ssl_key')
+
+        ssl_config = {
+          :SSLEnable => true,
+          :SSLCertificate => 'ssl_cert',
+          :SSLPrivateKey  => 'ssl_key',
+          :SSLCertName => [ ["CN", WEBrick::Utils::getservername] ],
+          :SSLVerifyClient => OpenSSL::SSL::VERIFY_NONE 
+        }
+
+        app.should_receive(:set).with(:webrick, hash_including(ssl_config))
+        RestAssured::Config.included(app)
+      end
+
+      it 'does all that only if ssl true' do
+        AppConfig.stub(:use_ssl).and_return(false)
+        
+        app.should_not_receive(:set).with(:webrick, anything)
+        RestAssured::Config.included(app)
+      end
+    end
   end
 end

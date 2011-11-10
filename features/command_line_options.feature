@@ -33,7 +33,6 @@ Feature: command line options
       | -d /tmp/ratest.db        | /tmp/ratest.db    |
       | --database /tmp/resta.db | /tmp/resta.db     |
 
-  @now
   Scenario Outline: mysql options
     When I start rest-assured with -a mysql <options>
     Then database options should be:
@@ -53,3 +52,24 @@ Feature: command line options
       | --dbencoding utf16le       | rest_assured | root   |        |        |        | utf16le    |                 |
       | --dbsocket /tmp/mysql.sock | rest_assured | root   |        |        |        |            | /tmp/mysql.sock |
 
+  @now
+  Scenario Outline: use ssl option
+    When I start rest-assured with <option>
+    Then rest-assured should "<use_ssl>"
+
+    Examples:
+      | option | use_ssl |
+      |        | false   |
+      | --ssl  | true    |
+
+  Scenario Outline: specifying ssl options 
+    When I start rest-assured with <option>
+    Then ssl certificate used should be "<ssl_cert>" and ssl key should be "<ssl_key>"
+
+    Examples:
+      | option                  | ssl_cert        | ssl_key        |
+      | -c /tmp/mycert.crt      | /tmp/mycert.crt | DEFAULT_KEY    |
+      | --ssl_cert ./mycert.crt | ./mycert.crt    | DEFAULT_KEY    |
+      |                         | DEFAULT_CERT    | DEFAULT_KEY    |
+      | -k /tmp/mykey.key       | DEFAULT_CERT    | /tmp/mykey.key |
+      | --ssl_key ./mykey.key   | DEFAULT_CERT    | ./mykey.key    |

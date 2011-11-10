@@ -1,6 +1,8 @@
 require 'logger'
 require 'active_record'
 require 'active_support/core_ext/kernel/reporting'
+require 'webrick'
+require 'webrick/https'
 
 module RestAssured
   module Config
@@ -37,11 +39,13 @@ module RestAssured
                               File.expand_path("../../../#{AppConfig.environment}.log", __FILE__)
                             end
       build_db_config
+      build_ssl_config
     end
 
     def self.included(klass)
       init_logger
       setup_db
+      setup_ssl(klass) if AppConfig.use_ssl
 
       klass.set :port, AppConfig.port
       klass.set :environment, AppConfig.environment
@@ -51,6 +55,19 @@ module RestAssured
     end
 
     private
+
+      def self.setup_ssl(klass)
+        ssl_config = {
+          :SSLEnable => true,
+          :SSLCertificate => OpenSSL::X509::Certificate.new( File.read( AppConfig.ssl_cert ) ),
+          :SSLPrivateKey => OpenSSL::PKey::RSA.new( File.read( AppConfig.ssl_key ) ),
+          :SSLCertName => [ ["CN", WEBrick::Utils::getservername] ],
+          :SSLVerifyClient => OpenSSL::SSL::VERIFY_NONE 
+        }
+
+        klass.set :server, %[webrick]
+        klass.set :webrick, ssl_config
+      end
 
       def self.setup_db
         setup_db_logging
@@ -118,6 +135,7 @@ module RestAssured
                                 opts = {
                                   :adapter => 'mysql',
                                   :reconnect => true,
+                                  :pool => 20,
                                   :user => AppConfig.user || 'root',
                                   :database => AppConfig.database || default_database
                                 }
@@ -131,6 +149,12 @@ module RestAssured
                               else
                                 raise "Unsupported db adapter '#{AppConfig.adapter}'. Valid adapters are sqlite and mysql"
                               end
+      end
+
+      def self.build_ssl_config
+        AppConfig.use_ssl ||= false
+        AppConfig.ssl_cert ||= File.expand_path('../../../ssl/localhost.crt', __FILE__)
+        AppConfig.ssl_key ||= File.expand_path('../../../ssl/localhost.key', __FILE__)
       end
   end
 end

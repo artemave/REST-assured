@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'sinatra/base'
+require 'sinatra/handler_options_patch'
 require 'haml'
 require 'rack-flash'
 require 'sinatra/partials'
