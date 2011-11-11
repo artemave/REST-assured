@@ -13,7 +13,7 @@ There are three main use cases:
 
 You are going to need ruby >= 1.8.7.
 
-First make sure database adapter present:
+First make sure there is database adapter:
 
     bash$ gem install mysql # or sqlite
 
@@ -31,6 +31,8 @@ Or clone from github and run:
     bash$ ./bin/rest-assured -a mysql &
 
 This starts an instance of rest-assured on port 4578 (changable with --port option). You can now access it via REST or web interfaces on 'http://localhost:4578'
+
+Various options (such as ssl, port, db credentials, etc.) are available through command line options. Check out `rest-assured -h` to see what they are.
 
 NOTE that although sqlite is an option, I found it locking under any non-trivial load. Mysql feels much more reliable. But may be that is me sqliting it wrong.
 
@@ -145,11 +147,13 @@ RestClient.post 'http://localhost:4578/redirects', { pattern: '^/auth', to: 'htt
   Now request (any verb) to 'http://localhost:4578/auth/services/1' will get redirected to 'https://myserver.com/api/auth/services/1.' Provided of course there is no double matched for that fullpath and verb.
   Much like rewrite rules, redirects are evaluated in order (of creation). In UI you can manually rearrange the order.
 
+#### Delete all redirects
+  HTTP DELETE to '/redirects/all' deletes all redirects. Useful for cleaning up between tests.
+
 ## TODO
 
 * Hide wiring rest-assured into ruby project behind client api
 * Bring UI upto date with rest-api (add verbs, statuses, request history)
-* Add delete all redirects to rest api
 * Add wait_for_requests()
 * Add custom response headers
 

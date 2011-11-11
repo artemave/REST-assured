@@ -104,5 +104,14 @@ describe 'Redirects routes' do
       last_response.should_not be_ok
       last_response.body.should =~ /Pattern can't be blank/
     end
+
+    it "deletes all redirects" do
+      Redirect.create redirect
+
+      delete '/redirects/all'
+
+      last_response.should be_ok
+      Redirect.count.should == 0
+    end
   end
 end

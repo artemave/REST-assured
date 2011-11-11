@@ -52,7 +52,6 @@ Feature: command line options
       | --dbencoding utf16le       | rest_assured | root   |        |        |        | utf16le    |                 |
       | --dbsocket /tmp/mysql.sock | rest_assured | root   |        |        |        |            | /tmp/mysql.sock |
 
-  @now
   Scenario Outline: use ssl option
     When I start rest-assured with <option>
     Then rest-assured should "<use_ssl>"

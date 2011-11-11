@@ -6,9 +6,13 @@ Then /^I should get (\d+)$/ do |code|
   last_response.status.should.to_s == code
 end
 
-When /^I register redirect with pattern "([^"]*)" and uri "([^"]*)"$/ do |pattern, uri|
-  post '/redirects', { :pattern => pattern, :to => uri }
+Given /^there is redirect with pattern "([^"]*)" and uri "([^"]*)"$/ do |pattern, url|
+  post '/redirects', { :pattern => pattern, :to => url }
   last_response.should be_ok
+end
+
+When /^I register redirect with pattern "([^"]*)" and uri "([^"]*)"$/ do |pattern, url|
+  Given %{there is redirect with pattern "#{pattern}" and uri "#{url}"}
 end
 
 Then /^it should redirect to "([^"]*)"$/ do |real_api_url|
@@ -63,4 +67,19 @@ Then /^"([^"]*)" should be redirected to "([^"]*)"$/ do |missing_request, url|
   follow_redirect!
 
   last_request.url.should == "#{url}#{missing_request}"
+end
+
+Given /^blank slate$/ do
+end
+
+Given /^there are some redirects$/ do
+  Redirect.create(:pattern => 'something', :to => 'somewhere')
+end
+
+When /^I delete all redirects$/ do
+  delete '/redirects/all'
+end
+
+Then /^there should be no redirects$/ do
+  Redirect.count.should == 0
 end
