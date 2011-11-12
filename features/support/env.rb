@@ -3,7 +3,7 @@ require 'rubygems'
 require 'spork'
 
 Spork.prefork do
-  require 'rspec/expectations'
+  require 'rspec'
   require 'rack/test'
   require 'capybara'
   require 'capybara/firebug'
@@ -77,6 +77,8 @@ Spork.each_run do
   After do
     sleep 0.1
     DatabaseCleaner.clean
+
+    @t.join if @t.is_a?(Thread)
   end
 end
 

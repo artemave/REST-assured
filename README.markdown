@@ -67,9 +67,7 @@ Or, in case you need verifications, create double in a Given part
 And verify requests happened on that double in a Then part
 
 ```ruby
-@double.reload
-
-@double.requests.count.should == 1
+@double.wait_for_requests(1, :timeout => 10) # default timeout 5 seconds
 
 req = @double.requests.first
 

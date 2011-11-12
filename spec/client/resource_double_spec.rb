@@ -43,5 +43,41 @@ module RestAssured::Client
       dd.requests.first.params.should == 'params'
       dd.requests.last.body.should == 'other body'
     end
+
+    context 'when waits requests' do
+      after do
+        @t.join if @t.respond_to?(:join)
+      end
+
+      it 'waits for specified number of requests' do
+        d = ::Double.create :fullpath => '/some/api', :content => 'content'
+        dd = Double.find(d.id)
+
+        @t = Thread.new do
+          3.times do
+            sleep 1
+            d.requests << Request.create(:rack_env => 'rack_env json', :body => 'body', :params => 'params')
+          end
+        end
+
+        dd.wait_for_requests(2)
+
+        dd.requests.count.should >= 2
+      end
+
+      it 'raises exception if requests have not happened within timeout' do
+        d = ::Double.create :fullpath => '/some/api', :content => 'content'
+        dd = Double.find(d.id)
+        dd.stub(:sleep)
+
+        @t = Thread.new do
+          2.times do
+            d.requests << Request.create(:rack_env => 'rack_env json', :body => 'body', :params => 'params')
+          end
+        end
+
+        lambda { dd.wait_for_requests(3) }.should raise_error(MoreRequestsExpected, 'Expected 3 requests. Got 2.')
+      end
+    end
   end
 end
