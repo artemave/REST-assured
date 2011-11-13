@@ -55,13 +55,13 @@ RestAssured::Client.config.server_address = 'http://localhost:4578' # or whereve
 You can then create doubles in your tests
 
 ```ruby
-RestAssured::Client::Double.create(fullpath: '/products', content: 'this is content')
+RestAssured::Double.create(fullpath: '/products', content: 'this is content')
 ```
 
 Or, in case you need verifications, create double in a Given part
 
 ```ruby
-@double = RestAssured::Client::Double.create(fullpath: '/products', verb: 'POST')
+@double = RestAssured::Double.create(fullpath: '/products', verb: 'POST')
 ```
 
 And verify requests happened on that double in a Then part

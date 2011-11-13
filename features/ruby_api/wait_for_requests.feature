@@ -6,7 +6,7 @@ Feature: wait for requests on double to happen
   Background:
     Given I created a double:
     """
-    @double = RestAssured::Client::Double.create(:fullpath => '/some/api', :verb => 'POST')
+    @double = RestAssured::Double.create(:fullpath => '/some/api')
     """
 
   Scenario: succesfully wait for requests

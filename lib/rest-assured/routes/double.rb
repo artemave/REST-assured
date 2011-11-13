@@ -8,18 +8,18 @@ module RestAssured
       end
 
       router.get '/doubles' do
-        @doubles = Double.all
+        @doubles = Models::Double.all
         haml :'doubles/index'
       end
 
       router.get '/doubles/new' do
-        @double = Double.new
+        @double = Models::Double.new
         haml :'doubles/new'
       end
 
       router.get '/doubles/:id.json' do |id|
         begin
-          double = Double.find(id)
+          double = Models::Double.find(id)
           body double.to_json(:include => :requests)
         rescue ActiveRecord::RecordNotFound
           status 404
@@ -29,7 +29,7 @@ module RestAssured
       router.post /^\/doubles(\.json)?$/ do |passes_json|
         f = { :fullpath => params['fullpath'], :content => params['content'], :description => params['description'], :verb => params['verb'], :status => params['status'] }
 
-        @double = Double.create(passes_json ? JSON.parse(request.body.read)['double'] : ( params['double'] || f )) 
+        @double = Models::Double.create(passes_json ? JSON.parse(request.body.read)['double'] : ( params['double'] || f )) 
 
         if browser?
           if @double.errors.blank?
@@ -50,12 +50,12 @@ module RestAssured
       end
 
       router.get %r{/doubles/(\d+)/edit} do |id|
-        @double = Double.find(id)
+        @double = Models::Double.find(id)
         haml :'doubles/edit'
       end
 
       router.put %r{/doubles/(\d+)} do |id|
-        @double = Double.find(id)
+        @double = Models::Double.find(id)
 
         if request.xhr?
           if params['active']
@@ -77,14 +77,14 @@ module RestAssured
       end
 
       router.delete %r{/doubles/(\d+)} do |id|
-        if Double.destroy(id)
+        if Models::Double.destroy(id)
           flash[:notice] = 'Double deleted'
           redirect '/doubles'
         end
       end
 
       router.delete '/doubles/all' do
-        status Double.delete_all ? 200 : 500
+        status Models::Double.delete_all ? 200 : 500
       end
     end
   end

@@ -1,7 +1,7 @@
 require 'uri'
 require File.expand_path('../../spec_helper', __FILE__)
 
-module RestAssured::Client
+module RestAssured
   describe Double do
     before do
       @orig_addr = RestAssured::Client.config.server_address
@@ -20,11 +20,11 @@ module RestAssured::Client
 
     it 'creates new double' do
       d = Double.create :fullpath => '/some/api', :content => 'content'
-      ::Double.where(:fullpath => d.fullpath, :content => d.content).should exist
+      Models::Double.where(:fullpath => d.fullpath, :content => d.content).should exist
     end
 
     it 'finds exising double' do
-      d = ::Double.create :fullpath => '/some/api', :content => 'content'
+      d = Models::Double.create :fullpath => '/some/api', :content => 'content'
 
       dd = Double.find(d.id)
 
@@ -33,9 +33,9 @@ module RestAssured::Client
     end
 
     it 'shows request history' do
-      d = ::Double.create :fullpath => '/some/api', :content => 'content'
-      d.requests << Request.create(:rack_env => 'rack_env json', :body => 'body', :params => 'params')
-      d.requests << Request.create(:rack_env => 'different rack_env', :body => 'other body', :params => 'more params')
+      d = Models::Double.create :fullpath => '/some/api', :content => 'content'
+      d.requests << Models::Request.create(:rack_env => 'rack_env json', :body => 'body', :params => 'params')
+      d.requests << Models::Request.create(:rack_env => 'different rack_env', :body => 'other body', :params => 'more params')
 
       dd = Double.find(d.id)
       dd.requests.size.should == 2
@@ -50,13 +50,13 @@ module RestAssured::Client
       end
 
       it 'waits for specified number of requests' do
-        d = ::Double.create :fullpath => '/some/api', :content => 'content'
+        d = Models::Double.create :fullpath => '/some/api', :content => 'content'
         dd = Double.find(d.id)
 
         @t = Thread.new do
           3.times do
             sleep 1
-            d.requests << Request.create(:rack_env => 'rack_env json', :body => 'body', :params => 'params')
+            d.requests << Models::Request.create(:rack_env => 'rack_env json', :body => 'body', :params => 'params')
           end
         end
 
@@ -66,13 +66,13 @@ module RestAssured::Client
       end
 
       it 'raises exception if requests have not happened within timeout' do
-        d = ::Double.create :fullpath => '/some/api', :content => 'content'
+        d = Models::Double.create :fullpath => '/some/api', :content => 'content'
         dd = Double.find(d.id)
         dd.stub(:sleep)
 
         @t = Thread.new do
           2.times do
-            d.requests << Request.create(:rack_env => 'rack_env json', :body => 'body', :params => 'params')
+            d.requests << Models::Request.create(:rack_env => 'rack_env json', :body => 'body', :params => 'params')
           end
         end
 

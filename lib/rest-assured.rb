@@ -15,7 +15,7 @@ require 'rest-assured/routes/response'
 module RestAssured
   class Application < Sinatra::Base
 
-    include RestAssured::Config
+    include Config
 
     enable :method_override
 

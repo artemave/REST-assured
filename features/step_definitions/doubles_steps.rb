@@ -1,7 +1,7 @@
 # REST api steps
 
 Given /^there are no doubles$/ do
-  Double.destroy_all
+  RestAssured::Models::Double.destroy_all
 end
 
 When /^I create a double with "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |fullpath, content|
@@ -19,19 +19,19 @@ Then /^I should get (#{CAPTURE_A_NUMBER}) in response status$/ do |status|
 end
 
 Then /^there should be (#{CAPTURE_A_NUMBER}) double with "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |n, fullpath, content|
-  Double.where(:fullpath => fullpath, :content => content).count.should == n
+  RestAssured::Models::Double.where(:fullpath => fullpath, :content => content).count.should == n
 end
 
 Then /^there should be (#{CAPTURE_A_NUMBER}) double with "([^""]*)" as fullpath, "([^""]*)" as response content, "([^""]*)" as request verb and status as "(#{CAPTURE_A_NUMBER})"$/ do |n, fullpath, content, verb, status|
-  Double.where(:fullpath => fullpath, :content => content, :verb => verb, :status => status).count.should == n
+  RestAssured::Models::Double.where(:fullpath => fullpath, :content => content, :verb => verb, :status => status).count.should == n
 end
 
 Given /^there is double with "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |fullpath, content|
-  Double.create(:fullpath => fullpath, :content => content)
+  RestAssured::Models::Double.create(:fullpath => fullpath, :content => content)
 end
 
 Given /^there is double with "([^"]*)" as fullpath, "([^"]*)" as response content, "([^"]*)" as request verb and "([^"]*)" as status$/ do |fullpath, content, verb, status|
-  Double.create(:fullpath => fullpath, :content => content, :verb => verb, :status => status)
+  RestAssured::Models::Double.create(:fullpath => fullpath, :content => content, :verb => verb, :status => status)
 end
 
 Given /^I register "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |fullpath, content|
@@ -54,7 +54,7 @@ end
 
 Given /^there are some doubles$/ do
   [['fullpath1', 'content1'], ['fullpath2', 'content2'], ['fullpath3', 'content3']].each do |double|
-    Double.create(:fullpath => double[0], :content => double[1])
+    RestAssured::Models::Double.create(:fullpath => double[0], :content => double[1])
   end
 end
 
@@ -64,14 +64,14 @@ When /^I delete all doubles$/ do
 end
 
 Then /^there should be no doubles$/ do
-  Double.count.should == 0
+  RestAssured::Models::Double.count.should == 0
 end
 
 # UI steps
 
 Given /^the following doubles exist:$/ do |doubles|
   doubles.hashes.each do |row|
-    Double.create(:fullpath => row['fullpath'], :description => row['description'], :content => row['content'])
+    RestAssured::Models::Double.create(:fullpath => row['fullpath'], :description => row['description'], :content => row['content'])
   end
 end
 
@@ -115,8 +115,8 @@ Then /^I should (not)? ?see "([^"]*)"$/ do |see, text|
 end
 
 Given /^there are two doubles for the same fullpath$/ do
-  @first = Double.create :fullpath => '/api/something', :content => 'some content'
-  @second = Double.create :fullpath => '/api/something', :content => 'other content'
+  @first = RestAssured::Models::Double.create :fullpath => '/api/something', :content => 'some content'
+  @second = RestAssured::Models::Double.create :fullpath => '/api/something', :content => 'other content'
 end
 
 When /^I make (first|second) double active$/ do |ord|

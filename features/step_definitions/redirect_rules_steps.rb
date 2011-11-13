@@ -1,5 +1,5 @@
 Given /^there are no redirect rules$/ do
-  Redirect.destroy_all
+  RestAssured::Models::Redirect.destroy_all
 end
 
 Then /^I should get (\d+)$/ do |code|
@@ -22,7 +22,7 @@ end
 
 Given /^the following redirects exist:$/ do |redirects|
   redirects.hashes.each do |row|
-    Redirect.create(:pattern => row['pattern'], :to => row['to'])
+    RestAssured::Models::Redirect.create(:pattern => row['pattern'], :to => row['to'])
   end
 end
 
@@ -54,7 +54,7 @@ Given /^I choose to delete redirect with pattern "([^"]*)"$/ do |pattern|
 end
 
 When /^I reorder second redirect to be the first one$/ do
-  handler = find("#redirects #redirect_#{Redirect.last.id} td.handle")
+  handler = find("#redirects #redirect_#{RestAssured::Models::Redirect.last.id} td.handle")
   target = find('#redirects thead')
 
   handler.drag_to target
@@ -73,7 +73,7 @@ Given /^blank slate$/ do
 end
 
 Given /^there are some redirects$/ do
-  Redirect.create(:pattern => 'something', :to => 'somewhere')
+  RestAssured::Models::Redirect.create(:pattern => 'something', :to => 'somewhere')
 end
 
 When /^I delete all redirects$/ do
@@ -81,5 +81,5 @@ When /^I delete all redirects$/ do
 end
 
 Then /^there should be no redirects$/ do
-  Redirect.count.should == 0
+  RestAssured::Models::Redirect.count.should == 0
 end

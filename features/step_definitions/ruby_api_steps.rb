@@ -1,5 +1,5 @@
 Given /^there is a double$/ do
-  @double = RestAssured::Client::Double.create(:fullpath => '/some/path', :content => 'some content', :verb => 'POST')
+  @double = RestAssured::Double.create(:fullpath => '/some/path', :content => 'some content', :verb => 'POST')
 end
 
 When /^that double gets requested$/ do
@@ -25,7 +25,7 @@ end
 
 Given /^I created a double:$/ do |string|
   # expected string is:
-  # @double = RestAssured::Client::Double.create(:fullpath => '/some/api', :verb => 'POST')
+  # @double = RestAssured::Double.create(:fullpath => '/some/api', :verb => 'POST')
   eval string
 end
 
@@ -44,7 +44,7 @@ When /^I wait for (\d+) requests:$/ do |num, string|
   @t = Thread.new do
     begin
       eval string
-    rescue RestAssured::Client::MoreRequestsExpected => e
+    rescue RestAssured::MoreRequestsExpected => e
       @more_reqs_exc = e
     end
   end
@@ -64,6 +64,6 @@ Then /^it should wait for (#{CAPTURE_A_NUMBER}) seconds(?: \(default timeout\))?
 end
 
 Then /^it should raise MoreRequestsExpected error after with the following message:$/ do |string|
-  @more_reqs_exc.should be_instance_of RestAssured::Client::MoreRequestsExpected
-  @more_reqs_exc.message.should == string
+  @more_reqs_exc.should be_instance_of RestAssured::MoreRequestsExpected
+  @more_reqs_exc.message.should =~ /#{string}/
 end
