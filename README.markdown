@@ -152,9 +152,19 @@ RestClient.post 'http://localhost:4578/redirects', { pattern: '^/auth', to: 'htt
 
 * Hide wiring rest-assured into ruby project behind client api
 * Bring UI upto date with rest-api (add verbs, statuses, request history)
-* Add wait_for_requests()
 * Add custom response headers
 
 ## Author
 
 [Artem Avetisyan](https://github.com/artemave)
+
+## Changelog
+
+0.2
+  - adds verifications
+  - adds ruby client
+  - adds custom return statuses
+  - adds ssl
+  - adds mysql support
+0.1 initial public release
+
