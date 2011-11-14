@@ -1,32 +1,47 @@
-class Double < ActiveRecord::Base
-  attr_accessible :fullpath, :content, :description, :method
+require 'net/http'
 
-  METHODS = %w{GET POST PUT DELETE}
+module RestAssured
+  module Models
+    class Double < ActiveRecord::Base
+      attr_accessible :fullpath, :content, :description, :verb, :status
 
-  validates_presence_of :fullpath, :content
-  validates_inclusion_of :method, :in => METHODS
+      VERBS = %w{GET POST PUT DELETE}
+      STATUSES = Net::HTTPResponse::CODE_TO_OBJ.keys.map(&:to_i)
 
-  before_save :toggle_active
-  before_validation :set_method
-  after_destroy :set_active
+      validates_presence_of :fullpath
+      validates_inclusion_of :verb, :in => VERBS
+      validates_inclusion_of :status, :in => STATUSES
 
-  private
-    def toggle_active
-      ne = id ? '!=' : 'IS NOT'
+      before_save :toggle_active
+      before_validation :set_verb
+      before_validation :set_status
+      after_destroy :set_active
 
-      if active && Double.where("fullpath = ? AND active = ? AND id #{ne} ?", fullpath, true, id).exists?
-        Double.where("fullpath = ? AND id #{ne} ?", fullpath, id).update_all :active => false
+      has_many :requests, :dependent => :destroy
+
+      private
+      def toggle_active
+        ne = id ? '!=' : 'IS NOT'
+
+        if active && Double.where("fullpath = ? AND active = ? AND id #{ne} ?", fullpath, true, id).exists?
+          Double.where("fullpath = ? AND id #{ne} ?", fullpath, id).update_all :active => false
+        end
+      end
+
+      def set_verb
+        self.verb = 'GET' unless verb.present?
+      end
+
+      def set_status
+        self.status = 200 unless status.present?
+      end
+
+      def set_active
+        if active && f = Double.where(:fullpath => fullpath).last
+          f.active = true
+          f.save
+        end
       end
     end
-
-    def set_method
-      self.method = 'GET' unless method.present?
-    end
-
-    def set_active
-      if active && f = Double.where(:fullpath => fullpath).last
-        f.active = true
-        f.save
-      end
-    end
+  end
 end

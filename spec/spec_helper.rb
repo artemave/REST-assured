@@ -1,10 +1,13 @@
 require 'rubygems'
 require 'spork'
 
+$:.unshift(File.expand_path('../../lib'), __FILE__)
+
 Spork.prefork do
   require 'capybara/rspec'
   require 'rack/test'
   require 'database_cleaner'
+  require File.expand_path('../custom_matchers', __FILE__)
 
   ENV['RACK_ENV'] = 'test'
 
@@ -40,10 +43,26 @@ Spork.prefork do
 end
 
 Spork.each_run do
-  require File.expand_path('../../lib/rest-assured', __FILE__)
-  require 'shoulda-matchers'
+  require 'rest-assured/config'
+  RestAssured::Config.build(:adapter => 'mysql')
 
-  DatabaseCleaner.strategy = :truncation
+  require 'rest-assured'
+  require 'rest-assured/client'
+  require 'shoulda-matchers'
+  require File.expand_path('../../features/support/test-server', __FILE__)
+
+  at_exit do
+    TestServer.stop
+  end
+
+  TestServer.start(:port => 9876)
+
+  while not TestServer.up?
+    puts 'Waiting for TestServer to come up...'
+    sleep 1
+  end
+
+  RestAssured::Client.config.server_address = 'http://localhost:9876'
 
   Capybara.app = RestAssured::Application
 
@@ -51,4 +70,5 @@ Spork.each_run do
     RestAssured::Application
   end
 
+  DatabaseCleaner.strategy = :truncation
 end

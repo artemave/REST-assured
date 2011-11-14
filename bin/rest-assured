@@ -6,27 +6,70 @@ require 'rubygems'
 require 'optparse'
 require 'rest-assured/config'
 
+user_opts = {}
+
 OptionParser.new do |opts|
   opts.banner = "Usage: rest-assured [options]"
 
-  opts.on('-d', '--database FILENAME', "Path to database file. Defaults to ./rest-assured.db. There is a special value ':memory:' for in memory database.") do |fname|
-    AppConfig[:database] = fname
+  opts.on('-a', '--adapter mysql|sqlite') do |adapter|
+    user_opts[:adapter] = adapter
+  end
+
+  opts.on('-d', '--database FILENAME', "Either path to database file (sqlite, defaults to ./rest-assured.db) or db name (defaults to rest_assured)") do |fname|
+    user_opts[:database] = fname
+  end
+
+  opts.on('-u', '--dbuser DBUSER', "Db username (mysql only)") do |user|
+    user_opts[:user] = user
+  end
+
+  opts.on('--dbpass DBPASSWORD', 'Db password (mysql only). Defaults to empty') do |password|
+    user_opts[:dbpass] = password
+  end
+
+  opts.on('--dbhost DBHOST', 'Db host (mysql only). Defaults to mysql default host (localhost)') do |dbhost|
+    user_opts[:dbhost] = dbhost
+  end
+
+  opts.on('--dbport DBPORT', Integer, 'Db port (mysql only). Defaults to mysql default port (3306)') do |dbport|
+    user_opts[:dbport] = dbport
+  end
+
+  opts.on('--dbencoding DBENCODING', 'Db encoding (mysql only). Defaults to mysql default encoding') do |dbencoding|
+    user_opts[:dbencoding] = dbencoding
+  end
+
+  opts.on('--dbsocket DBSOCKET', 'Db socket (mysql only). Defaults to mysql default socket') do |dbsocket|
+    user_opts[:dbsocket] = dbsocket
   end
 
   opts.on('-p', '--port PORT', Integer, "Server port. Defaults to 4578") do |port|
-    AppConfig[:port] = port
+    user_opts[:port] = port
   end
 
-  opts.on('-l', '--logfile FILENAME', "Path to logfile. Defaults to ./rest-assured.log") do |log_file|
-    AppConfig[:log_file] = log_file
+  opts.on('-l', '--logfile FILENAME', "Path to logfile. Defaults to ./rest-assured.log") do |logfile|
+    user_opts[:logfile] = logfile
   end
 
-  opts.on_tail("-h", "--help", "Show this message") do
+  opts.on('--ssl', "Whether or not to run on https. Defaults to false (http)") do |use_ssl|
+    user_opts[:use_ssl] = true
+  end
+
+  opts.on('-c', '--ssl_cert FILENAME', "Path to ssl_cert. Defaults to self signed certificate shipped with rest-assured") do |ssl_cert|
+    user_opts[:ssl_cert] = ssl_cert
+  end
+
+  opts.on('-k', '--ssl_key FILENAME', "Path to ssl_key. Defaults to key shipped with rest-assured") do |ssl_key|
+    user_opts[:ssl_key] = ssl_key
+  end
+
+  opts.on_tail("--help", "Show this message") do
     puts opts
     exit
   end
 end.parse!
 
-require 'rest-assured'
+RestAssured::Config.build(user_opts)
 
+require 'rest-assured'
 RestAssured::Application.run!

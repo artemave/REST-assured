@@ -1,7 +1,7 @@
 # REST api steps
 
 Given /^there are no doubles$/ do
-  Double.destroy_all
+  RestAssured::Models::Double.destroy_all
 end
 
 When /^I create a double with "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |fullpath, content|
@@ -9,25 +9,29 @@ When /^I create a double with "([^"]*)" as fullpath and "([^"]*)" as response co
   last_response.should be_ok
 end
 
-When /^I create a double with "([^"]*)" as fullpath, "([^"]*)" as response content and "([^"]*)" as request method$/ do |fullpath, content, method|
-  post '/doubles', { :fullpath => fullpath, :content => content, :method => method }
+When /^I create a double with "([^""]*)" as fullpath, "([^""]*)" as response content, "([^""]*)" as request verb and status as "([^""]*)"$/ do |fullpath, content, verb, status|
+  post '/doubles', { :fullpath => fullpath, :content => content, :verb => verb, :status => status }
   last_response.should be_ok
 end
 
-Then /^there should be (#{CAPTURE_A_NUMBER}) double with "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |n, fullpath, content|
-  Double.where(:fullpath => fullpath, :content => content).count.should == 1
+Then /^I should get (#{CAPTURE_A_NUMBER}) in response status$/ do |status|
+  last_response.status.should == status
 end
 
-Then /^there should be (#{CAPTURE_A_NUMBER}) double with "([^"]*)" as fullpath, "([^"]*)" as response content and "([^"]*)" as request method$/ do |n, fullpath, content, method|
-  Double.where(:fullpath => fullpath, :content => content, :method => method).count.should == n
+Then /^there should be (#{CAPTURE_A_NUMBER}) double with "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |n, fullpath, content|
+  RestAssured::Models::Double.where(:fullpath => fullpath, :content => content).count.should == n
+end
+
+Then /^there should be (#{CAPTURE_A_NUMBER}) double with "([^""]*)" as fullpath, "([^""]*)" as response content, "([^""]*)" as request verb and status as "(#{CAPTURE_A_NUMBER})"$/ do |n, fullpath, content, verb, status|
+  RestAssured::Models::Double.where(:fullpath => fullpath, :content => content, :verb => verb, :status => status).count.should == n
 end
 
 Given /^there is double with "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |fullpath, content|
-  Double.create(:fullpath => fullpath, :content => content)
+  RestAssured::Models::Double.create(:fullpath => fullpath, :content => content)
 end
 
-Given /^there is double with "([^"]*)" as fullpath, "([^"]*)" as response content and "([^"]*)" as request method$/ do |fullpath, content, method|
-  Double.create(:fullpath => fullpath, :content => content, :method => method)
+Given /^there is double with "([^"]*)" as fullpath, "([^"]*)" as response content, "([^"]*)" as request verb and "([^"]*)" as status$/ do |fullpath, content, verb, status|
+  RestAssured::Models::Double.create(:fullpath => fullpath, :content => content, :verb => verb, :status => status)
 end
 
 Given /^I register "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |fullpath, content|
@@ -39,17 +43,18 @@ When /^I request "([^"]*)"$/ do |fullpath|
   get fullpath
 end
 
-When /^I "([^"]*)" "([^"]*)"$/ do |method, fullpath|
-  send(method.downcase, fullpath)
+When /^I "([^"]*)" "([^"]*)"$/ do |verb, fullpath|
+  send(verb.downcase, fullpath)
 end
 
-Then /^I should get "([^"]*)" in response content$/ do |content|
+Then /^I should get (?:"(#{CAPTURE_A_NUMBER})" as response status and )?"([^"]*)" in response content$/ do |status, content|
+  last_response.status.should == status if status.present?
   last_response.body.should == content
 end
 
 Given /^there are some doubles$/ do
   [['fullpath1', 'content1'], ['fullpath2', 'content2'], ['fullpath3', 'content3']].each do |double|
-    Double.create(:fullpath => double[0], :content => double[1])
+    RestAssured::Models::Double.create(:fullpath => double[0], :content => double[1])
   end
 end
 
@@ -59,14 +64,14 @@ When /^I delete all doubles$/ do
 end
 
 Then /^there should be no doubles$/ do
-  Double.count.should == 0
+  RestAssured::Models::Double.count.should == 0
 end
 
 # UI steps
 
 Given /^the following doubles exist:$/ do |doubles|
   doubles.hashes.each do |row|
-    Double.create(:fullpath => row['fullpath'], :description => row['description'], :content => row['content'])
+    RestAssured::Models::Double.create(:fullpath => row['fullpath'], :description => row['description'], :content => row['content'])
   end
 end
 
@@ -110,8 +115,8 @@ Then /^I should (not)? ?see "([^"]*)"$/ do |see, text|
 end
 
 Given /^there are two doubles for the same fullpath$/ do
-  @first = Double.create :fullpath => '/api/something', :content => 'some content'
-  @second = Double.create :fullpath => '/api/something', :content => 'other content'
+  @first = RestAssured::Models::Double.create :fullpath => '/api/something', :content => 'some content'
+  @second = RestAssured::Models::Double.create :fullpath => '/api/something', :content => 'other content'
 end
 
 When /^I make (first|second) double active$/ do |ord|
@@ -121,6 +126,7 @@ When /^I make (first|second) double active$/ do |ord|
 end
 
 Then /^(first|second) double should be served$/ do |ord|
+  sleep 0.1 # allow time for change to end up in the db
   f = instance_variable_get('@' + ord)
   get f.fullpath
   last_response.body.should == f.content
@@ -141,3 +147,4 @@ end
 Then /^I should be asked to confirm delete$/ do
   page.driver.browser.switch_to.alert.accept
 end
+

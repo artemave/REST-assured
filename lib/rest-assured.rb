@@ -1,28 +1,23 @@
 require 'rubygems'
 require 'sinatra/base'
+require 'sinatra/handler_options_patch'
 require 'haml'
-require 'sass'
-#require 'sinatra/reloader'
 require 'rack-flash'
 require 'sinatra/partials'
-require 'rest-assured/init'
+require 'rest-assured/config'
 require 'rest-assured/models/double'
 require 'rest-assured/models/redirect'
+require 'rest-assured/models/request'
 require 'rest-assured/routes/double'
 require 'rest-assured/routes/redirect'
+require 'rest-assured/routes/response'
 
 module RestAssured
   class Application < Sinatra::Base
-    set :environment, AppConfig[:environment]
-    set :port, AppConfig[:port]
+
+    include Config
 
     enable :method_override
-
-    Logger.class_eval do
-      alias_method :write, :<<
-    end
-    enable :logging
-    use Rack::CommonLogger, $app_logger
 
     enable :sessions
     use Rack::Flash, :sweep => true
@@ -42,27 +37,10 @@ module RestAssured
     include DoubleRoutes
     include RedirectRoutes
 
-    get '/css/base.css' do
-      scss :base
-    end
-
-    %w{get post put delete}.each do |method|
-      send method, /.*/ do
-        Double.where(:fullpath => request.fullpath, :active => true, :method => method.upcase).first.try(:content) or try_redirect(request) or status 404
+    %w{get post put delete}.each do |verb|
+      send verb, /.*/ do
+        Response.perform(self)
       end
     end
-
-    #configure(:development) do
-      #register Sinatra::Reloader
-    #end
-
-    private
-      def try_redirect(request)
-        r = Redirect.ordered.find do |r|
-          request.fullpath =~ /#{r.pattern}/
-        end
-
-        r && redirect( "#{r.to}#{request.fullpath}" )
-      end
   end
 end

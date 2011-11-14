@@ -3,12 +3,13 @@ require 'rubygems'
 require 'spork'
 
 Spork.prefork do
-  require 'rspec/expectations'
+  require 'rspec'
   require 'rack/test'
   require 'capybara'
   require 'capybara/firebug'
   require 'capybara/cucumber'
   require 'database_cleaner'
+  require File.dirname(__FILE__) + '/world_helpers'
 
   ENV['RACK_ENV'] = 'test'
 
@@ -32,12 +33,31 @@ Spork.prefork do
     Capybara::Selenium::Driver.new(app, :browser => :firefox, :profile => profile) 
   end
 
-  World(Capybara, Rack::Test::Methods, RackHeaderHack)
+  World(Capybara, Rack::Test::Methods, RackHeaderHack, WorldHelpers)
+
 end
 
 
 Spork.each_run do
+  require 'rest-assured/config'
+  RestAssured::Config.build(:adapter => 'mysql')
+
   require 'rest-assured'
+  require 'rest-assured/client'
+  require File.expand_path('../test-server', __FILE__)
+
+  at_exit do
+    TestServer.stop
+  end
+
+  TestServer.start(:port => 9876)
+
+  while not TestServer.up?
+    puts 'Waiting for TestServer to come up...'
+    sleep 1
+  end
+
+  RestAssured::Client.config.server_address = 'http://localhost:9876'
 
   def app
     RestAssured::Application
@@ -55,7 +75,10 @@ Spork.each_run do
   end
 
   After do
+    sleep 0.1
     DatabaseCleaner.clean
+
+    @t.join if @t.is_a?(Thread)
   end
 end
 
