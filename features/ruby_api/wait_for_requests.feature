@@ -29,7 +29,6 @@ Feature: wait for requests on double to happen
     Expected 3 requests. Got 2.
     """
 
-  @now
   Scenario: custom timeout
     When I wait for 3 requests:
     """

@@ -1,7 +1,3 @@
-Given /^there are no redirect rules$/ do
-  RestAssured::Models::Redirect.destroy_all
-end
-
 Then /^I should get (\d+)$/ do |code|
   last_response.status.should.to_s == code
 end

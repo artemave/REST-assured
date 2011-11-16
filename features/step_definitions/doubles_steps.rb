@@ -4,11 +4,6 @@ Given /^there are no doubles$/ do
   RestAssured::Models::Double.destroy_all
 end
 
-When /^I create a double with "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |fullpath, content|
-  post '/doubles', { :fullpath => fullpath, :content => content }
-  last_response.should be_ok
-end
-
 When /^I create a double with "([^""]*)" as fullpath, "([^""]*)" as response content, "([^""]*)" as request verb and status as "([^""]*)"$/ do |fullpath, content, verb, status|
   post '/doubles', { :fullpath => fullpath, :content => content, :verb => verb, :status => status }
   last_response.should be_ok
@@ -16,10 +11,6 @@ end
 
 Then /^I should get (#{CAPTURE_A_NUMBER}) in response status$/ do |status|
   last_response.status.should == status
-end
-
-Then /^there should be (#{CAPTURE_A_NUMBER}) double with "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |n, fullpath, content|
-  RestAssured::Models::Double.where(:fullpath => fullpath, :content => content).count.should == n
 end
 
 Then /^there should be (#{CAPTURE_A_NUMBER}) double with "([^""]*)" as fullpath, "([^""]*)" as response content, "([^""]*)" as request verb and status as "(#{CAPTURE_A_NUMBER})"$/ do |n, fullpath, content, verb, status|
@@ -32,11 +23,6 @@ end
 
 Given /^there is double with "([^"]*)" as fullpath, "([^"]*)" as response content, "([^"]*)" as request verb and "([^"]*)" as status$/ do |fullpath, content, verb, status|
   RestAssured::Models::Double.create(:fullpath => fullpath, :content => content, :verb => verb, :status => status)
-end
-
-Given /^I register "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |fullpath, content|
-  post '/doubles', { :fullpath => fullpath, :content => content }
-  last_response.should be_ok
 end
 
 When /^I request "([^"]*)"$/ do |fullpath|
