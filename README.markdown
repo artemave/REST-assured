@@ -17,7 +17,7 @@ First make sure there is database adapter:
 
     bash$ gem install mysql # or sqlite
 
-If using mysql, rest-assured expects database 'rest\_assured' to be accessible by user 'root' with no password. Those are defaults and are changeable with command line options.
+If using mysql, rest-assured expects database 'rest\_assured' to be accessible by user 'root' with no password. Those are defaults and can be changed from command.
 
 Then install gem and run:
 
@@ -30,17 +30,17 @@ Or clone from github and run:
     bash$ cd rest-assured && bundle install
     bash$ ./bin/rest-assured -a mysql &
 
-This starts an instance of rest-assured on port 4578 (changable with --port option). You can now access it via REST or web interfaces on 'http://localhost:4578'
+This starts an instance of rest-assured on port 4578. It is accessible via REST or web interfaces on 'http://localhost:4578'
 
 Various options (such as ssl, port, db credentials, etc.) are available through command line options. Check out `rest-assured -h` to see what they are.
 
-NOTE that although sqlite is an option, I found it locking under any non-trivial load. Mysql feels much more reliable. But may be that is me sqliting it wrong.
+NOTE that although sqlite is an option, I found it locking tables under any non-trivial load. Mysql feels much more reliable. But may be that is just me sqliting it wrong.
 
 ## REST API
 
 ### Doubles
 
-Double is a stub/mock of a particular external call.
+Double is a stub/mock of HTTP request.
 
 #### Ruby Client API
 
@@ -52,19 +52,21 @@ require 'rest-assured/client'
 RestAssured::Client.config.server_address = 'http://localhost:4578' # or wherever your rest-assured is
 ```
 
-You can then create doubles in your tests
+You can then create doubles in your tests:
 
 ```ruby
 RestAssured::Double.create(fullpath: '/products', content: 'this is content')
 ```
 
-Or, in case you need verifications, create double in a Given part
+Now GET 'http://localhost:4578/products' will be returning 'this is content'.
+
+You can also verify what requests happen on a double. Say this is a Given part of a test:
 
 ```ruby
 @double = RestAssured::Double.create(fullpath: '/products', verb: 'POST')
 ```
 
-And verify requests happened on that double in a Then part
+Then let us assume that 'http://localhost:4578/products' got POSTed as a result of some actions in When part. Now we can examine requests happened on that double in Then part:
 
 ```ruby
 @double.wait_for_requests(1, :timeout => 10) # default timeout 5 seconds
@@ -77,6 +79,8 @@ JSON.parse(req.rack_env)['ACCEPT'].should == 'Application/json'
 ```
 
 #### Plain REST API
+
+ 
 
 ##### Create double 
   HTTP POST to '/doubles.json' creates double and returns its json representation.
@@ -118,9 +122,9 @@ puts response.body
   The important bit here is 'requests' array. This is history of requests for that double (in chronological order). Each element contains the following data (keys):
   
   - __body__ - request payload
-  - __params__ - request parameters
+  - __params__ - request parameters. json
   - __created_at__ - request timestamp
-  - __rack_env__ - raw request dump (key value pairs). Including request headers
+  - __rack_env__ - raw request dump (json) including request headers
 
 ##### Delete all doubles
   HTTP DELETE to '/doubles/all' deletes all doubles. Useful for cleaning up between tests.
@@ -160,11 +164,13 @@ RestClient.post 'http://localhost:4578/redirects', { pattern: '^/auth', to: 'htt
 
 ## Changelog
 
-0.2
-  - adds verifications
-  - adds ruby client
-  - adds custom return statuses
-  - adds ssl
-  - adds mysql support
-0.1 initial public release
+#### 0.2
+
+* adds verifications
+* adds ruby client
+* adds custom return statuses
+* adds ssl
+* adds mysql support
+
+#### 0.1 initial public release
 
