@@ -15,7 +15,7 @@ You are going to need ruby >= 1.8.7.
 
 First make sure there is database adapter:
 
-    bash$ gem install mysql # or sqlite
+    bash$ gem install sqlite3 # or mysql
 
 If using mysql, rest-assured expects database 'rest\_assured' to be accessible by user 'root' with no password. Those are defaults and can be changed from command.
 
@@ -28,13 +28,13 @@ Or clone from github and run:
 
     bash$ git clone git@github.com:BBC/rest-assured.git
     bash$ cd rest-assured && bundle install
-    bash$ ./bin/rest-assured -a mysql &
+    bash$ ./bin/rest-assured -d :memory: & # in-memory sqlite db
 
 This starts an instance of rest-assured on port 4578. It is accessible via REST or web interfaces on 'http://localhost:4578'
 
 Various options (such as ssl, port, db credentials, etc.) are available through command line options. Check out `rest-assured -h` to see what they are.
 
-NOTE that although sqlite is an option, I found it locking tables under any non-trivial load. Mysql feels much more reliable. But may be that is just me sqliting it wrong.
+NOTE that although sqlite is an extremely handy option (especially in memory on), I found it locking tables under non-trivial load. Consider switching to mysql if that starts happenning. But may be that is just me sqliting it wrong.
 
 ## REST API
 
