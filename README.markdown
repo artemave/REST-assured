@@ -34,7 +34,7 @@ This starts an instance of rest-assured on port 4578. It is accessible via REST 
 
 Various options (such as ssl, port, db credentials, etc.) are available through command line options. Check out `rest-assured -h` to see what they are.
 
-NOTE that although sqlite is an extremely handy option (especially in memory on), I found it locking tables under non-trivial load. Hence there is mysql - more setup, but always works. But may be that is just me sqliting it wrong.
+NOTE that although sqlite is an extremely handy option (especially with :memory:), I found it locking tables under non-trivial load. Hence there is mysql - more setup, but always works. But may be that is just me sqliting it wrong.
 
 ## REST API
 
