@@ -17,7 +17,7 @@ First make sure there is database adapter:
 
     bash$ gem install sqlite3 # or mysql
 
-If using mysql, rest-assured expects database 'rest\_assured' to be accessible by user 'root' with no password. Those are defaults and can be changed from command.
+If using mysql, rest-assured expects database 'rest\_assured' to be accessible by user 'root' with no password. Those are defaults and can be changed with cli options.
 
 Then install gem and run:
 
@@ -34,7 +34,7 @@ This starts an instance of rest-assured on port 4578. It is accessible via REST 
 
 Various options (such as ssl, port, db credentials, etc.) are available through command line options. Check out `rest-assured -h` to see what they are.
 
-NOTE that although sqlite is an extremely handy option (especially in memory on), I found it locking tables under non-trivial load. Consider switching to mysql if that starts happenning. But may be that is just me sqliting it wrong.
+NOTE that although sqlite is an extremely handy option (especially in memory on), I found it locking tables under non-trivial load. Hence there is mysql - more setup, but always works. But may be that is just me sqliting it wrong.
 
 ## REST API
 
