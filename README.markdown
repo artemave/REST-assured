@@ -83,7 +83,7 @@ JSON.parse(req.rack_env)['ACCEPT'].should == 'Application/json'
  
 
 ##### Create double 
-  HTTP POST to '/doubles.json' creates double and returns its json representation.
+  HTTP POST to '/doubles' creates double and returns its json representation.
   The following options can be passed as request parameters:
 
   - __fullpath__ - e.g., '/some/api/object', or with parameters in query string (useful for doubling GETs) - '/some/other/api/object?a=2&b=c'. Mandatory.
