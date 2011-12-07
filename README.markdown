@@ -81,8 +81,8 @@ JSON.parse(req.rack_env)['ACCEPT'].should == 'Application/json'
 Use plain rest api to clear doubles/redirects between tests:
 
 ```ruby
-RestClient.delete "#{rest_assured_address}/redirects/all"
-RestClient.delete "#{rest_assured_address}/doubles/all"
+RestClient.delete "#{RestAssured::Client.config.server_address}/redirects/all"
+RestClient.delete "#{RestAssured::Client.config.server_address}/doubles/all"
 ```
 
 
