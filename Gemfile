@@ -17,7 +17,10 @@ gem 'launchy'
 gem 'rake'
 gem "spork", "> 0.9.0.rc"
 gem "guard-spork"
-gem 'rb-fsevent' if RUBY_PLATFORM =~ /darwin/
+if RUBY_PLATFORM =~ /darwin/
+  gem 'growl_notify'
+  gem 'rb-fsevent'
+end
 gem 'sinatra-activerecord'
 gem 'mysql'
 gem 'sqlite3', '~> 1.3.4'

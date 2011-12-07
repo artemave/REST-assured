@@ -26,10 +26,20 @@ module RestAssured
         end
       end
 
-      router.post /^\/doubles(\.json)?$/ do |passes_json|
-        f = { :fullpath => params['fullpath'], :content => params['content'], :description => params['description'], :verb => params['verb'], :status => params['status'] }
+      router.post /^\/doubles(\.json)?$/ do
+        begin
+          d = JSON.parse( request.body.read )['double']
+        rescue
+          d = params['double'] || {
+            :fullpath    => params['fullpath'],
+            :content     => params['content'],
+            :description => params['description'],
+            :verb        => params['verb'],
+            :status      => params['status']
+          }
+        end
 
-        @double = Models::Double.create(passes_json ? JSON.parse(request.body.read)['double'] : ( params['double'] || f )) 
+        @double = Models::Double.create(d) 
 
         if browser?
           if @double.errors.blank?
