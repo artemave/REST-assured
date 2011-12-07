@@ -168,5 +168,7 @@ It is sometimes desirable to only double certain calls while letting others thro
 * adds ssl
 * adds mysql support
 
-#### 0.1 initial public release
+#### 0.1
+
+* initial public release
 
