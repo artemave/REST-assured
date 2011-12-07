@@ -78,6 +78,14 @@ JSON.parse(req.params).should == expected_params_hash
 JSON.parse(req.rack_env)['ACCEPT'].should == 'Application/json'
 ```
 
+Use plain rest api to clear doubles/redirects between tests:
+
+```ruby
+RestClient.delete "#{rest_assured_address}/redirects/all"
+RestClient.delete "#{rest_assured_address}/doubles/all"
+```
+
+
 #### Plain REST API
 
  
@@ -90,36 +98,26 @@ JSON.parse(req.rack_env)['ACCEPT'].should == 'Application/json'
   - __content__ - whatever you want this double to respond with. Optional.
   - __verb__ - one of http the following http verbs: GET, POST, PUT, DELETE. Optional. GET is default.
   - __status__ - status returned when double is requested. Optional. 200 is default.
-
-  Example (using ruby RestClient):
   
-```ruby
-response = RestClient.post 'http://localhost:4578/doubles', { fullpath: '/api/v2/products?type=fresh', verb: 'GET', content: 'this is list of products', status: 200 }
-puts response.body
-```
-  Produces:
+  Example:
 
-    "{\"double\":{\"fullpath\":\"/api/v2/products?type=fresh\",\"verb\":\"GET\",\"id\":123,\"content\":\"this is list of products\",\"description\":null,\"status\":null,\"active\":true}}"
+    bash$ curl -d 'fullpath=/api/something&content=awesome' http://localhost:4578/doubles
+    {"double":{"active":true,"content":"awesome","description":null,"fullpath":"/api/something","id":2,"status":200,"verb":"GET"}}
 
-  And then GETting 'http://localhost:4578/api/v2/products?type=fresh' (in browser for instance) should return "this is list of products".
+    bash$ curl http://localhost:4578/api/something
+    awesome
 
   If there is more than one double for the same fullpath and verb, the last created one gets served. In UI you can manually control which double is 'active' (gets served).
 
 ##### Get double state
-  HTTP GET to '/double/:id.json' returns json with double current state. Use id from create json as :id.
+  HTTP GET to '/doubles/:id.json' returns json with double current state. Use id from create json as :id.
+  
+  Example:
+    
+    bash$ curl http://localhost:4578/doubles/2.json
+    {"double":{"active":true,"content":"awesome","description":null,"fullpath":"/api/something","id":2,"status":200,"verb":"GET","requests":[{"body":"","created_at":"2011-12-07T12:07:22+00:00","double_id":2,"id":2,"params":"{}","rack_env":"{\"SERVER_SOFTWARE\":\"thin 1.3.1 codename Triple Espresso\",\"SERVER_NAME\":\"localhost\",\"rack.version\":[1,0],\"rack.multithread\":false,\"rack.multiprocess\":false,\"rack.run_once\":false,\"REQUEST_METHOD\":\"GET\",\"REQUEST_PATH\":\"/api/something\",\"PATH_INFO\":\"/api/something\",\"REQUEST_URI\":\"/api/something\",\"HTTP_VERSION\":\"HTTP/1.1\",\"HTTP_USER_AGENT\":\"curl/7.19.7 (universal-apple-darwin10.0) libcurl/7.19.7 OpenSSL/0.9.8l zlib/1.2.3\",\"HTTP_HOST\":\"localhost:4578\",\"HTTP_ACCEPT\":\"*/*\",\"GATEWAY_INTERFACE\":\"CGI/1.2\",\"SERVER_PORT\":\"4578\",\"QUERY_STRING\":\"\",\"SERVER_PROTOCOL\":\"HTTP/1.1\",\"rack.url_scheme\":\"http\",\"SCRIPT_NAME\":\"\",\"REMOTE_ADDR\":\"127.0.0.1\",\"async.callback\":{},\"async.close\":{},\"rack.session\":{\"session_id\":\"bf08f065955d9aa68e77af9b916419558ca0d0ce47629d967c9882f503afb482\",\"tracking\":{\"HTTP_USER_AGENT\":\"06e79511d71287ca292dced4ef07c8fff9400376\",\"HTTP_ACCEPT_ENCODING\":\"da39a3ee5e6b4b0d3255bfef95601890afd80709\",\"HTTP_ACCEPT_LANGUAGE\":\"da39a3ee5e6b4b0d3255bfef95601890afd80709\"},\"__FLASH__\":{}},\"rack.session.options\":{\"key\":\"rack.session\",\"path\":\"/\",\"domain\":null,\"expire_after\":null,\"secure\":false,\"httponly\":true,\"defer\":false,\"renew\":false,\"sidbits\":128,\"secure_random\":{\"pid\":19776},\"secret\":\"16ca2e9c22e3cf1ce1724141b2031e1fa91fee92e8d818472ea38d68fffa64d886ff9a74ec9d7055d5925d063bd5f627f5717276da4b14485e1454ea5265d3b7\",\"coder\":{},\"id\":\"bf08f065955d9aa68e77af9b916419558ca0d0ce47629d967c9882f503afb482\"},\"rack.request.cookie_hash\":{},\"rack.session.unpacked_cookie_data\":{\"session_id\":\"bf08f065955d9aa68e77af9b916419558ca0d0ce47629d967c9882f503afb482\"},\"x-rack.flash\":{\"opts\":{\"sweep\":true},\"store\":{\"session_id\":\"bf08f065955d9aa68e77af9b916419558ca0d0ce47629d967c9882f503afb482\",\"tracking\":{\"HTTP_USER_AGENT\":\"06e79511d71287ca292dced4ef07c8fff9400376\",\"HTTP_ACCEPT_ENCODING\":\"da39a3ee5e6b4b0d3255bfef95601890afd80709\",\"HTTP_ACCEPT_LANGUAGE\":\"da39a3ee5e6b4b0d3255bfef95601890afd80709\"},\"__FLASH__\":{}},\"flagged\":[]},\"rack.request.query_string\":\"\",\"rack.request.query_hash\":{}}"}]}}
 
-  Example (using ruby RestClient):
-
-```ruby
-response = RestClient.get 'http://localhost:4578/doubles/123.json'
-puts response.body
-```
-
-  Assuming the above double has been requested once, this call would produce
-
-    "{\"double\":{\"fullpath\":\"/api/v2/products?type=fresh\",\"verb\":\"GET\",\"id\":123,\"requests\":[{\"rack_env\":\"LOOK FOR YOUR HEADERS HERE\",\"created_at\":\"2011-11-07T18:34:21+00:00\",\"body\":\"\",\"params\":\"{}\"}],\"content\":\"this is list of products\",\"description\":null,\"status\":null,\"active\":true}}"
-
-  The important bit here is 'requests' array. This is history of requests for that double (in chronological order). Each element contains the following data (keys):
+  The above assumes that that double has been requested once. Now take a look at 'requests' array. This is history of requests for that double (in chronological order). Each element contains the following data (keys):
   
   - __body__ - request payload
   - __params__ - request parameters. json
@@ -140,11 +138,9 @@ It is sometimes desirable to only double certain calls while letting others thro
   - __pattern__ - regex (perl5 style) tested against request fullpath. Mandatory
   - __to__ - url base e.g., 'https://myserver:8787/api'. Mandatory
 
-  Example (using ruby RestClient):
-
-```ruby
-RestClient.post 'http://localhost:4578/redirects', { pattern: '^/auth', to: 'https://myserver.com/api' }
-```
+  Example:
+  
+    bash$ curl -d 'pattern=^/auth&to=https://myserver.com/api' http://localhost:4578/redirects
 
   Now request (any verb) to 'http://localhost:4578/auth/services/1' will get redirected to 'https://myserver.com/api/auth/services/1.' Provided of course there is no double matched for that fullpath and verb.
   Much like rewrite rules, redirects are evaluated in order (of creation). In UI you can manually rearrange the order.
