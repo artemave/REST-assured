@@ -3,6 +3,12 @@ Feature: verify requests that happened on double
   As test developer
   I want to be able to get double 'call history' 
 
+  Background:
+    Given rest-assured is running locally:
+    """
+    RestAssured::Client.config.server_address = 'http://localhost:9876'
+    """
+
   Scenario: no calls made to double
     Given I created a double:
     """

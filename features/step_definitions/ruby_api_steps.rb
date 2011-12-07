@@ -1,3 +1,7 @@
+Given /^rest\-assured is running locally:$/ do |code|
+  eval code
+end
+
 When /^that double gets requested:$/ do |code|
   eval code
 end
@@ -14,7 +18,7 @@ Then /^it should be empty:$/ do |code|
   eval code
 end
 
-Given /^I created a double:$/ do |string|
+Given /^I created? a double:$/ do |string|
   # expected string is:
   # @double = RestAssured::Double.create(:fullpath => '/some/api', :verb => 'POST')
   eval string
@@ -57,4 +61,8 @@ end
 Then /^it should raise MoreRequestsExpected error after with the following message:$/ do |string|
   @more_reqs_exc.should be_instance_of RestAssured::MoreRequestsExpected
   @more_reqs_exc.message.should =~ /#{string}/
+end
+
+Then /^it should have the following defaults:$/ do |code|
+  eval code
 end

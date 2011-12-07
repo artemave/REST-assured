@@ -57,8 +57,6 @@ Spork.each_run do
     sleep 1
   end
 
-  RestAssured::Client.config.server_address = 'http://localhost:9876'
-
   def app
     RestAssured::Application
   end

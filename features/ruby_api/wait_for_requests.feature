@@ -4,7 +4,11 @@ Feature: wait for requests on double to happen
   I want to be able to wait until specified number of requests happen
 
   Background:
-    Given I created a double:
+    Given rest-assured is running locally:
+    """
+    RestAssured::Client.config.server_address = 'http://localhost:9876'
+    """
+    And I created a double:
     """
     @double = RestAssured::Double.create(:fullpath => '/some/api')
     """
