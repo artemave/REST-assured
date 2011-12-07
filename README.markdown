@@ -19,7 +19,7 @@ First make sure there is database adapter:
 
 If using mysql, rest-assured expects database 'rest\_assured' to be accessible by user 'root' with no password. Those are defaults and can be changed with cli options.
 
-Then install gem and run:
+Then gem install and run:
 
     bash$ gem install rest-assured
     bash$ rest-assured -a mysql &
@@ -36,13 +36,11 @@ Various options (such as ssl, port, db credentials, etc.) are available through 
 
 NOTE that although sqlite is an extremely handy option (especially with :memory:), I found it locking tables under non-trivial load. Hence there is mysql - more setup, but always works. But may be that is just me sqliting it wrong.
 
-## REST API
-
-### Doubles
+## Doubles
 
 Double is a stub/mock of HTTP request.
 
-#### Ruby Client API
+### Ruby Client API
 
 Rest-assured provides client library which partially implements ActiveResource (create and get). To make it available put the following in your test setup code (e.g. env.rb)
 
@@ -85,12 +83,10 @@ RestClient.delete "#{RestAssured::Client.config.server_address}/redirects/all"
 RestClient.delete "#{RestAssured::Client.config.server_address}/doubles/all"
 ```
 
+### Plain REST API
 
-#### Plain REST API
+#### Create double
 
- 
-
-##### Create double 
   HTTP POST to '/doubles' creates double and returns its json representation.
   The following options can be passed as request parameters:
 
@@ -109,7 +105,8 @@ RestClient.delete "#{RestAssured::Client.config.server_address}/doubles/all"
 
   If there is more than one double for the same fullpath and verb, the last created one gets served. In UI you can manually control which double is 'active' (gets served).
 
-##### Get double state
+#### Get double state
+
   HTTP GET to '/doubles/:id.json' returns json with double current state. Use id from create json as :id.
   
   Example:
@@ -124,14 +121,16 @@ RestClient.delete "#{RestAssured::Client.config.server_address}/doubles/all"
   - __created_at__ - request timestamp
   - __rack_env__ - raw request dump (json) including request headers
 
-##### Delete all doubles
+#### Delete all doubles
+
   HTTP DELETE to '/doubles/all' deletes all doubles. Useful for cleaning up between tests.
 
-### Redirects
+## Redirects
 
 It is sometimes desirable to only double certain calls while letting others through to the 'real' services. Meet Redirects. Kind of "rewrite rules" for requests that didn't match any double. Here is the rest API for managing redirects:
 
-#### Create redirect
+### Create redirect
+
   HTTP POST to '/redirects' creates redirect.
   The following options can be passed as request parameters:
 
@@ -145,7 +144,8 @@ It is sometimes desirable to only double certain calls while letting others thro
   Now request (any verb) to 'http://localhost:4578/auth/services/1' will get redirected to 'https://myserver.com/api/auth/services/1.' Provided of course there is no double matched for that fullpath and verb.
   Much like rewrite rules, redirects are evaluated in order (of creation). In UI you can manually rearrange the order.
 
-#### Delete all redirects
+### Delete all redirects
+
   HTTP DELETE to '/redirects/all' deletes all redirects. Useful for cleaning up between tests.
 
 ## TODO
