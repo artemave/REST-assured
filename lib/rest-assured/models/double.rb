@@ -3,7 +3,9 @@ require 'net/http'
 module RestAssured
   module Models
     class Double < ActiveRecord::Base
-      attr_accessible :fullpath, :content, :description, :verb, :status
+      attr_accessible :fullpath, :content, :description, :verb, :status, :response_headers
+
+      serialize :response_headers, Hash
 
       VERBS = %w{GET POST PUT DELETE}
       STATUSES = Net::HTTPResponse::CODE_TO_OBJ.keys.map(&:to_i)
@@ -20,28 +22,29 @@ module RestAssured
       has_many :requests, :dependent => :destroy
 
       private
-      def toggle_active
-        ne = id ? '!=' : 'IS NOT'
 
-        if active && Double.where("fullpath = ? AND active = ? AND id #{ne} ?", fullpath, true, id).exists?
-          Double.where("fullpath = ? AND id #{ne} ?", fullpath, id).update_all :active => false
+        def toggle_active
+          ne = id ? '!=' : 'IS NOT'
+
+          if active && Double.where("fullpath = ? AND active = ? AND id #{ne} ?", fullpath, true, id).exists?
+            Double.where("fullpath = ? AND id #{ne} ?", fullpath, id).update_all :active => false
+          end
         end
-      end
 
-      def set_verb
-        self.verb = 'GET' unless verb.present?
-      end
-
-      def set_status
-        self.status = 200 unless status.present?
-      end
-
-      def set_active
-        if active && f = Double.where(:fullpath => fullpath).last
-          f.active = true
-          f.save
+        def set_verb
+          self.verb = 'GET' unless verb.present?
         end
-      end
+
+        def set_status
+          self.status = 200 unless status.present?
+        end
+
+        def set_active
+          if active && f = Double.where(:fullpath => fullpath).last
+            f.active = true
+            f.save
+          end
+        end
     end
   end
 end

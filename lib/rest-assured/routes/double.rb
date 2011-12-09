@@ -28,14 +28,26 @@ module RestAssured
 
       router.post /^\/doubles(\.json)?$/ do
         begin
-          d = JSON.parse( request.body.read )['double']
+          data = request.body.read
+          d = JSON.parse(data)['double']
+
+          # XXX ActiveResource for some reason sends Hash attributes in the form of
+          # {... "response_headers":{"response_headers": {'ACCEPT': 'text/html'}} ...}
+          # instead of
+          # {... "response_headers": {'ACCEPT': 'text/html'} ...}
+          # so we need to manually fix this, so that ActiveRecord saves just headers data
+          resp_headers = d.delete('response_headers')
+          d.merge!(resp_headers) if resp_headers
+
+          d
         rescue
           d = params['double'] || {
-            :fullpath    => params['fullpath'],
-            :content     => params['content'],
-            :description => params['description'],
-            :verb        => params['verb'],
-            :status      => params['status']
+            :fullpath               => params['fullpath'],
+            :content                => params['content'],
+            :description            => params['description'],
+            :verb                   => params['verb'],
+            :response_headers       => params['response_headers'],
+            :status                 => params['status']
           }
         end
 

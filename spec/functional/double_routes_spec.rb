@@ -3,11 +3,34 @@ require File.expand_path('../../spec_helper', __FILE__)
 module RestAssured
   describe 'Double routes' do
     let :test_double do
-      { :fullpath => '/api/google?a=5', :content => 'some awesome content', :verb => 'POST', :status => '201' }
+      {
+        :fullpath         => '/api/google?a=5',
+        :content          => 'some awesome content',
+        :verb             => 'POST',
+        :status           => '201',
+        :response_headers => { 'ACCEPT' => 'text/html' }
+      }
     end
+
+    # stupid ActiveResource packs keys for hash attributes (:response_headers in this case) twice
+    # so we have to emulate this behavior in tests
+    let :ar_test_double do
+      rh = test_double.delete(:response_headers)
+      test_double.merge!({ :response_headers => { :response_headers => rh } })
+    end
+
     let :valid_params do
-      { 'double[fullpath]' =>  test_double[:fullpath], 'double[content]' => test_double[:content], 'double[verb]' => test_double[:verb], 'double[status]' => test_double[:status] }
+      params = {
+        'double[fullpath]'         => test_double[:fullpath],
+        'double[content]'          => test_double[:content],
+        'double[verb]'             => test_double[:verb],
+        'double[status]'           => test_double[:status],
+        'double[response_headers]' => test_double[:response_headers]
+      }
+
+      params
     end
+
     let :invalid_params do
       valid_params.except('double[fullpath]')
     end
@@ -40,7 +63,9 @@ module RestAssured
 
         last_request.fullpath.should == '/doubles'
         last_response.body.should =~ /Double created/
-        Models::Double.exists?(test_double).should be true
+
+        d = Models::Double.where(test_double.except(:response_headers)).first
+        d.response_headers['ACCEPT'].should == 'text/html'
       end
 
       it "reports failure when creating with invalid parameters" do
@@ -87,7 +112,7 @@ module RestAssured
         last_response.should be_ok
         last_response.body.should =~ /Double deleted/
 
-        Models::Double.exists?(test_double).should be_false
+        Models::Double.exists?(test_double.except(:response_headers)).should be_false
       end
     end
 
@@ -96,7 +121,9 @@ module RestAssured
         post '/doubles', test_double
 
         last_response.should be_ok
-        Models::Double.exists?(test_double).should be_true
+
+        d = Models::Double.where(test_double.except(:response_headers)).first
+        d.response_headers['ACCEPT'].should == 'text/html'
       end
 
       it "reports failure when creating with invalid parameters" do
@@ -118,15 +145,17 @@ module RestAssured
 
     describe 'through REST (ActiveResource compatible) json api', :ui => false do
       it "creates double as AR resource" do
-        post '/doubles.json', { :double => test_double }.to_json, 'CONTENT_TYPE' => 'Application/json'
+        post '/doubles.json', { :double => ar_test_double }.to_json, 'CONTENT_TYPE' => 'Application/json'
 
         last_response.should be_ok
-        Models::Double.exists?(test_double).should be_true
-        last_response.body.should == Models::Double.where(test_double).first.to_json
+
+        d = Models::Double.where(test_double.except(:response_headers)).first
+        d.response_headers['ACCEPT'].should == 'text/html'
+        last_response.body.should == d.to_json
       end
 
       it "reports failure when creating with invalid parameters" do
-        post '/doubles.json', { :double => test_double.except(:fullpath) }.to_json, 'CONTENT_TYPE' => 'Application/json'
+        post '/doubles.json', { :double => ar_test_double.except(:fullpath) }.to_json, 'CONTENT_TYPE' => 'Application/json'
 
         last_response.should_not be_ok
         last_response.body.should =~ /\{"fullpath":\["can't be blank"\]\}/

@@ -10,6 +10,7 @@ module RestAssured
 
         d.requests.create!(:rack_env => env.to_json, :body => body, :params => request.params.to_json)
 
+        app.headers d.response_headers
         app.body d.content
         app.status d.status
       elsif r = Models::Redirect.ordered.find { |r| request.fullpath =~ /#{r.pattern}/ }

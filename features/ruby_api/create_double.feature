@@ -17,13 +17,13 @@ Feature: create double using ruby client api
     """
     Then it should have the following defaults:
     """
-    @double.verb.should == 'GET'
+    @double.verb.should             == 'GET'
     @double.response_headers.should == {}
-    @double.status.should == 200
-    @double.content.should == nil
+    @double.status.should           == 200
+    @double.content.should          == nil
 
     get @double.fullpath
-    last_response.status.should be_ok
+    last_response.should be_ok
     """
 
   Scenario: create double with specified response headers

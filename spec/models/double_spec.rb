@@ -3,7 +3,13 @@ require File.expand_path('../../spec_helper', __FILE__)
 module RestAssured::Models
   describe Double do
     let :valid_params do
-      { :fullpath => '/some/api', :content => 'some content', :verb => 'GET', :status => '303' }
+      {
+        :fullpath         => '/some/api',
+        :content          => 'some content',
+        :verb             => 'GET',
+        :status           => '303',
+        :response_headers => { 'ACCEPT' => 'text/html' }
+      }
     end
 
     it { should validate_presence_of(:fullpath) }
@@ -13,6 +19,7 @@ module RestAssured::Models
     it { should allow_mass_assignment_of(:content) }
     it { should allow_mass_assignment_of(:verb) }
     it { should allow_mass_assignment_of(:status) }
+    it { should allow_mass_assignment_of(:response_headers) }
 
     it { should have_many(:requests) }
 

@@ -25,7 +25,12 @@ module RestAssured
 
     context 'when double matches request' do
       before do
-        @double = Models::Double.create :fullpath => '/some/path', :content => 'content', :status => 201
+        @double = Models::Double.create \
+          :fullpath         => '/some/path',
+          :content          => 'content',
+          :response_headers => { 'ACCEPT' => 'text/html' },
+          :status           => 201
+
         request.stub(:fullpath).and_return(@double.fullpath)
       end
 
@@ -37,6 +42,12 @@ module RestAssured
 
       it 'sets response status to the one from double' do
         rest_assured_app.should_receive(:status).with(@double.status)
+
+        Response.perform(rest_assured_app)
+      end
+
+      it 'sets response headers to those in Double#response_headers' do
+        rest_assured_app.should_receive(:headers).with(@double.response_headers)
 
         Response.perform(rest_assured_app)
       end

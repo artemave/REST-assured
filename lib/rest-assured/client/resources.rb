@@ -4,6 +4,10 @@ module RestAssured
   class MoreRequestsExpected < StandardError; end
 
   class Double < ActiveResource::Base
+    def response_headers
+      attributes[:response_headers].attributes
+    end
+
     def wait_for_requests(n, opts = {})
       timeout = opts[:timeout] || 5
 
