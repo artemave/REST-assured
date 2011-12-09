@@ -15,7 +15,7 @@ When /^I create a double$/ do
 end
 
 Then /^I should be able to get json representation of that double from response$/ do
-  d = RestAssured::Models::Double.first
+  d = RestAssured::Models::Double.last
   JSON.parse( @create_a_double_response ).should == JSON.parse( d.to_json )
 end
 

@@ -24,3 +24,4 @@ end
 gem 'sinatra-activerecord'
 gem 'mysql'
 gem 'sqlite3', '~> 1.3.4'
+gem 'thin'

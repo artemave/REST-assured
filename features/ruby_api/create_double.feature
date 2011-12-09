@@ -1,4 +1,3 @@
-@now
 Feature: create double using ruby client api
   As ruby developer
   I want to be able to create doubles via client api

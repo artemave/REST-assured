@@ -16,6 +16,7 @@ Feature: use doubles via api
       | /api/some?a=3&b=dd | more content |        | GET         |        | 200           |
       | /api/empty         |              | POST   | POST        |        | 200           |
 
+  @now
   Scenario: view created double details
     When I create a double
     Then I should be able to get json representation of that double from response

@@ -12,13 +12,6 @@ module RestAssured
       }
     end
 
-    # stupid ActiveResource packs keys for hash attributes (:response_headers in this case) twice
-    # so we have to emulate this behavior in tests
-    let :ar_test_double do
-      rh = test_double.delete(:response_headers)
-      test_double.merge!({ :response_headers => { :response_headers => rh } })
-    end
-
     let :valid_params do
       params = {
         'double[fullpath]'         => test_double[:fullpath],
@@ -145,7 +138,7 @@ module RestAssured
 
     describe 'through REST (ActiveResource compatible) json api', :ui => false do
       it "creates double as AR resource" do
-        post '/doubles.json', { :double => ar_test_double }.to_json, 'CONTENT_TYPE' => 'Application/json'
+        post '/doubles.json', { :double => test_double }.to_json, 'CONTENT_TYPE' => 'Application/json'
 
         last_response.should be_ok
 
@@ -155,7 +148,7 @@ module RestAssured
       end
 
       it "reports failure when creating with invalid parameters" do
-        post '/doubles.json', { :double => ar_test_double.except(:fullpath) }.to_json, 'CONTENT_TYPE' => 'Application/json'
+        post '/doubles.json', { :double => test_double.except(:fullpath) }.to_json, 'CONTENT_TYPE' => 'Application/json'
 
         last_response.should_not be_ok
         last_response.body.should =~ /\{"fullpath":\["can't be blank"\]\}/

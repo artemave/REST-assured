@@ -19,7 +19,11 @@ First make sure there is database adapter:
 
 If using mysql, rest-assured expects database 'rest\_assured' to be accessible by user 'root' with no password. Those are defaults and can be changed with cli options.
 
-Then gem install and run:
+It is also recommended to have thin installed. This improves startup (over default webrick) and also it works in-memory sqlite (which webrick does not):
+
+    bash$ gem install thin
+
+Then install gem and run:
 
     bash$ gem install rest-assured
     bash$ rest-assured -a mysql &
@@ -94,6 +98,7 @@ RestClient.delete "#{RestAssured::Client.config.server_address}/doubles/all"
   - __content__ - whatever you want this double to respond with. Optional.
   - __verb__ - one of http the following http verbs: GET, POST, PUT, DELETE. Optional. GET is default.
   - __status__ - status returned when double is requested. Optional. 200 is default.
+  - __response_headers__ - key/value map of headers. Optional.
   
   Example:
 
