@@ -176,12 +176,6 @@ It is sometimes desirable to only double certain calls while letting others thro
 
   HTTP DELETE to '/redirects/all' deletes all redirects. Useful for cleaning up between tests.
 
-## TODO
-
-* Hide wiring rest-assured into ruby project behind client api
-* Bring UI upto date with rest-api (add verbs, statuses, request history)
-* Add custom response headers
-
 ## Author
 
 [Artem Avetisyan](https://github.com/artemave)
