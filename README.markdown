@@ -116,7 +116,7 @@ RestClient.delete "#{RestAssured::Client.config.server_address}/doubles/all"
   
   Example:
     
-    bash$ curl http://localhost:4578/doubles/2.json | prettify_json.rb
+    bash$ curl http://localhost:4578/doubles/1.json | prettify_json.rb
     {
         "double": {
             "verb": "GET",
@@ -187,6 +187,10 @@ It is sometimes desirable to only double certain calls while letting others thro
 [Artem Avetisyan](https://github.com/artemave)
 
 ## Changelog
+
+#### 0.3 (12 Dec 2011)
+
+* you can now specify response headers for double to respond with
 
 #### 0.2
 
