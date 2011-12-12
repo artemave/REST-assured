@@ -28,13 +28,13 @@ Feature: create double using ruby client api
   Scenario: create double with specified response headers
     When I create a double:
     """
-    @double = RestAssured::Double.create(:fullpath => '/some/api', :response_headers => { 'ACCEPT' => 'text/html' })
+    @double = RestAssured::Double.create(:fullpath => '/some/api', :response_headers => { 'Content-Type' => 'text/html' })
     """
     Then it should have the following defaults:
     """
-    @double.response_headers.should == { 'ACCEPT' => 'text/html' }
+    @double.response_headers.should == { 'Content-Type' => 'text/html' }
 
     get @double.fullpath
-    last_response.headers['ACCEPT'].should == 'text/html'
+    last_response.headers['Content-Type'].should == 'text/html'
     """
 
