@@ -2,18 +2,18 @@
 
 ## Overview
 
-A tool for stubbing/mocking external http based services that your app under test interacts with. This is useful for blackbox/integration testing.
+A tool for stubbing/mocking http based services that your app under test interacts with. This is useful for blackbox/integration testing.
 There are three main use cases:
 
 * stubbing out external data sources with predefined data
 * verify requests to external services
-* quickly emulate different behavior of external services during development (using web UI)
+* quickly simulate different behavior of external services using web UI; useful in development
 
 ## Usage
 
 You are going to need ruby >= 1.8.7.
 
-First make sure there is database adapter:
+Rest-assured requires a database to run. Either sqlite3 or mysql. So, make sure there is one and install corresponding gem:
 
     bash$ gem install sqlite3 # or mysql
 
@@ -34,15 +34,15 @@ Or clone from github and run:
     bash$ cd rest-assured && bundle install
     bash$ ./bin/rest-assured -d :memory: & # in-memory sqlite db
 
-This starts an instance of rest-assured on port 4578. It is accessible via REST or web interfaces on 'http://localhost:4578'
+This starts up an instance of rest-assured on port 4578. It is accessible via REST or web interfaces on 'http://localhost:4578'
 
 Various options (such as ssl, port, db credentials, etc.) are available through command line options. Check out `rest-assured -h` to see what they are.
 
-NOTE that although sqlite is an extremely handy option (especially with :memory:), I found it sometimes locking tables under non-trivial load. Hence there is mysql - more setup, but always works. But may be that is just me sqliting it wrong.
+NOTE that although sqlite is an extremely handy option (especially with :memory:), I found it sometimes locking tables under non-trivial load. Hence there is a plan B - mysql. But may be that is just me sqliting it wrong.
 
 ## Doubles
 
-Double is a stub/mock of HTTP request.
+Double is a stub/mock of HTTP request. You create a double that has the same request fullpath and method as the one your app is sending to a dependency and then convience your app that rest-assured is that dependency (for the purpose of test).
 
 ### Ruby Client API
 
