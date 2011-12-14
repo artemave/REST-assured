@@ -42,7 +42,7 @@ NOTE that although sqlite is an extremely handy option (especially with :memory:
 
 ## Doubles
 
-Double is a stub/mock of HTTP request. You create a double that has the same request fullpath and method as the one your app is sending to a dependency and then convience your app that rest-assured is that dependency (for the purpose of test).
+Double is a stub/mock of HTTP request. You create a double that has the same request fullpath and method as the one your app is sending to a dependency and then convience your app that rest-assured is that dependency (by making endpoints configurable).
 
 ### Ruby Client API
 
