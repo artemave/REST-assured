@@ -89,6 +89,8 @@ RestClient.delete "#{RestAssured::Client.config.server_address}/doubles/all"
 
 ### Plain REST API
 
+For those usging rest-assured from non-ruby environments.
+
 #### Create double
 
   HTTP POST to '/doubles' creates double and returns its json representation.
