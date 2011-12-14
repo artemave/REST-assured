@@ -19,7 +19,7 @@ Rest-assured requires a database to run. Either sqlite3 or mysql. So, make sure 
 
 If using mysql, rest-assured expects database 'rest\_assured' to be accessible by user 'root' with no password. Those are defaults and can be changed with cli options.
 
-It is also recommended to have thin installed. This improves startup time (over default webrick) and also it works in-memory sqlite (which webrick does not):
+It is also recommended to have thin installed. This improves startup time (over default webrick) and also it works with in-memory sqlite (which webrick does not):
 
     bash$ gem install thin
 
