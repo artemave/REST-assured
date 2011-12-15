@@ -2,24 +2,24 @@
 
 ## Overview
 
-A tool for stubbing/mocking external http based services that your app under test interacts with. This is useful for blackbox/integration testing.
+A tool for stubbing/mocking http based services that your app under test interacts with. This is useful for blackbox/integration testing.
 There are three main use cases:
 
 * stubbing out external data sources with predefined data
 * verify requests to external services
-* quickly emulate different behavior of external services during development (using web UI)
+* quickly simulate different behavior of external services using web UI; useful in development
 
 ## Usage
 
 You are going to need ruby >= 1.8.7.
 
-First make sure there is database adapter:
+Rest-assured requires a database to run. Either sqlite3 or mysql. So, make sure there is one and install corresponding gem:
 
     bash$ gem install sqlite3 # or mysql
 
 If using mysql, rest-assured expects database 'rest\_assured' to be accessible by user 'root' with no password. Those are defaults and can be changed with cli options.
 
-It is also recommended to have thin installed. This improves startup time (over default webrick) and also it works in-memory sqlite (which webrick does not):
+It is also recommended to have thin installed. This improves startup time (over default webrick) and also it works with in-memory sqlite (which webrick does not):
 
     bash$ gem install thin
 
@@ -34,15 +34,15 @@ Or clone from github and run:
     bash$ cd rest-assured && bundle install
     bash$ ./bin/rest-assured -d :memory: & # in-memory sqlite db
 
-This starts an instance of rest-assured on port 4578. It is accessible via REST or web interfaces on 'http://localhost:4578'
+This starts up an instance of rest-assured on port 4578. It is accessible via REST or web interfaces on 'http://localhost:4578'
 
 Various options (such as ssl, port, db credentials, etc.) are available through command line options. Check out `rest-assured -h` to see what they are.
 
-NOTE that although sqlite is an extremely handy option (especially with :memory:), I found it sometimes locking tables under non-trivial load. Hence there is mysql - more setup, but always works. But may be that is just me sqliting it wrong.
+NOTE that although sqlite is an extremely handy option (especially with :memory:), I found it sometimes locking tables under non-trivial load. Hence there is a plan B - mysql. But may be that is just me sqliting it wrong.
 
 ## Doubles
 
-Double is a stub/mock of HTTP request.
+Double is a stub/mock of HTTP request. You create a double that has the same request fullpath and method as the one your app is sending to a dependency and then convience your app that rest-assured is that dependency (by making endpoints configurable).
 
 ### Ruby Client API
 
@@ -89,6 +89,8 @@ RestClient.delete "#{RestAssured::Client.config.server_address}/doubles/all"
 
 ### Plain REST API
 
+For those usging rest-assured from non-ruby environments.
+
 #### Create double
 
   HTTP POST to '/doubles' creates double and returns its json representation.
@@ -126,14 +128,14 @@ RestClient.delete "#{RestAssured::Client.config.server_address}/doubles/all"
             },
             "id": 1,
             "requests": [
-            {
-                "double_id": 1,
-                "created_at": "2011-12-12T11:13:33+00:00",
-                "body": "",
-                "rack_env": "{\"SERVER_SOFTWARE\":\"thin 1.3.1 codename Triple Espresso\",\"SERVER_NAME\":\"localhost\",\"rack.version\":[1,0],\"rack.multithread\":false,\"rack.multiprocess\":false,\"rack.run_once\":false,\"REQUEST_METHOD\":\"GET\",\"REQUEST_PATH\":\"/api/something\",\"PATH_INFO\":\"/api/something\",\"REQUEST_URI\":\"/api/something\",\"HTTP_VERSION\":\"HTTP/1.1\",\"HTTP_USER_AGENT\":\"curl/7.19.7 (universal-apple-darwin10.0) libcurl/7.19.7 OpenSSL/0.9.8l zlib/1.2.3\",\"HTTP_HOST\":\"localhost:4578\",\"HTTP_ACCEPT\":\"*/*\",\"GATEWAY_INTERFACE\":\"CGI/1.2\",\"SERVER_PORT\":\"4578\",\"QUERY_STRING\":\"\",\"SERVER_PROTOCOL\":\"HTTP/1.1\",\"rack.url_scheme\":\"http\",\"SCRIPT_NAME\":\"\",\"REMOTE_ADDR\":\"127.0.0.1\",\"async.callback\":{},\"async.close\":{},\"rack.session\":{\"session_id\":\"2d206d4edb880d41ae098bf0551c6904a4914f8632d101606b5304d4f651ce52\",\"tracking\":{\"HTTP_USER_AGENT\":\"06e79511d71287ca292dced4ef07c8fff9400376\",\"HTTP_ACCEPT_ENCODING\":\"da39a3ee5e6b4b0d3255bfef95601890afd80709\",\"HTTP_ACCEPT_LANGUAGE\":\"da39a3ee5e6b4b0d3255bfef95601890afd80709\"},\"__FLASH__\":{}},\"rack.session.options\":{\"key\":\"rack.session\",\"path\":\"/\",\"domain\":null,\"expire_after\":null,\"secure\":false,\"httponly\":true,\"defer\":false,\"renew\":false,\"sidbits\":128,\"secure_random\":{\"pid\":7885},\"secret\":\"bf80c75d713c92d2e3f94ea58be318c3f8988a3ed79d997f9cf883cc7aab1141225477ed81da7fe62ac77ecac3f979d255328dcbe8caa1bb342f4be6cb850983\",\"coder\":{},\"id\":\"2d206d4edb880d41ae098bf0551c6904a4914f8632d101606b5304d4f651ce52\"},\"rack.request.cookie_hash\":{},\"rack.session.unpacked_cookie_data\":{\"session_id\":\"2d206d4edb880d41ae098bf0551c6904a4914f8632d101606b5304d4f651ce52\"},\"x-rack.flash\":{\"opts\":{\"sweep\":true},\"store\":{\"session_id\":\"2d206d4edb880d41ae098bf0551c6904a4914f8632d101606b5304d4f651ce52\",\"tracking\":{\"HTTP_USER_AGENT\":\"06e79511d71287ca292dced4ef07c8fff9400376\",\"HTTP_ACCEPT_ENCODING\":\"da39a3ee5e6b4b0d3255bfef95601890afd80709\",\"HTTP_ACCEPT_LANGUAGE\":\"da39a3ee5e6b4b0d3255bfef95601890afd80709\"},\"__FLASH__\":{}},\"flagged\":[]},\"rack.request.query_string\":\"\",\"rack.request.query_hash\":{}}",
-                "id": 1,
-                "params": "{}"
-            }
+                {
+                    "double_id": 1,
+                    "created_at": "2011-12-12T11:13:33+00:00",
+                    "body": "",
+                    "rack_env": "{\"SERVER_SOFTWARE\":\"thin 1.3.1 codename Triple Espresso\",\"SERVER_NAME\":\"localhost\",\"rack.version\":[1,0],\"rack.multithread\":false,\"rack.multiprocess\":false,\"rack.run_once\":false,\"REQUEST_METHOD\":\"GET\",\"REQUEST_PATH\":\"/api/something\",\"PATH_INFO\":\"/api/something\",\"REQUEST_URI\":\"/api/something\",\"HTTP_VERSION\":\"HTTP/1.1\",\"HTTP_USER_AGENT\":\"curl/7.19.7 (universal-apple-darwin10.0) libcurl/7.19.7 OpenSSL/0.9.8l zlib/1.2.3\",\"HTTP_HOST\":\"localhost:4578\",\"HTTP_ACCEPT\":\"*/*\",\"GATEWAY_INTERFACE\":\"CGI/1.2\",\"SERVER_PORT\":\"4578\",\"QUERY_STRING\":\"\",\"SERVER_PROTOCOL\":\"HTTP/1.1\",\"rack.url_scheme\":\"http\",\"SCRIPT_NAME\":\"\",\"REMOTE_ADDR\":\"127.0.0.1\",\"async.callback\":{},\"async.close\":{},\"rack.session\":{\"session_id\":\"2d206d4edb880d41ae098bf0551c6904a4914f8632d101606b5304d4f651ce52\",\"tracking\":{\"HTTP_USER_AGENT\":\"06e79511d71287ca292dced4ef07c8fff9400376\",\"HTTP_ACCEPT_ENCODING\":\"da39a3ee5e6b4b0d3255bfef95601890afd80709\",\"HTTP_ACCEPT_LANGUAGE\":\"da39a3ee5e6b4b0d3255bfef95601890afd80709\"},\"__FLASH__\":{}},\"rack.session.options\":{\"key\":\"rack.session\",\"path\":\"/\",\"domain\":null,\"expire_after\":null,\"secure\":false,\"httponly\":true,\"defer\":false,\"renew\":false,\"sidbits\":128,\"secure_random\":{\"pid\":7885},\"secret\":\"bf80c75d713c92d2e3f94ea58be318c3f8988a3ed79d997f9cf883cc7aab1141225477ed81da7fe62ac77ecac3f979d255328dcbe8caa1bb342f4be6cb850983\",\"coder\":{},\"id\":\"2d206d4edb880d41ae098bf0551c6904a4914f8632d101606b5304d4f651ce52\"},\"rack.request.cookie_hash\":{},\"rack.session.unpacked_cookie_data\":{\"session_id\":\"2d206d4edb880d41ae098bf0551c6904a4914f8632d101606b5304d4f651ce52\"},\"x-rack.flash\":{\"opts\":{\"sweep\":true},\"store\":{\"session_id\":\"2d206d4edb880d41ae098bf0551c6904a4914f8632d101606b5304d4f651ce52\",\"tracking\":{\"HTTP_USER_AGENT\":\"06e79511d71287ca292dced4ef07c8fff9400376\",\"HTTP_ACCEPT_ENCODING\":\"da39a3ee5e6b4b0d3255bfef95601890afd80709\",\"HTTP_ACCEPT_LANGUAGE\":\"da39a3ee5e6b4b0d3255bfef95601890afd80709\"},\"__FLASH__\":{}},\"flagged\":[]},\"rack.request.query_string\":\"\",\"rack.request.query_hash\":{}}",
+                    "id": 1,
+                    "params": "{}"
+                }
             ],
             "content": "awesome",
             "description": null,
