@@ -1,4 +1,4 @@
-Feature: create double using ruby client api
+Feature: create double
   As ruby developer
   I want to be able to create doubles via client api
   So that interactions with rest-assured server are completely hidden from me
@@ -9,12 +9,12 @@ Feature: create double using ruby client api
     RestAssured::Client.config.server_address = 'http://localhost:9876'
     """
 
-  Scenario: create double with defaults
+  Scenario: default options
     When I create a double:
     """
     @double = RestAssured::Double.create(:fullpath => '/some/api')
     """
-    Then it should have the following defaults:
+    Then the following should be true:
     """
     @double.verb.should             == 'GET'
     @double.response_headers.should == {}
@@ -25,12 +25,12 @@ Feature: create double using ruby client api
     last_response.should be_ok
     """
 
-  Scenario: create double with specified response headers
+  Scenario: specify response headers
     When I create a double:
     """
     @double = RestAssured::Double.create(:fullpath => '/some/api', :response_headers => { 'Content-Type' => 'text/html' })
     """
-    Then it should have the following defaults:
+    Then the following should be true:
     """
     @double.response_headers.should == { 'Content-Type' => 'text/html' }
 
@@ -38,3 +38,44 @@ Feature: create double using ruby client api
     last_response.headers['Content-Type'].should == 'text/html'
     """
 
+  Scenario: specify content
+    When I create a double:
+    """
+    @double = RestAssured::Double.create(:fullpath => '/some/api', :content => 'awesome')
+    """
+    Then the following should be true:
+    """
+    @double.content = 'awesome'
+
+    get @double.fullpath
+    last_response.body == 'awesome'
+    """
+
+  Scenario: specify verb
+    When I create a double:
+    """
+    @double = RestAssured::Double.create(:fullpath => '/some/api', :verb => 'POST')
+    """
+    Then the following should be true:
+    """
+    @double.verb = 'POST'
+
+    get @double.fullpath
+    last_response.should_not be_ok
+
+    post @double.fullpath
+    last_response.should be_ok
+    """
+
+  Scenario: specify status
+    When I create a double:
+    """
+    @double = RestAssured::Double.create(:fullpath => '/some/api', :status => 302)
+    """
+    Then the following should be true:
+    """
+    @double.status = 302
+
+    get @double.fullpath
+    last_response.status == 302
+    """

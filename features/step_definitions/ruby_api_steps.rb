@@ -63,6 +63,6 @@ Then /^it should raise MoreRequestsExpected error after with the following messa
   @more_reqs_exc.message.should =~ /#{string}/
 end
 
-Then /^it should have the following defaults:$/ do |code|
+Then /^the following should be true:$/ do |code|
   eval code
 end

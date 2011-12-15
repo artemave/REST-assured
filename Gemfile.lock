@@ -86,6 +86,12 @@ GEM
     rake (0.9.2.2)
     rb-appscript (0.6.1)
     rb-fsevent (0.4.3.1)
+    relish (0.5.3)
+      archive-tar-minitar (>= 0.5.2)
+      json (>= 1.4.6)
+      rest-client (>= 1.6.1)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     rspec (2.7.0)
       rspec-core (~> 2.7.0)
       rspec-expectations (~> 2.7.0)
@@ -148,6 +154,7 @@ DEPENDENCIES
   rack-test
   rake
   rb-fsevent
+  relish
   rest-assured!
   rspec
   ruby-debug19
