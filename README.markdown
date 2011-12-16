@@ -1,6 +1,6 @@
 # REST assured
 
-[https://secure.travis-ci.org/artemave/REST-assured.png]
+![](https://secure.travis-ci.org/artemave/REST-assured.png)
 
 ## Overview
 
