@@ -46,7 +46,9 @@ Double is a stub/mock of HTTP request. You create a double that has the same req
 
 ### Ruby Client API
 
-Rest-assured provides client library to work with doubles. Set it up in env.rb/spec_helper.rb first:
+Rest-assured provides client library to work with doubles. Check out 'Ruby API' section in [documentation](https://www.relishapp.com/artemave/rest-assured) for full reference.
+
+First set it up in env.rb/spec_helper.rb:
 
 ```ruby
 require 'rest-assured/client'
