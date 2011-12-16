@@ -3,10 +3,11 @@ rvm:
   - 1.8.7
   - 1.9.2
   - 1.9.3
+env: DISPLAY=:99.0
 before_script:
   - "mysql -e 'create database rest_assured_test;'"
   - "sh -e /etc/init.d/xvfb start"
-script: "export DISPLAY=:99.0 && bundle exec rspec spec && bundle exec cucumber"
+script: "bundle exec rspec spec && bundle exec cucumber"
 branches:
   only:
     - master
