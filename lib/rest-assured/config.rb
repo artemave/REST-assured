@@ -133,7 +133,7 @@ module RestAssured
                                                    end
 
                                 opts = {
-                                  :adapter => 'mysql',
+                                  :adapter => 'mysql2',
                                   :reconnect => true,
                                   :pool => 20,
                                   :user => AppConfig.user || 'root',

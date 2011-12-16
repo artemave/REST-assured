@@ -74,7 +74,7 @@ GEM
       ruby_core_source (>= 0.1.4)
     mime-types (1.16)
     multi_json (1.0.4)
-    mysql (2.8.1)
+    mysql2 (0.3.11)
     nokogiri (1.5.0)
     rack (1.3.5)
     rack-flash (0.1.2)
@@ -150,7 +150,7 @@ DEPENDENCIES
   guard-spork
   interactive_editor
   launchy
-  mysql
+  mysql2
   rack-test
   rake
   rb-fsevent

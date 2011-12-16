@@ -13,9 +13,9 @@ There are three main use cases:
 
 You are going to need ruby >= 1.8.7.
 
-Rest-assured requires a database to run. Either sqlite3 or mysql. So, make sure there is one and install corresponding gem:
+Rest-assured requires a database to run. Either sqlite or mysql. So, make sure there is one and install corresponding gem:
 
-    bash$ gem install sqlite3 # or mysql
+    bash$ gem install sqlite3 # or mysql2
 
 If using mysql, rest-assured expects database 'rest\_assured' to be accessible by user 'root' with no password. Those are defaults and can be changed with cli options.
 

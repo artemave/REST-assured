@@ -24,7 +24,7 @@ Then /^database options should be:$/ do |table|
     string.empty? ? nil : string
   end
   
-  @app_config[:db_config][:adapter].should == 'mysql'
+  @app_config[:db_config][:adapter].should == 'mysql2'
   @app_config[:db_config][:database].should == res['dbname']
   @app_config[:db_config][:user].should == res['dbuser']
   @app_config[:db_config][:password].should == empty_to_nil[res['dbpass']]
