@@ -1,5 +1,7 @@
 # REST assured
 
+https://secure.travis-ci.org/artemave/REST-assured.png
+
 ## Overview
 
 A tool for stubbing/mocking http based services that your app under test interacts with. This is useful for blackbox/integration testing.

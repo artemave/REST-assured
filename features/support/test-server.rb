@@ -6,6 +6,7 @@ class TestServer
 
   def self.start(opts = {})
     @server_port = opts[:port] || 9876
+    db_user = opts[:db_user] || 'root'
 
     print 'Starting TestServer server... '
 
@@ -13,7 +14,7 @@ class TestServer
       if get_pid
         print "\nPrevious TestServer instance appears to be running. Will be using it."
       else
-        Process.exec("bundle exec rest-assured -p #{@server_port} -a mysql")
+        Process.exec("bundle exec rest-assured -p #{@server_port} -a mysql -u #{db_user}")
       end
     end
 

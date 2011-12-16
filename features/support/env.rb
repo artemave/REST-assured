@@ -50,7 +50,7 @@ Spork.each_run do
     TestServer.stop
   end
 
-  TestServer.start(:port => 9876)
+  TestServer.start(:port => 9876, :db_user => ENV['TRAVIS'] ? "''" : "root")
 
   while not TestServer.up?
     puts 'Waiting for TestServer to come up...'
