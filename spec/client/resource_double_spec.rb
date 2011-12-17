@@ -76,6 +76,7 @@ module RestAssured
           end
         end
 
+        sleep 0.5
         lambda { dd.wait_for_requests(3) }.should raise_error(MoreRequestsExpected, 'Expected 3 requests. Got 2.')
       end
     end
