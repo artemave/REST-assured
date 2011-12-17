@@ -83,7 +83,7 @@ Then /^I should see existing doubles:$/ do |doubles|
 end
 
 Given /^I am on "([^"]*)" page$/ do |page|
-  When "I visit \"#{page}\" page"
+  step "I visit \"#{page}\" page"
 end
 
 When /^I choose to create a double$/ do

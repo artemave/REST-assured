@@ -8,7 +8,7 @@ Given /^there is redirect with pattern "([^"]*)" and uri "([^"]*)"$/ do |pattern
 end
 
 When /^I register redirect with pattern "([^"]*)" and uri "([^"]*)"$/ do |pattern, url|
-  Given %{there is redirect with pattern "#{pattern}" and uri "#{url}"}
+  step %{there is redirect with pattern "#{pattern}" and uri "#{url}"}
 end
 
 Then /^it should redirect to "([^"]*)"$/ do |real_api_url|
