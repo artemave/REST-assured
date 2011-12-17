@@ -48,7 +48,6 @@ Spork.each_run do
 
   require 'rest-assured'
   require 'rest-assured/client'
-  require 'rspec'
   require 'shoulda-matchers'
   require File.expand_path('../../features/support/test-server', __FILE__)
 

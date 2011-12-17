@@ -12,13 +12,14 @@ gem 'capybara'
 gem 'capybara-firebug'
 gem 'rake'
 gem 'mysql2'
-gem 'sqlite3', '~> 1.3.4'
 gem 'thin'
 gem 'relish'
 gem "spork", "> 0.9.0.rc"
+gem 'childprocess'
 
 group :local do
-  gem RUBY_VERSION =~ /^1\.8/ ? 'ruby-debug' : 'ruby-debug19'
+  gem 'ruby-debug', :platform => :mri_18
+  gem 'ruby-debug19', :platform => :mri_19
   gem 'awesome_print'
   gem 'interactive_editor'
   gem 'launchy'

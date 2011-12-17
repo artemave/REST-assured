@@ -8,13 +8,11 @@ end
 
 Then /^the log file should be (.*)$/ do |logfile|
   @app_config[:logfile].should == logfile
-  `rm #{logfile}`
 end
 
 Then /^database adapter should be sqlite and db file should be (.*)$/ do |dbfile|
   @app_config[:db_config][:database].should == dbfile
   @app_config[:db_config][:adapter].should == 'sqlite3'
-  `rm #{dbfile}`
 end
 
 Then /^database options should be:$/ do |table|

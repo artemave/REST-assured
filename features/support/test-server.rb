@@ -1,30 +1,23 @@
 require 'net/http'
+require 'childprocess'
 
 # This is only needed till I get ActiveResource going through rack-test
 class TestServer
-  @pid_file = "./rest-assured.pid"
-
   def self.start(opts = {})
     @server_port = opts[:port] || 9876
     db_user = opts[:db_user] || 'root'
 
-    print 'Starting TestServer server... '
+    print "Starting TestServer server... "
 
-    p = Process.fork do
-      if get_pid
-        print "\nPrevious TestServer instance appears to be running. Will be using it."
-      else
-        Process.exec("bundle exec rest-assured -p #{@server_port} -a mysql -u #{db_user}")
-      end
-    end
+    @child = ChildProcess.build("bundle exec rest-assured -p #@server_port -a mysql -u #{db_user}")
+    @child.start
 
-    Process.detach(p)
     puts 'Done.'
   end
 
   def self.stop
     print 'Shutting down TestServer server... '
-    Process.kill('TERM', get_pid.to_i) rescue puts( "Failed to kill TestServer server: #{$!}" )
+    @child.stop
     puts 'Done.'
   end
 
@@ -38,10 +31,4 @@ class TestServer
   rescue Errno::ECONNREFUSED
     false
   end
-
-  private
-
-    def self.get_pid
-      `ps -eo pid,args`.split("\n").grep( /rest-assured -p #{@server_port}/ ).map{|p| p.split.first }.first
-    end
 end
