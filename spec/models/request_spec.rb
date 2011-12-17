@@ -1,5 +1,5 @@
 require File.expand_path('../../spec_helper', __FILE__)
-require 'rest-assured/models/request'
+require 'shoulda-matchers'
 
 module RestAssured::Models
   describe Request do
