@@ -1,7 +1,7 @@
 require 'net/http'
 require 'childprocess'
 
-# This is only needed till I get ActiveResource going through rack-test
+# This is only needed till someone gets ActiveResource going through rack-test
 class TestServer
   def self.start(opts = {})
     @server_port = opts[:port] || 9876
@@ -10,6 +10,7 @@ class TestServer
     print "Starting TestServer server... "
 
     @child = ChildProcess.build("bundle exec rest-assured -p #@server_port -a mysql -u #{db_user}")
+    @child.io.inherit!
     @child.start
 
     puts 'Done.'
