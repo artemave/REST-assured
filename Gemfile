@@ -26,8 +26,9 @@ group :local do
   gem 'launchy'
   gem "guard-spork"
   if RUBY_PLATFORM =~ /darwin/
-    gem 'growl_notify'
+    gem 'growl'
     gem 'rb-fsevent'
+    gem 'rb-readline'
   end
   gem 'sinatra-activerecord'
 end
