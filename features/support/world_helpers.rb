@@ -7,7 +7,7 @@ module WorldHelpers
     code = File.read rest_assured_exec
 
     code.sub!(/(.*)/, "\\1\nENV['RACK_ENV'] = 'production'")
-    code.sub!(/require 'rest-assured'/, '')
+    code.sub!(/require 'rest-assured\/application'/, '')
     code.sub!(/RestAssured::Application.run!/, 'puts AppConfig.to_yaml')
 
     new_exec = "#{rest_assured_exec}_temp"

@@ -44,7 +44,6 @@ Spork.each_run do
   RestAssured::Config.build(:adapter => 'mysql')
 
   require 'rest-assured'
-  require 'rest-assured/client'
   require File.expand_path('../test-server', __FILE__)
 
   at_exit do

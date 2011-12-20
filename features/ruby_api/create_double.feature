@@ -6,7 +6,7 @@ Feature: create double
   Background:
     Given rest-assured is running locally:
     """
-    RestAssured::Client.config.server_address = 'http://localhost:9876'
+    RestAssured::Double.site = 'http://localhost:9876'
     """
 
   Scenario: default options

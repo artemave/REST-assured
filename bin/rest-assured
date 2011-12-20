@@ -71,5 +71,5 @@ end.parse!
 
 RestAssured::Config.build(user_opts)
 
-require 'rest-assured'
+require 'rest-assured/application'
 RestAssured::Application.run!

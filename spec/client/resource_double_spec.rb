@@ -3,20 +3,7 @@ require File.expand_path('../../spec_helper', __FILE__)
 
 module RestAssured
   describe Double do
-    before do
-      @orig_addr = RestAssured::Client.config.server_address
-    end
-
-    after do
-      RestAssured::Client.config.server_address = @orig_addr
-    end
-
     it { should be_kind_of ActiveResource::Base }
-
-    it 'knows where rest-assured server is' do
-      RestAssured::Client.config.server_address = 'http://localhost:1234'
-      Double.site.should == URI.parse('http://localhost:1234')
-    end
 
     it 'creates new double' do
       d = Double.create :fullpath => '/some/api', :content => 'content'

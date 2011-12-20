@@ -48,7 +48,6 @@ Spork.each_run do
   RestAssured::Config.build(:adapter => 'mysql')
 
   require 'rest-assured'
-  require 'rest-assured/client'
   require 'shoulda-matchers'
   require File.expand_path('../../features/support/test-server', __FILE__)
 
@@ -63,7 +62,7 @@ Spork.each_run do
     sleep 1
   end
 
-  RestAssured::Client.config.server_address = 'http://localhost:9876'
+  RestAssured::Double.site = 'http://localhost:9876'
 
   Capybara.app = RestAssured::Application
 
