@@ -1,32 +1,46 @@
-require 'slave'
-require 'rest-assured/port_explorer'
+require 'singleton'
+require 'rest-assured/config'
 require 'rest-assured/api/resources'
 require 'rest-assured/application'
-
-# XXX hack to fix "too long unix socket path (max: 103bytes)" on Mac
-def Dir.tmpdir
-  '/tmp'
-end
+require 'rest-assured/utils/subprocess'
+require 'rest-assured/utils/port_explorer'
 
 module RestAssured
   class Server
-    attr_reader :app
+    include Singleton
 
-    def self.start
-      slave = Slave.new(:object => RestAssured::Server.new)
-      server = slave.object
+    def start!
+      port = Utils::PortExplorer.free_tcp_port
 
-      server.app.run!
+      Config.build(
+        :port => port,
+        :database => ':memory:',
+        :adapter => 'sqlite'
+      )
+
+      @child = Utils::Subprocess.new do
+        RestAssured::Application.run!
+      end
     end
 
-    #def self.address=(addr)
-      #Double.site = addr
-    #end
+    def start
+      start!
 
-    def initialize(app = RestAssured::Application)
-      @app = app
+      until up?
+        sleep 1
+      end
     end
 
+    def stop
+      @child.stop
+    end
+
+    def up?
+      !@child.nil? && @child.alive?
+    end
+
+    def self.method_missing(*args)
+      instance.send(*args)
+    end
   end
 end
-

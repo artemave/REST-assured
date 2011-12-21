@@ -9,6 +9,7 @@ Spork.prefork do
   require 'rack/test'
   require 'database_cleaner'
   require File.expand_path('../custom_matchers', __FILE__)
+  require File.expand_path('../support/reset-singleton', __FILE__)
 
   ENV['RACK_ENV'] = 'test'
 

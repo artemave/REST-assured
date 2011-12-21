@@ -26,6 +26,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'haml', '>= 3.1.3'
   s.add_dependency 'activerecord', '~> 3.1.0'
   s.add_dependency 'activeresource', '~> 3.1.0'
-  s.add_dependency 'slave', '>= 1.2.2'
 end
 
