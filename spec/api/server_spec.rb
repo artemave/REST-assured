@@ -33,19 +33,13 @@ module RestAssured
         #started.should be_true
       end
 
-      it 'picks free tcp port' do
-        Utils::Subprocess.stub(:new)
-        Utils::PortExplorer.stub(:free_tcp_port).and_return(3489)
-
-        Config.should_receive(:build).with(hash_including(:port => 3489))
-        Server.start!
-      end
-
-      it 'uses in-memory sqlite database' do
+      it 'allows to configure application' do
         Utils::Subprocess.stub(:new)
 
-        Config.should_receive(:build).with(hash_including(:database => ':memory:', :adapter => 'sqlite'))
-        Server.start!
+        opts = { :port => 34545, :database => ':memory:' }
+
+        Config.should_receive(:build).with(opts)
+        Server.start!(opts)
       end
 
       it 'khows when it is up' do
