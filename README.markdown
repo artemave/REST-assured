@@ -161,7 +161,8 @@ For those usging rest-assured from non-ruby environments.
 
 ## Redirects
 
-It is sometimes desirable to only double certain calls while letting others through to the 'real' services. Meet Redirects. Kind of "rewrite rules" for requests that didn't match any double. Here is the rest API for managing redirects:
+It is sometimes desirable to only double certain calls while letting others through to the 'real' services. Meet Redirects. Kind of "rewrite rules" for requests that didn't match any double. Redirects can also be used to route different requests to the same double.
+Here is the rest API for managing redirects:
 
 ### Create redirect
 
