@@ -9,22 +9,16 @@ module RestAssured
   class Server
     include Singleton
 
-    def start!
-      port = Utils::PortExplorer.free_tcp_port
-
-      Config.build(
-        :port => port,
-        :database => ':memory:',
-        :adapter => 'sqlite'
-      )
+    def start!(opts = {})
+      Config.build(opts)
 
       @child = Utils::Subprocess.new do
         RestAssured::Application.run!
       end
     end
 
-    def start
-      start!
+    def start(*args)
+      start!(*args)
 
       until up?
         sleep 1
