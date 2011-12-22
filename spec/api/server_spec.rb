@@ -44,7 +44,7 @@ module RestAssured
 
       it 'khows when it is up' do
         Utils::Subprocess.stub(:new).and_return(child = stub(:alive? => true))
-        Utils::PortExplorer.stub(:port_in_use? => true, :free_tcp_port => 4578)
+        Utils::PortExplorer.stub(:port_in_use? => true)
         Server.start
 
         Server.up?.should == true
@@ -57,7 +57,7 @@ module RestAssured
         
         it 'if it starting at the moment' do
           Utils::Subprocess.stub(:new).and_return(child = stub(:alive? => false))
-          Utils::PortExplorer.stub(:port_in_use? => false, :free_tcp_port => 4578)
+          Utils::PortExplorer.stub(:port_in_use? => false)
           Server.start!
 
           Server.up?.should == false
@@ -67,7 +67,7 @@ module RestAssured
       describe 'async/sync start' do
         before do
           Utils::Subprocess.stub(:new).and_return(child = stub(:alive? => false))
-          Utils::PortExplorer.stub(:port_in_use? => false, :free_tcp_port => 4578)
+          Utils::PortExplorer.stub(:port_in_use? => false)
 
           @t = Thread.new do
             sleep 0.5
@@ -85,7 +85,7 @@ module RestAssured
           Server.up?.should == false
         end
 
-        it 'can wait optionally wait until Application is up before passing control' do
+        it 'can wait until Application is up before passing control' do
           Server.start
           Server.up?.should == true
         end
