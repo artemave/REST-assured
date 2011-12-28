@@ -8,6 +8,7 @@ Spork.prefork do
   require 'capybara/rspec'
   require 'rack/test'
   require 'database_cleaner'
+  require 'awesome_print'
   require File.expand_path('../support/custom_matchers', __FILE__)
   require File.expand_path('../support/reset-singleton', __FILE__)
 
