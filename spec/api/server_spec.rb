@@ -8,8 +8,39 @@ module RestAssured
       Server.reset_instance
     end
 
-    context 'when starts' do
-      it 'runs RestAssured::Application in subprocess' do
+    it 'passes configuration to underlying application' do
+      Utils::Subprocess.stub(:new)
+
+      opts = { :port => 34545, :database => ':memory:' }
+
+      Config.should_receive(:build).with(opts)
+      Server.start!(opts)
+    end
+
+    it 'khows when it is up' do
+      Utils::Subprocess.stub(:new).and_return(child = stub(:alive? => true))
+      Utils::PortExplorer.stub(:port_in_use? => true)
+      Server.start
+
+      Server.up?.should == true
+    end
+
+    context 'knows that it is NOT up' do
+      it 'if it has not been started' do
+        Server.up?.should == false
+      end
+
+      it 'if it starting at the moment' do
+        Utils::Subprocess.stub(:new).and_return(child = stub(:alive? => false))
+        Utils::PortExplorer.stub(:port_in_use? => false)
+        Server.start!
+
+        Server.up?.should == false
+      end
+    end
+
+    context 'when started' do
+      it 'starts RestAssured::Application in subprocess' do
         Utils::Subprocess.should_receive(:new) do |&block|
           block.call
         end
@@ -31,37 +62,6 @@ module RestAssured
         #end
 
         #started.should be_true
-      end
-
-      it 'allows to configure application' do
-        Utils::Subprocess.stub(:new)
-
-        opts = { :port => 34545, :database => ':memory:' }
-
-        Config.should_receive(:build).with(opts)
-        Server.start!(opts)
-      end
-
-      it 'khows when it is up' do
-        Utils::Subprocess.stub(:new).and_return(child = stub(:alive? => true))
-        Utils::PortExplorer.stub(:port_in_use? => true)
-        Server.start
-
-        Server.up?.should == true
-      end
-
-      context 'it is NOT up' do
-        it 'if it has not been started' do
-          Server.up?.should == false
-        end
-        
-        it 'if it starting at the moment' do
-          Utils::Subprocess.stub(:new).and_return(child = stub(:alive? => false))
-          Utils::PortExplorer.stub(:port_in_use? => false)
-          Server.start!
-
-          Server.up?.should == false
-        end
       end
 
       describe 'async/sync start' do
@@ -92,12 +92,14 @@ module RestAssured
       end
     end
 
-    it 'stops application subprocess' do
-      Utils::Subprocess.stub(:new).and_return(child = mock)
-      Server.start!
+    context 'when stopped' do
+      it 'stops application subprocess' do
+        Utils::Subprocess.stub(:new).and_return(child = mock)
+        Server.start!
 
-      child.should_receive(:stop)
-      Server.stop
+        child.should_receive(:stop)
+        Server.stop
+      end
     end
   end
 end
