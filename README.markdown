@@ -4,18 +4,18 @@
 
 ## Overview
 
-A tool for stubbing/mocking http based services that your app under test interacts with. This is useful for blackbox/integration testing.
+A tool for stubbing/spying on http(s) based services that your app under test interacts with. This is useful for blackbox/integration testing.
 There are three main use cases:
 
 * stubbing out external data sources with predefined data
-* verify requests to external services
+* verify requests to external services (aka spying)
 * quickly simulate different behavior of external services using web UI; useful in development
 
 ## Usage
 
 You are going to need ruby >= 1.8.7.
 
-Rest-assured requires a database to run. Either sqlite or mysql. So, make sure there is one and install corresponding gem:
+Rest-assured requires a database to run. Either sqlite or mysql. So, make sure there is one and its backed with corresponding client gem:
 
     bash$ gem install sqlite3 # or mysql2
 
@@ -40,17 +40,17 @@ This starts up an instance of rest-assured on port 4578. It is accessible via RE
 
 Various options (such as ssl, port, db credentials, etc.) are available through command line options. Check out `rest-assured -h` to see what they are.
 
-NOTE that although sqlite is an extremely handy option (especially with :memory:), I found it sometimes locking tables under non-trivial load. Hence there is a plan B - mysql. But may be that is just me sqliting it wrong.
+NOTE that although sqlite is an extremely handy option (especially with :memory:), I found it sometimes locking tables under non-trivial load. Hence there is a Plan B - mysql. But may be that is just me sqliting it wrong.
 
 ## Doubles
 
-Double is a stub/mock of HTTP request. You create a double that has the same request fullpath and method as the one your app is sending to a dependency and then convience your app that rest-assured is that dependency (by making endpoints configurable).
+Double is a stub/spy of HTTP request. Create a double that has the same request fullpath and method as the one your app is sending to a dependant service and then convience your app that rest-assured is that dependency (hint: by making endpoints configurable).
 
 ### Ruby Client API
 
 Rest-assured provides client library to work with doubles. Check out 'Ruby API' section in [documentation](https://www.relishapp.com/artemave/rest-assured) for full reference.
 
-First set it up in env.rb/spec_helper.rb:
+Set it up first in env.rb/spec_helper.rb:
 
 ```ruby
 require 'rest-assured/client'
@@ -66,7 +66,7 @@ RestAssured::Double.create(fullpath: '/products', content: 'this is content')
 
 Now GET 'http://localhost:4578/products' will be returning 'this is content'.
 
-You can also verify what requests happen on a double. Say this is a Given part of a test:
+You can also verify what requests happen on a double, or, in other words, spy on a double. Say this is a Given part of a test:
 
 ```ruby
 @double = RestAssured::Double.create(fullpath: '/products', verb: 'POST')
@@ -75,7 +75,7 @@ You can also verify what requests happen on a double. Say this is a Given part o
 Then let us assume that 'http://localhost:4578/products' got POSTed as a result of some actions in When part. Now we can examine requests happened on that double in Then part:
 
 ```ruby
-@double.wait_for_requests(1, :timeout => 10) # defaults to 5 seconds
+@double.wait_for_requests(1, timeout: 10) # defaults to 5 seconds
 
 req = @double.requests.first
 
@@ -93,11 +93,11 @@ RestClient.delete "#{RestAssured::Client.config.server_address}/doubles/all"
 
 ### Plain REST API
 
-For those usging rest-assured from non-ruby environments.
+For those using rest-assured from non-ruby environments.
 
 #### Create double
 
-  HTTP POST to '/doubles' creates double and returns its json representation.
+  HTTP POST to '/doubles' creates a double and returns its json representation.
   The following options can be passed as request parameters:
 
   - __fullpath__ - e.g., '/some/api/object', or with parameters in query string (useful for doubling GETs) - '/some/other/api/object?a=2&b=c'. Mandatory.
@@ -161,7 +161,10 @@ For those usging rest-assured from non-ruby environments.
 
 ## Redirects
 
-It is sometimes desirable to only double certain calls while letting others through to the 'real' services. Meet Redirects. Kind of "rewrite rules" for requests that didn't match any double. Redirects can also be used to route different requests to the same double.
+It is sometimes desirable to only double certain calls while letting others through to the 'real' services. Meet Redirects. Kind of "rewrite rules" for requests that didn't match any double. 
+
+Another potential use for redirects is setting up a 'default' double that matches multiple fullpaths. This is of course given your app does not mind an extra redirect. Also note that 'default' double still covers only one http verb so requests with different methods won't match.
+
 Here is the rest API for managing redirects:
 
 ### Create redirect
