@@ -30,7 +30,7 @@ module RestAssured
     end
 
     def up?
-      !@child.nil? && @child.alive?
+      !@child.nil? && @child.alive? && !Utils::PortExplorer.port_free?(AppConfig.port)
     end
 
     def self.method_missing(*args)
