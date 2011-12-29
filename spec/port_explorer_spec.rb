@@ -3,18 +3,13 @@ require File.expand_path('../../lib/rest-assured/utils/port_explorer', __FILE__)
 
 module RestAssured::Utils
   describe PortExplorer do
-    it 'finds unused tcp port' do
-      pending %{I don't see how to test this without basically
-        reimplementing the same thing. So I am going to rely
-        on the tests below (that use free_tcp_port) for the time being
-
-        TODO try:
-        lsof -i -P | grep -i "listen"
-      }
+    it 'finds free tcp port' do
+      free_port = PortExplorer.free_port
+      lambda { Net::HTTP.get('127.0.0.1', '/', free_port) }.should raise_error(Errno::ECONNREFUSED)
     end
 
     it 'knows if port is in use' do
-      port = PortExplorer.free_tcp_port
+      port = PortExplorer.free_port
 
       Thread.new do
         TCPServer.open('127.0.0.1', port) do |serv|
@@ -25,13 +20,13 @@ module RestAssured::Utils
       end
       sleep 0.5
 
-      PortExplorer.port_in_use?(port).should == true
+      PortExplorer.port_free?(port).should == false
     end
 
-    it 'knows that port is NOT in use' do
-      port = PortExplorer.free_tcp_port
+    it 'knows that port is free' do
+      port = PortExplorer.free_port
 
-      PortExplorer.port_in_use?(port).should == false
+      PortExplorer.port_free?(port).should == true
     end
   end
 end
