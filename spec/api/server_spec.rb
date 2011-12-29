@@ -1,4 +1,3 @@
-require 'net/http'
 require File.expand_path('../../spec_helper', __FILE__)
 require File.expand_path('../../../lib/rest-assured/api/server', __FILE__)
 
@@ -31,7 +30,7 @@ module RestAssured
       end
 
       it 'if it starting at the moment' do
-        Utils::Subprocess.stub(:new).and_return(child = stub(:alive? => false))
+        Utils::Subprocess.stub(:new).and_return(child = stub(:alive? => true))
         Utils::PortExplorer.stub(:port_free? => true)
         Server.start!
 
@@ -54,12 +53,12 @@ module RestAssured
       describe 'async/sync start' do
         before do
           Utils::Subprocess.stub(:new).and_return(child = stub(:alive? => false))
-          Utils::PortExplorer.stub(:port_free? => false)
+          Utils::PortExplorer.stub(:port_free? => true)
 
           @t = Thread.new do
             sleep 0.5
             child.stub(:alive?).and_return(true)
-            Utils::PortExplorer.stub(:port_free? => true)
+            Utils::PortExplorer.stub(:port_free? => false)
           end
         end
 
