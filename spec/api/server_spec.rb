@@ -19,7 +19,7 @@ module RestAssured
 
     it 'khows when it is up' do
       Utils::Subprocess.stub(:new).and_return(child = stub(:alive? => true))
-      Utils::PortExplorer.stub(:port_in_use? => true)
+      Utils::PortExplorer.stub(:port_free? => false)
       Server.start
 
       Server.up?.should == true
@@ -32,7 +32,7 @@ module RestAssured
 
       it 'if it starting at the moment' do
         Utils::Subprocess.stub(:new).and_return(child = stub(:alive? => false))
-        Utils::PortExplorer.stub(:port_in_use? => false)
+        Utils::PortExplorer.stub(:port_free? => true)
         Server.start!
 
         Server.up?.should == false
@@ -49,30 +49,17 @@ module RestAssured
         Application.should_receive(:run!)
 
         Server.start!
-
-        #started = false
-        #10.times do
-          #begin
-            #Net::HTTP.new('localhost', Config.port).head('/')
-            #started = true
-          #rescue Errno::ECONNREFUSED
-            #sleep 1
-          #end
-          #break if started
-        #end
-
-        #started.should be_true
       end
 
       describe 'async/sync start' do
         before do
           Utils::Subprocess.stub(:new).and_return(child = stub(:alive? => false))
-          Utils::PortExplorer.stub(:port_in_use? => false)
+          Utils::PortExplorer.stub(:port_free? => false)
 
           @t = Thread.new do
             sleep 0.5
             child.stub(:alive?).and_return(true)
-            Utils::PortExplorer.stub(:port_in_use? => true)
+            Utils::PortExplorer.stub(:port_free? => true)
           end
         end
 
