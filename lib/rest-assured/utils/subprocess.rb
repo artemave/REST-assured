@@ -1,8 +1,15 @@
 module RestAssured
   module Utils
     class Subprocess
-      def initialize(&block)
-        @pid = Kernel.fork &block
+      def initialize
+        @pid = Kernel.fork do
+          at_exit{ exit! }
+
+          yield
+
+          puts "#{self} has quit. Shutting down parent..."
+          Process.kill('INT', Process.ppid)
+        end
         Process.detach(@pid)
       end
 
@@ -13,6 +20,10 @@ module RestAssured
         rescue Errno::ESRCH
           false
         end 
+      end
+
+      def stop
+        Process.kill('TERM', @pid) if alive?
       end
     end
   end
