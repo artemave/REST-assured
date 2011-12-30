@@ -1,13 +1,8 @@
+@ruby_api
 Feature: create double
   As ruby developer
   I want to be able to create doubles via client api
   So that interactions with rest-assured server are completely hidden from me
-
-  Background:
-    Given rest-assured is running locally:
-    """
-    RestAssured::Double.site = 'http://localhost:9876'
-    """
 
   Scenario: default options
     When I create a double:

@@ -5,17 +5,26 @@ module RestAssured
 
       def initialize
         @pid = Kernel.fork do
-          at_exit{ exit! }
+          trap('USR1') do
+            $stopped = true
+            exit
+          end
+
+          at_exit do
+            if $stopped
+              puts "Being stopped from parent..."
+            else
+              puts "Shutting down parent..."
+              Process.kill('TERM', Process.ppid)
+            end
+            exit!
+          end
+
           begin
             yield
-          rescue SignalException
-            puts "being killed from parent..."
           rescue => e
-            puts "#{self} has raised #{e.inspect}. Shutting down parent..."
-            Process.kill('TERM', Process.ppid)
-          else
-            puts "#{self} has quit. Shutting down parent..."
-            Process.kill('TERM', Process.ppid)
+            puts "#{self} has raised #{e.inspect}:"
+            puts e.backtrace.join("\n")
           end
         end
 
@@ -31,7 +40,7 @@ module RestAssured
       end
 
       def stop
-        Process.kill('TERM', @pid) rescue Errno::ESRCH # no such process
+        Process.kill('USR1', @pid) rescue Errno::ESRCH # no such process
       end
     end
   end

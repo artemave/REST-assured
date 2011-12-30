@@ -8,15 +8,21 @@ module RestAssured::Utils
 
     it 'forks passed block' do
       ppid_file = Tempfile.new('ppidfile')
-      Process.stub(:kill)
+      pid_file = Tempfile.new('pidfile')
 
-      Subprocess.new do
-        ppid_file.write(Process.ppid)
-        ppid_file.rewind
+      fork do
+        pid_file.write(Process.pid)
+        pid_file.rewind
+        at_exit { exit! }
+        Subprocess.new do
+          ppid_file.write(Process.ppid)
+          ppid_file.rewind
+          sleep 2
+        end
+        sleep 0.5
       end
-      sleep 0.5
-
-      ppid_file.read.should == Process.pid.to_s
+      Process.wait
+      ppid_file.read.should == pid_file.read
     end
 
     it 'ensures no zombies' do
@@ -39,10 +45,17 @@ module RestAssured::Utils
     end
 
     it 'shuts down child when stopped' do
-      child = Subprocess.new { sleep 2 }
-      child.stop
-      sleep 0.5
-      child.alive?.should == false
+      res_file = Tempfile.new('res')
+      fork do
+        at_exit { exit! }
+        child = Subprocess.new { sleep 2 }
+        child.stop
+        sleep 0.5
+        res_file.write(child.alive?)
+        res_file.rewind
+      end
+      Process.wait
+      res_file.read.should == 'false'
     end
 
     describe 'commits seppuku' do
