@@ -67,9 +67,47 @@ Then /^the following should be true:$/ do |code|
   eval code
 end
 
-Given /^rest-assured server is not running$/ do
+Given /^there is free tcp port$/ do
+  @free_tcp_port = RestAssured::Utils::PortExplorer.free_port
 end
 
 When /^I start rest-assured server via client library:$/ do |code|
+  eval code
+end
+
+Then /^rest\-assured server should be running:$/ do |code|
+  eval code
+end
+
+When /^I start rest\-assured asyncronously:$/ do |code|
+  eval code
+end
+
+Then /^rest\-assured server should not be running:$/ do |code|
+  eval code
+end
+
+When /^it finally comes up$/ do
+  timeout(5) do
+    loop do
+      begin
+        Net::HTTP.new('localhost', @free_tcp_port).head('/')
+        break
+      rescue Errno::ECONNREFUSED
+        sleep 1
+      end
+    end
+  end
+end
+
+Given /^rest\-assured has been started via client library$/ do
+  RestAssured::Server.start(:port => RestAssured::Utils::PortExplorer.free_port)
+end
+
+When /^I stop it:$/ do |code|
+  eval code
+end
+
+Then /^it should be stopped:$/ do |code|
   eval code
 end

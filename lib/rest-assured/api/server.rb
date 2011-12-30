@@ -10,9 +10,14 @@ module RestAssured
     include Singleton
 
     def start!(opts = {})
+      stop if up?
+
       Config.build(opts)
 
+      Double.site = "http#{AppConfig.use_ssl ? 's' : ''}://127.0.0.1:#{AppConfig.port}"
+
       @child = Utils::Subprocess.new do
+        RestAssured::Application.send(:include, Config)
         RestAssured::Application.run!
       end
     end
@@ -20,9 +25,9 @@ module RestAssured
     def start(*args)
       start!(*args)
 
-      until up?
-        sleep 1
-      end
+      begin
+        sleep 0.5
+      end while not up?
     end
 
     def stop

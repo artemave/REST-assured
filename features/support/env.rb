@@ -3,6 +3,7 @@ require 'rubygems'
 require 'spork'
 
 Spork.prefork do
+  require 'timeout'
   require 'rspec'
   require 'rack/test'
   require 'capybara'
@@ -10,6 +11,7 @@ Spork.prefork do
   require 'capybara/cucumber'
   require 'database_cleaner'
   require 'awesome_print'
+  require 'rest-assured/utils/port_explorer'
   require File.dirname(__FILE__) + '/world_helpers'
 
   ENV['RACK_ENV'] = 'test'
@@ -42,20 +44,7 @@ end
 Spork.each_run do
   require 'rest-assured/config'
   RestAssured::Config.build(:adapter => 'mysql')
-
   require 'rest-assured'
-  require File.expand_path('../test-server', __FILE__)
-
-  at_exit do
-    TestServer.stop
-  end
-
-  TestServer.start(:port => 9876, :db_user => ENV['TRAVIS'] ? "''" : "root")
-
-  while not TestServer.up?
-    puts 'Waiting for TestServer to come up...'
-    sleep 1
-  end
 
   def app
     RestAssured::Application
@@ -66,6 +55,10 @@ Spork.each_run do
 
   Before do
     DatabaseCleaner.start
+  end
+
+  Before "@ruby_api" do
+    RestAssured::Server.start(:port => 9876, :db_user => ENV['TRAVIS'] ? "''" : "root")
   end
 
   Before "@ui" do

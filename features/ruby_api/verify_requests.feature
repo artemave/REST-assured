@@ -1,13 +1,8 @@
+@ruby_api
 Feature: verify requests that happened on double
   In order to check that my app is performing correct requests
   As test developer
   I want to be able to get double 'call history' 
-
-  Background:
-    Given rest-assured is running locally:
-    """
-    RestAssured::Double.site = 'http://localhost:9876'
-    """
 
   Scenario: no calls made to double
     Given I created a double:

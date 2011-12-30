@@ -1,14 +1,11 @@
+@ruby_api
 Feature: wait for requests on double to happen
   In order to know when it is a good time to verify requests on a double
   As test developer
   I want to be able to wait until specified number of requests happen
 
   Background:
-    Given rest-assured is running locally:
-    """
-    RestAssured::Double.site = 'http://localhost:9876'
-    """
-    And I created a double:
+    Given I created a double:
     """
     @double = RestAssured::Double.create(:fullpath => '/some/api')
     """
