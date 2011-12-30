@@ -29,7 +29,7 @@ module RestAssured
         Server.up?.should == false
       end
 
-      it 'if it starting at the moment' do
+      it 'if it is starting at the moment' do
         Utils::Subprocess.stub(:new).and_return(child = stub(:alive? => true))
         Utils::PortExplorer.stub(:port_free? => true)
         Server.start!

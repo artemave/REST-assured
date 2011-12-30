@@ -1,3 +1,5 @@
+require 'tempfile'
+require 'ostruct'
 require File.expand_path('../spec_helper', __FILE__)
 require File.expand_path('../../lib/rest-assured/utils/subprocess', __FILE__)
 
@@ -5,16 +7,16 @@ module RestAssured::Utils
   describe Subprocess do
 
     it 'forks passed block' do
-      ppid_file = '/tmp/ra_ppid'
+      ppid_file = Tempfile.new('ppidfile')
       Process.stub(:kill)
 
       Subprocess.new do
-        File.open(ppid_file, 'w') {|f| f.write Process.ppid }
+        ppid_file.write(Process.ppid)
+        ppid_file.rewind
       end
       sleep 0.5
 
-      File.read(ppid_file).should == Process.pid.to_s
-      File.unlink(ppid_file)
+      ppid_file.read.should == Process.pid.to_s
     end
 
     it 'ensures no zombies' do
@@ -25,18 +27,15 @@ module RestAssured::Utils
     end
 
     it 'knows when it is running' do
-      Process.stub(:kill)
-      child = Subprocess.new { sleep 0.5 }
-      Process.unstub(:kill)
-      child.alive?.should == true
-    end
-
-    it 'knows when it is not running' do
-      Process.stub(:kill)
-      child = Subprocess.new { 1 }
-      sleep 0.5
-      Process.unstub(:kill)
-      child.alive?.should == false
+      res_file = Tempfile.new('res')
+      fork do
+        at_exit { exit! }
+        child = Subprocess.new { sleep 0.5 }
+        res_file.write(child.alive?)
+        res_file.rewind
+      end
+      Process.wait
+      res_file.read.should == 'true'
     end
 
     it 'shuts down child when stopped' do
@@ -47,21 +46,76 @@ module RestAssured::Utils
     end
 
     describe 'commits seppuku' do
-      it 'if child raises exception'
+      it 'if child raises exception' do
+        res_file = Tempfile.new('res')
+        fork do
+          at_exit { exit! }
+          Subprocess.new { raise; sleep 1 }
+          sleep 0.5
+          res_file.write('should not exist because this process should be killed by now')
+          res_file.rewind
+        end
+        Process.wait
+        res_file.read.should == ''
+      end
 
       it 'if child just quits' do
-        pending "in the code below stub works but mocking the same method - does not. I am puzzled"
-
-        #Process.should_receive(:kill).with('INT', Process.pid)
-        #Process.stub(:kill).with do
-        #puts "FUUUUCK"
-        #end
-
-        Subprocess.new { 1 }
-        sleep 0.5
+        res_file = Tempfile.new('res')
+        fork do
+          at_exit { exit! }
+          Subprocess.new { 1 }
+          sleep 0.5
+          res_file.write('should not exist because this process should be killed by now')
+          res_file.rewind
+        end
+        Process.wait
+        res_file.read.should == ''
       end
     end
 
-    it 'makes sure child process does not oulive current one'
+    context 'shuts down child process' do
+      let(:child_pid) do
+        Tempfile.new('child_pid')
+      end
+
+      let(:child_alive?) do
+        begin
+          Process.kill(0, child_pid.read.to_i)
+          true
+        rescue Errno::ESRCH
+          false
+        end
+      end
+
+      it 'when exits normally' do
+        child_pid # Magic touch. Literally. Else Tempfile gets created in fork and that messes things up
+
+        fork do
+          at_exit { exit! }
+          child = Subprocess.new { sleep 2 }
+          child_pid.write(child.pid)
+          child_pid.rewind
+        end
+
+        sleep 0.5
+        child_alive?.should == false
+      end
+
+      it 'when killed violently' do
+        child_pid
+
+        fork do
+          at_exit { exit! }
+          child = Subprocess.new { sleep 2 }
+          child_pid.write(child.pid)
+          child_pid.rewind
+
+          Process.kill('TERM', Process.pid)
+        end
+        
+        sleep 0.5
+        child_alive?.should == false
+      end
+    end
   end
 end
