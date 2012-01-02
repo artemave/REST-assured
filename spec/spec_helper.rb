@@ -51,19 +51,8 @@ Spork.each_run do
 
   require 'rest-assured'
   require 'shoulda-matchers'
-  require File.expand_path('../../features/support/test-server', __FILE__)
 
-  at_exit do
-    TestServer.stop
-  end
-
-  TestServer.start(:port => 9876, :db_user => ENV['TRAVIS'] ? "''" : "root")
-
-  while not TestServer.up?
-    puts 'Waiting for TestServer to come up...'
-    sleep 1
-  end
-
+  RestAssured::Server.start(:port => 9876, :db_user => ENV['TRAVIS'] ? "''" : "root")
   RestAssured::Double.site = 'http://localhost:9876'
 
   Capybara.app = RestAssured::Application
