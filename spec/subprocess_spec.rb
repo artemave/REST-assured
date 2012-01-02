@@ -44,47 +44,34 @@ module RestAssured::Utils
       res_file.read.should == 'true'
     end
 
-    it 'shuts down child when stopped' do
-      res_file = Tempfile.new('res')
-      fork do
-        at_exit { exit! }
-        child = Subprocess.new { sleep 2 }
-        child.stop
-        sleep 0.5
-        res_file.write(child.alive?)
-        res_file.rewind
-      end
-      Process.wait
-      res_file.read.should == 'false'
-    end
+    # I am not sure this is actually useful
+    #describe 'commits seppuku' do
+      #it 'if child raises exception' do
+        #res_file = Tempfile.new('res')
+        #fork do
+          #at_exit { exit! }
+          #Subprocess.new { raise "!!NO PANIC!! This exception is part of test"; sleep 1 }
+          #sleep 0.5
+          #res_file.write('should not exist because this process should be killed by now')
+          #res_file.rewind
+        #end
+        #Process.wait
+        #res_file.read.should == ''
+      #end
 
-    describe 'commits seppuku' do
-      it 'if child raises exception' do
-        res_file = Tempfile.new('res')
-        fork do
-          at_exit { exit! }
-          Subprocess.new { raise; sleep 1 }
-          sleep 0.5
-          res_file.write('should not exist because this process should be killed by now')
-          res_file.rewind
-        end
-        Process.wait
-        res_file.read.should == ''
-      end
-
-      it 'if child just quits' do
-        res_file = Tempfile.new('res')
-        fork do
-          at_exit { exit! }
-          Subprocess.new { 1 }
-          sleep 0.5
-          res_file.write('should not exist because this process should be killed by now')
-          res_file.rewind
-        end
-        Process.wait
-        res_file.read.should == ''
-      end
-    end
+      #it 'if child just quits' do
+        #res_file = Tempfile.new('res')
+        #fork do
+          #at_exit { exit! }
+          #Subprocess.new { 1 }
+          #sleep 0.5
+          #res_file.write('should not exist because this process should be killed by now')
+          #res_file.rewind
+        #end
+        #Process.wait
+        #res_file.read.should == ''
+      #end
+    #end
 
     context 'shuts down child process' do
       let(:child_pid) do
@@ -98,6 +85,20 @@ module RestAssured::Utils
         rescue Errno::ESRCH
           false
         end
+      end
+
+      it 'when stopped' do
+        res_file = Tempfile.new('res')
+        fork do
+          at_exit { exit! }
+          child = Subprocess.new { sleep 2 }
+          child.stop
+          sleep 1
+          res_file.write(child.alive?)
+          res_file.rewind
+        end
+        Process.wait
+        res_file.read.should == 'false'
       end
 
       it 'when exits normally' do

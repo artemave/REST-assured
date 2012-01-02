@@ -13,9 +13,9 @@ module RestAssured
           at_exit do
             if $stopped
               puts "Being stopped from parent..."
-            else
-              puts "Shutting down parent..."
-              Process.kill('TERM', Process.ppid)
+            #else
+              #puts "Shutting down parent..."
+              #Process.kill('TERM', Process.ppid)
             end
             exit!
           end
