@@ -56,9 +56,11 @@ Start up the server:
 # env.rb/spec_helper.rb
 require 'rest-assured'
 
-RestAssured::Server.start # this will shut down automatically when your tests are done
+RestAssured::Server.start(database: ':memory:', port: 7899) # or any other option available on command line
 ```
-Or, if you want to use existing instance:
+This server will be automatically shut down when your tests are done.
+
+Alternatively, if you want to use existing server instance:
 
 ```ruby
 RestAssured::Server.address = 'http://localhost:4578' # or wherever it is
