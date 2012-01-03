@@ -7,6 +7,8 @@ require 'rest-assured/utils/port_explorer'
 
 module RestAssured
   class Server
+    attr_reader :address
+
     include Singleton
 
     def start!(opts = {})
@@ -14,7 +16,7 @@ module RestAssured
 
       Config.build(opts)
 
-      Double.site = "http#{AppConfig.use_ssl ? 's' : ''}://127.0.0.1:#{AppConfig.port}"
+      self.address = "http#{AppConfig.use_ssl ? 's' : ''}://127.0.0.1:#{AppConfig.port}"
 
       @child = Utils::Subprocess.new do
         RestAssured::Application.send(:include, Config)
@@ -28,6 +30,10 @@ module RestAssured
       begin
         sleep 0.5
       end while not up?
+    end
+
+    def address=(address)
+      Double.site = @address = address
     end
 
     def stop
