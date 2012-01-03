@@ -50,15 +50,20 @@ Double is a stub/spy of HTTP request. Create a double that has the same request 
 
 Rest-assured provides client library to work with doubles. Check out 'Ruby API' section in [documentation](https://www.relishapp.com/artemave/rest-assured) for full reference.
 
-Set it up first in env.rb/spec_helper.rb:
+Start up server instance first in env.rb/spec_helper.rb:
 
 ```ruby
-require 'rest-assured/client'
+require 'rest-assured'
 
-RestAssured::Client.config.server_address = 'http://localhost:4578' # or wherever your rest-assured is
+RestAssured::Server.start # this will shut down automatically when your tests are done
+```
+Or, if you want to use existing instance:
+
+```ruby
+RestAssured::Server.address = 'http://localhost:4578' # or wherever it is
 ```
 
-You can then create doubles in your tests:
+You can now create doubles in your tests:
 
 ```ruby
 RestAssured::Double.create(fullpath: '/products', content: 'this is content')
@@ -87,8 +92,8 @@ JSON.parse(req.rack_env)['ACCEPT'].should == 'text/html'
 Use plain rest api to clear doubles/redirects between tests:
 
 ```ruby
-RestClient.delete "#{RestAssured::Client.config.server_address}/redirects/all"
-RestClient.delete "#{RestAssured::Client.config.server_address}/doubles/all"
+RestClient.delete "#{RestAssured::Server.address}/redirects/all"
+RestClient.delete "#{RestAssured::Server.address}/doubles/all"
 ```
 
 ### Plain REST API
