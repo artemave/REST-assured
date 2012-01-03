@@ -31,7 +31,13 @@ module RestAssured
 
     context 'when starts' do
       it 'makes sure no previous child is running' do
-        pending 'write test'
+        child = double(:alive? => true)
+        Utils::PortExplorer.stub(:port_free? => false)
+        Utils::Subprocess.stub(:new).and_return(child)
+
+        child.should_receive(:stop).once
+        Server.start!
+        Server.start!
       end
 
       it 'starts RestAssured::Application in subprocess' do
@@ -55,7 +61,7 @@ module RestAssured
         Server.start!(opts)
       end
 
-      context 'sets up RestAssured::Double.site' do
+      context 'sets up server address' do
         before do
           Utils::Subprocess.stub(:new)
         end
@@ -63,22 +69,26 @@ module RestAssured
         it 'uses 127.0.0.1 as hostname' do
           RestAssured::Double.should_receive(:site=).with(/127\.0\.0\.1/)
           Server.start!
+          Server.address.should =~ /127\.0\.0\.1/
         end
 
         it 'uses port from config' do
           RestAssured::Double.should_receive(:site=).with(/#{AppConfig.port}/)
           Server.start!
+          Server.address.should =~ /#{AppConfig.port}/
         end
 
         it 'uses http by default' do
           RestAssured::Double.should_receive(:site=).with(/http[^s]/)
           Server.start!
+          Server.address.should =~ /http[^s]/
         end
 
         it 'uses https if ssl is set in config' do
           AppConfig.use_ssl = true
           RestAssured::Double.should_receive(:site=).with(/https/)
           Server.start!
+          Server.address.should =~ /https/
         end
       end
 
