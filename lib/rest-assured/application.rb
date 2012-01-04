@@ -1,7 +1,7 @@
 require 'sinatra/base'
 require 'sinatra/handler_options_patch'
 require 'haml'
-require 'rack-flash'
+require 'sinatra/flash'
 require 'sinatra/partials'
 require 'rest-assured/config'
 require 'rest-assured/models/double'
@@ -19,7 +19,7 @@ module RestAssured
     enable :method_override
 
     enable :sessions
-    use Rack::Flash, :sweep => true
+    register Sinatra::Flash
 
     set :public_folder, File.expand_path('../../../public', __FILE__)
     set :views, File.expand_path('../../../views', __FILE__)
