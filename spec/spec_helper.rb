@@ -50,10 +50,10 @@ Spork.each_run do
   RestAssured::Config.build(:adapter => 'mysql')
 
   require 'rest-assured'
+  require 'rest-assured/application'
   require 'shoulda-matchers'
 
   RestAssured::Server.start(:port => 9876, :db_user => ENV['TRAVIS'] ? "''" : "root")
-  RestAssured::Double.site = 'http://localhost:9876'
 
   Capybara.app = RestAssured::Application
 

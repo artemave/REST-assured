@@ -45,6 +45,7 @@ Spork.each_run do
   require 'rest-assured/config'
   RestAssured::Config.build(:adapter => 'mysql')
   require 'rest-assured'
+  require 'rest-assured/application'
 
   def app
     RestAssured::Application

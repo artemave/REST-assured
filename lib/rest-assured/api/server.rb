@@ -1,7 +1,6 @@
 require 'singleton'
 require 'rest-assured/config'
 require 'rest-assured/api/resources'
-require 'rest-assured/application'
 require 'rest-assured/utils/subprocess'
 require 'rest-assured/utils/port_explorer'
 
@@ -19,7 +18,12 @@ module RestAssured
       self.address = "http#{AppConfig.use_ssl ? 's' : ''}://127.0.0.1:#{AppConfig.port}"
 
       @child = Utils::Subprocess.new do
-        RestAssured::Application.send(:include, Config)
+        if defined?(RestAssured::Application)
+          RestAssured::Application.send(:include, Config)
+        else
+          require 'rest-assured/application'
+        end
+
         RestAssured::Application.run!
       end
     end

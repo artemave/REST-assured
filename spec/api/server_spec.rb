@@ -40,25 +40,30 @@ module RestAssured
         Server.start!
       end
 
-      it 'starts RestAssured::Application in subprocess' do
-        Utils::Subprocess.should_receive(:new) do |&block|
-          block.call
-        end
-        # XXX I don't know how to test that run! happens
-        # only as part of block passed to Subprocess. Code smell?
-        Application.should_receive(:include).with(Config).ordered
-        Application.should_receive(:run!).ordered
-
-        Server.start!
-      end
-
-      it 'passes configuration to underlying application' do
+      it 'builds application config' do
         Utils::Subprocess.stub(:new)
 
         opts = { :port => 34545, :database => ':memory:' }
 
         Config.should_receive(:build).with(opts)
         Server.start!(opts)
+      end
+
+      context 'loads and starts application in subprocess' do
+        it 'just reloads configuration if it is already defined' do
+          Utils::Subprocess.should_receive(:new) do |&block|
+            block.call
+          end
+
+          Application.should_receive(:include).with(Config).ordered
+          Application.should_receive(:run!).ordered
+
+          Server.start!
+        end
+
+        it 'requires application if it is not defined' do
+          pending "figure out how to test it"
+        end
       end
 
       context 'sets up server address' do
