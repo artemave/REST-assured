@@ -21,8 +21,8 @@ Gem::Specification.new do |s|
   s.require_paths         = ['lib']
 
   s.add_dependency 'sinatra', '>= 1.3.1'
-  s.add_dependency 'rack-flash', '>= 0.1.2'
   s.add_dependency 'rack', '<= 1.3.6'
+  s.add_dependency 'sinatra-flash'
   s.add_dependency 'haml', '>= 3.1.3'
   s.add_dependency 'activerecord', '~> 3.1.0'
   s.add_dependency 'activeresource', '~> 3.1.0'

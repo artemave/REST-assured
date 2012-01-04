@@ -19,7 +19,7 @@ module RestAssured
             flash[:notice] = "Redirect created"
             redirect '/redirects'
           else
-            flash[:error] = "Crumps! " + @redirect.errors.full_messages.join("; ")
+            flash.now[:error] = "Crumps! " + @redirect.errors.full_messages.join("; ")
             haml :'redirects/new'
           end
         else

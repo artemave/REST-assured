@@ -48,7 +48,7 @@ module RestAssured
             flash[:notice] = "Double created"
             redirect '/doubles'
           else
-            flash[:error] = "Crumps! " + @double.errors.full_messages.join("; ")
+            flash.now[:error] = "Crumps! " + @double.errors.full_messages.join("; ")
             haml :'doubles/new'
           end
         else
