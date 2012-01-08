@@ -1,7 +1,7 @@
 require 'singleton'
 require 'rest-assured/config'
 require 'rest-assured/api/resources'
-require 'rest-assured/utils/subprocess'
+require 'rest-assured/api/app_session'
 require 'rest-assured/utils/port_explorer'
 
 module RestAssured
@@ -17,15 +17,7 @@ module RestAssured
 
       self.address = "http#{AppConfig.use_ssl ? 's' : ''}://127.0.0.1:#{AppConfig.port}"
 
-      @child = Utils::Subprocess.new do
-        if defined?(RestAssured::Application)
-          RestAssured::Application.send(:include, Config)
-        else
-          require 'rest-assured/application'
-        end
-
-        RestAssured::Application.run!
-      end
+      @session = AppSession.new
     end
 
     def start(*args)
@@ -41,11 +33,11 @@ module RestAssured
     end
 
     def stop
-      @child.stop
+      @session.stop
     end
 
     def up?
-      !@child.nil? && @child.alive? && !Utils::PortExplorer.port_free?(AppConfig.port)
+      !@session.nil? && @session.alive? && !Utils::PortExplorer.port_free?(AppConfig.port)
     end
 
     def self.method_missing(*args)
