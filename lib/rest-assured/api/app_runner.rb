@@ -5,8 +5,7 @@ module RestAssured
     include Singleton
 
     def run!
-      # just reload config if application has already been loaded (happens in tests)
-      unless require 'rest-assured/application'
+      unless Kernel.require 'rest-assured/application'
         RestAssured::Application.send(:include, Config)
       end
       RestAssured::Application.run!
