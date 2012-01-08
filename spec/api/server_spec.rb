@@ -8,7 +8,7 @@ module RestAssured
     end
 
     it 'khows when it is up' do
-      Utils::Subprocess.stub(:new).and_return(child = stub(:alive? => true))
+      AppSession.stub(:new).and_return(session = stub(:alive? => true))
       Utils::PortExplorer.stub(:port_free? => false)
       Server.start
 
@@ -21,7 +21,7 @@ module RestAssured
       end
 
       it 'if it is starting at the moment' do
-        Utils::Subprocess.stub(:new).and_return(child = stub(:alive? => true))
+        AppSession.stub(:new).and_return(session = stub(:alive? => true))
         Utils::PortExplorer.stub(:port_free? => true)
         Server.start!
 
@@ -30,18 +30,18 @@ module RestAssured
     end
 
     context 'when starts' do
-      it 'makes sure no previous child is running' do
-        child = double(:alive? => true)
+      it 'makes sure no previous session is running' do
+        session = double(:alive? => true)
         Utils::PortExplorer.stub(:port_free? => false)
-        Utils::Subprocess.stub(:new).and_return(child)
+        AppSession.stub(:new).and_return(session)
 
-        child.should_receive(:stop).once
+        session.should_receive(:stop).once
         Server.start!
         Server.start!
       end
 
       it 'builds application config' do
-        Utils::Subprocess.stub(:new)
+        AppSession.stub(:new)
 
         opts = { :port => 34545, :database => ':memory:' }
 
@@ -49,26 +49,9 @@ module RestAssured
         Server.start!(opts)
       end
 
-      context 'loads and starts application in subprocess' do
-        it 'just reloads configuration if it is already defined' do
-          Utils::Subprocess.should_receive(:new) do |&block|
-            block.call
-          end
-
-          Application.should_receive(:include).with(Config).ordered
-          Application.should_receive(:run!).ordered
-
-          Server.start!
-        end
-
-        it 'requires application if it is not defined' do
-          pending "figure out how to test it"
-        end
-      end
-
       context 'sets up server address' do
         before do
-          Utils::Subprocess.stub(:new)
+          AppSession.stub(:new)
         end
 
         it 'uses 127.0.0.1 as hostname' do
@@ -99,12 +82,12 @@ module RestAssured
 
       describe 'async/sync start' do
         before do
-          Utils::Subprocess.stub(:new).and_return(child = stub(:alive? => false))
+          AppSession.stub(:new).and_return(session = stub(:alive? => false))
           Utils::PortExplorer.stub(:port_free? => true)
 
           @t = Thread.new do
             sleep 0.5
-            child.stub(:alive?).and_return(true)
+            session.stub(:alive?).and_return(true)
             Utils::PortExplorer.stub(:port_free? => false)
           end
         end
@@ -127,10 +110,10 @@ module RestAssured
 
     context 'when stopped' do
       it 'stops application subprocess' do
-        Utils::Subprocess.stub(:new).and_return(child = mock)
+        AppSession.stub(:new).and_return(session = mock)
         Server.start!
 
-        child.should_receive(:stop)
+        session.should_receive(:stop)
         Server.stop
       end
     end
