@@ -73,7 +73,7 @@ module RestAssured
         end
 
         it 'uses https if ssl is set in config' do
-          AppConfig.use_ssl = true
+          AppConfig.ssl = true
           RestAssured::Double.should_receive(:site=).with(/https/)
           Server.start!
           Server.address.should =~ /https/

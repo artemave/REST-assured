@@ -51,8 +51,8 @@ OptionParser.new do |opts|
     user_opts[:logfile] = logfile
   end
 
-  opts.on('--ssl', "Whether or not to run on https. Defaults to false (http)") do |use_ssl|
-    user_opts[:use_ssl] = true
+  opts.on('--ssl', "Whether or not to run on https. Defaults to false (http)") do
+    user_opts[:ssl] = true
   end
 
   opts.on('-c', '--ssl_cert FILENAME', "Path to ssl_cert. Defaults to self signed certificate shipped with rest-assured") do |ssl_cert|
