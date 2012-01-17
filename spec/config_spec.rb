@@ -5,16 +5,16 @@ require 'webrick'
 
 module RestAssured
   describe Config do
+    before do
+      Config.build
+    end
+
     context 'builds config from user options' do
       #this is thoroughly covered in cucumber (since there it also serves documentation purposes)
     end
 
     context 'when included in Application' do
       let(:app) { mock(:app).as_null_object }
-
-      before do
-        Config.build
-      end
 
       it 'initializes logger' do
         Config.stub(:setup_db)
@@ -95,7 +95,7 @@ module RestAssured
 
       context 'when ssl true' do
         before do
-          AppConfig.stub(:use_ssl).and_return(true)
+          AppConfig.stub(:ssl).and_return(true)
         end
 
         it 'makes sure only webrick can be used' do
@@ -120,11 +120,28 @@ module RestAssured
         end
 
         it 'does all that only if ssl true' do
-          AppConfig.stub(:use_ssl).and_return(false)
+          AppConfig.stub(:ssl).and_return(false)
 
           app.should_not_receive(:set).with(:webrick, anything)
           Config.included(app)
         end
+      end
+    end
+    
+    context 'cmd args array conversion' do
+      it 'converts true values in form of "value" => ["--#{value}"]' do
+        AppConfig.ssl = true
+        Config.to_cmdargs.should include('--ssl')
+      end
+
+      it 'does not include false values' do
+        AppConfig.ssl = false
+        Config.to_cmdargs.should_not include('--ssl')
+      end
+
+      it 'converts key value pairs in form of "key => value" => ["--#{key}", value]' do
+        AppConfig.port = 1234
+        Config.to_cmdargs.should include('--port', 1234)
       end
     end
   end

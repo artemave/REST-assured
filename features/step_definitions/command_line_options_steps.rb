@@ -41,5 +41,5 @@ Then /^ssl certificate used should be "([^"]*)" and ssl key should be "([^"]*)"$
 end
 
 Then /^rest\-assured should "([^"]*)"$/ do |use|
-  @app_config[:use_ssl].to_s.should == use
+  @app_config[:ssl].to_s.should == use
 end

@@ -15,7 +15,7 @@ module RestAssured
 
       Config.build(opts)
 
-      self.address = "http#{AppConfig.use_ssl ? 's' : ''}://127.0.0.1:#{AppConfig.port}"
+      self.address = "http#{AppConfig.ssl ? 's' : ''}://127.0.0.1:#{AppConfig.port}"
 
       @session = AppSession.new
     end

@@ -54,10 +54,10 @@ Feature: command line options
 
   Scenario Outline: use ssl option
     When I start rest-assured with <option>
-    Then rest-assured should "<use_ssl>"
+    Then rest-assured should "<ssl>"
 
     Examples:
-      | option | use_ssl |
+      | option | ssl |
       |        | false   |
       | --ssl  | true    |
 

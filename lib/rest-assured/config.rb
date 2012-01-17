@@ -45,13 +45,25 @@ module RestAssured
     def self.included(klass)
       init_logger
       setup_db
-      setup_ssl(klass) if AppConfig.use_ssl
+      setup_ssl(klass) if AppConfig.ssl
 
       klass.set :port, AppConfig.port
       klass.set :environment, AppConfig.environment
 
       klass.enable :logging
       klass.use Rack::CommonLogger, AppConfig.logger
+    end
+
+    def self.to_cmdargs
+      AppConfig.inject([]) do |acc, (k,v)|
+        if v == true
+          acc << "--#{k}"
+        elsif v.is_a?(String) || v.is_a?(Integer)
+          acc << "--#{k}" << v
+        else
+          acc
+        end
+      end
     end
 
     private
@@ -152,7 +164,7 @@ module RestAssured
       end
 
       def self.build_ssl_config
-        AppConfig.use_ssl ||= false
+        AppConfig.ssl ||= false
         AppConfig.ssl_cert ||= File.expand_path('../../../ssl/localhost.crt', __FILE__)
         AppConfig.ssl_key ||= File.expand_path('../../../ssl/localhost.key', __FILE__)
       end
