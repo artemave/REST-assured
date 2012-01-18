@@ -59,7 +59,7 @@ Spork.each_run do
   end
 
   Before "@ruby_api" do
-    RestAssured::Server.start(:port => 9876, :db_user => ENV['TRAVIS'] ? "''" : "root")
+    RestAssured::Server.start(:port => 9876, :dbuser => ENV['TRAVIS'] ? "''" : "root")
   end
 
   Before "@ui" do

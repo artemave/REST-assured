@@ -5,9 +5,12 @@ require File.expand_path('../../../lib/rest-assured/utils/drb_sniffer', __FILE__
 
 module RestAssured
   describe AppSession do
-    context 'starts application' do
-      it 'in subprocess if current process does NOT involve Drb (e.g. spork)' do
+    context 'current process does NOT involve Drb (e.g. spork)' do
+      before do
         AppSession.any_instance.stub(:drb? => false)
+      end
+
+      it 'start application in subprocess' do
         state = ''
         Utils::Subprocess.should_receive(:new) do |&block|
           state << 'called from block'
@@ -20,9 +23,14 @@ module RestAssured
 
         AppSession.new
       end
+    end
 
-      it 'in childprocess if current process relies on Drb (e.g. using spork)' do
+    context 'current process relies on Drb (e.g. spork)' do
+      before do
         AppSession.any_instance.stub(:drb? => true)
+      end
+
+      it 'starts application in childprocess' do
         cmdargs = %w{-d :memory: -p 6666}
         Config.stub(:to_cmdargs => cmdargs)
 
@@ -38,6 +46,7 @@ module RestAssured
 
         AppSession.new
       end
+
     end
   end
 end
