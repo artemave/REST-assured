@@ -10,6 +10,10 @@ module RestAssured
 
     include Singleton
 
+    at_exit do
+      instance.stop
+    end
+
     def start!(opts = {})
       stop if up?
 
@@ -33,7 +37,7 @@ module RestAssured
     end
 
     def stop
-      @session.stop
+      @session.stop if @session
     end
 
     def up?

@@ -130,18 +130,18 @@ module RestAssured
     
     context 'cmd args array conversion' do
       it 'converts true values in form of "value" => ["--#{value}"]' do
-        AppConfig.ssl = true
-        Config.to_cmdargs.should include('--ssl')
+        Config.build(:ssl => true)
+        Config.to_cmdargs.should == ['--ssl']
       end
 
       it 'does not include false values' do
-        AppConfig.ssl = false
+        Config.build(:ssl => false)
         Config.to_cmdargs.should_not include('--ssl')
       end
 
-      it 'converts key value pairs in form of "key => value" => ["--#{key}", value]' do
-        AppConfig.port = 1234
-        Config.to_cmdargs.should include('--port', 1234)
+      it 'converts key value pairs in form of "key => value" => ["--#{key}", "value"]' do
+        Config.build(:port => 1234, :database => ':memory:')
+        Config.to_cmdargs.should == ['--port', '1234', '--database', ':memory:']
       end
     end
   end

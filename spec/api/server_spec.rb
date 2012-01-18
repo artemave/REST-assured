@@ -117,5 +117,19 @@ module RestAssured
         Server.stop
       end
     end
+
+    it 'stops application subprocess when current process exits' do
+      res_file = Tempfile.new('res')
+      AppSession.stub(:new).and_return(session = mock)
+      session.stub(:stop) do
+        res_file.write "stopped"
+        res_file.rewind
+      end
+      fork do
+        Server.start!
+      end
+      Process.wait
+      res_file.read.should == 'stopped'
+    end
   end
 end

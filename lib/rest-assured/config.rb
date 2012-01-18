@@ -31,7 +31,8 @@ module RestAssured
 
     # this is meant to be called prior to include
     def self.build(opts = {})
-      AppConfig.merge!(opts)
+      @user_conf = opts
+      AppConfig.merge!(@user_conf)
 
       AppConfig.logfile ||= if AppConfig.environment == 'production'
                               './rest-assured.log'
@@ -55,11 +56,11 @@ module RestAssured
     end
 
     def self.to_cmdargs
-      AppConfig.inject([]) do |acc, (k,v)|
+      @user_conf.inject([]) do |acc, (k,v)|
         if v == true
           acc << "--#{k}"
         elsif v.is_a?(String) || v.is_a?(Integer)
-          acc << "--#{k}" << v
+          acc << "--#{k}" << v.to_s
         else
           acc
         end
