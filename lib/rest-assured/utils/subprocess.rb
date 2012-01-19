@@ -23,6 +23,9 @@ module RestAssured
           begin
             yield
           rescue => e
+            if defined?(EventMachine) && e.is_a?(EventMachine::ConnectionNotBound)
+              retry
+            end
             puts "#{self} has raised #{e.inspect}:"
             puts e.backtrace.join("\n")
           end
