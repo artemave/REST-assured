@@ -7,7 +7,7 @@ module RestAssured
         @pid = Kernel.fork do
           trap('USR1') do
             $stopped = true
-            exit
+            Process.kill('TERM', Process.pid) # unlike 'exit' this one is NOT being intercepted by Webrick
           end
 
           at_exit do
