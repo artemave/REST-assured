@@ -27,9 +27,9 @@ module RestAssured
     def start(*args)
       start!(*args)
 
-      begin
+      while not up?
         sleep 0.5
-      end while not up?
+      end
     end
 
     def address=(address)
@@ -37,11 +37,21 @@ module RestAssured
     end
 
     def stop
-      @session.stop if @session
+      @session.try(:stop)
+
+      10.times do
+        if up?
+          sleep 0.5
+          next
+        else
+          return
+        end
+      end
+      raise "Failed to stop RestAssured server"
     end
 
     def up?
-      !@session.nil? && @session.alive? && !Utils::PortExplorer.port_free?(AppConfig.port)
+      !!@session && @session.alive? && !Utils::PortExplorer.port_free?(AppConfig.port) 
     end
 
     def self.method_missing(*args)

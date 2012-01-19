@@ -31,7 +31,8 @@ module RestAssured
 
     context 'when starts' do
       it 'makes sure no previous session is running' do
-        session = double(:alive? => true)
+        session = mock
+        session.stub(:alive?).and_return(true, false)
         Utils::PortExplorer.stub(:port_free? => false)
         AppSession.stub(:new).and_return(session)
 
@@ -110,7 +111,7 @@ module RestAssured
 
     context 'when stopped' do
       it 'stops application subprocess' do
-        AppSession.stub(:new).and_return(session = mock)
+        AppSession.stub(:new).and_return(session = mock.as_null_object)
         Server.start!
 
         session.should_receive(:stop)
@@ -120,7 +121,7 @@ module RestAssured
 
     it 'stops application subprocess when current process exits' do
       res_file = Tempfile.new('res')
-      AppSession.stub(:new).and_return(session = mock)
+      AppSession.stub(:new).and_return(session = mock.as_null_object)
       session.stub(:stop) do
         res_file.write "stopped"
         res_file.rewind
