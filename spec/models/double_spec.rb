@@ -44,34 +44,39 @@ module RestAssured::Models
     end
 
     describe 'when created' do
-      it "toggles active double for the same fullpath" do
+      it "toggles active double for the same fullpath and verb" do
         f1 = Double.create valid_params
         f2 = Double.create valid_params
         f3 = Double.create valid_params.merge(:fullpath => '/some/other/api')
+        f4 = Double.create valid_params.merge(:verb => 'POST')
 
         f1.reload.active.should be false
         f2.reload.active.should be true
         f3.reload.active.should be true
+        f4.reload.active.should be true
       end
     end
 
     describe 'when saved' do
-      it "toggles active double for the same fullpath" do
+      it "toggles active double for the same fullpath and verb" do
         f1 = Double.create valid_params
         f2 = Double.create valid_params
         f3 = Double.create valid_params.merge(:fullpath => '/some/other/api')
+        f4 = Double.create valid_params.merge(:verb => 'POST')
 
         f1.active = true
         f1.save
 
         f2.reload.active.should be false
         f3.reload.active.should be true
+        f4.reload.active.should be true
       end
 
       it "makes other doubles inactive only when active bit set to true" do
         f1 = Double.create valid_params
         f2 = Double.create valid_params
         f3 = Double.create valid_params.merge(:fullpath => '/some/other/api')
+        f4 = Double.create valid_params.merge(:verb => 'POST')
 
         f1.reload.save
         f2.reload.save
@@ -79,6 +84,7 @@ module RestAssured::Models
         f1.reload.active.should be false
         f2.reload.active.should be true
         f3.reload.active.should be true
+        f4.reload.active.should be true
       end
     end
 

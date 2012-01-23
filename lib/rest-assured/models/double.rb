@@ -26,8 +26,8 @@ module RestAssured
         def toggle_active
           ne = id ? '!=' : 'IS NOT'
 
-          if active && Double.where("fullpath = ? AND active = ? AND id #{ne} ?", fullpath, true, id).exists?
-            Double.where("fullpath = ? AND id #{ne} ?", fullpath, id).update_all :active => false
+          if active && Double.where("fullpath = ? AND verb = ? AND active = ? AND id #{ne} ?", fullpath, verb, true, id).exists?
+            Double.where("fullpath = ? AND verb = ? AND id #{ne} ?", fullpath, verb, id).update_all :active => false
           end
         end
 
