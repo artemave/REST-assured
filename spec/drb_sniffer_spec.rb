@@ -10,21 +10,36 @@ module RestAssured::Utils
       o
     end
 
-    context 'with DRb' do
-      before do
-        DRb.start_service("druby://127.0.0.1:#{PortExplorer.free_port}")
+    context 'cucumber' do
+      around do |example|
+        argv = ARGV.clone
+        example.run
+        ARGV.clear.push(argv).flatten!
       end
-      after do
-        DRb.stop_service
+
+      before do
+        RSpec.stub_chain('configuration.drb').and_raise(NameError)
       end
 
       it 'lets extendee to find out whether current process is using drb' do
+        ARGV.delete_if {|a| a =~ /--drb/}
+        extendee.drb?.should == false
+      end
+
+      it 'lets extendee to find out whether current process is NOT using drb' do
+        ARGV << '--drb'
         extendee.drb?.should == true
       end
     end
 
-    context 'without DRb' do
+    context 'rspec' do
+      it 'lets extendee to find out whether current process is using drb' do
+        RSpec.stub_chain('configuration.drb').and_return(true)
+        extendee.drb?.should == true
+      end
+
       it 'lets extendee to find out whether current process is NOT using drb' do
+        RSpec.stub_chain('configuration.drb').and_return(false)
         extendee.drb?.should == false
       end
     end
