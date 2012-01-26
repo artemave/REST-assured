@@ -8,7 +8,7 @@ module RestAssured
     end
 
     it 'khows when it is up' do
-      AppSession.stub(:new).and_return(session = stub(:alive? => true))
+      AppSession.stub(:new).and_return(session = stub(:alive? => true).as_null_object)
       Utils::PortExplorer.stub(:port_free? => false)
       Server.start
 
@@ -21,7 +21,7 @@ module RestAssured
       end
 
       it 'if it is starting at the moment' do
-        AppSession.stub(:new).and_return(session = stub(:alive? => true))
+        AppSession.stub(:new).and_return(session = stub(:alive? => true).as_null_object)
         Utils::PortExplorer.stub(:port_free? => true)
         Server.start!
 
@@ -31,7 +31,7 @@ module RestAssured
 
     context 'when starts' do
       it 'makes sure no previous session is running' do
-        session = mock
+        session = mock.as_null_object
         session.stub(:alive?).and_return(true, false)
         Utils::PortExplorer.stub(:port_free? => false)
         AppSession.stub(:new).and_return(session)
@@ -42,7 +42,7 @@ module RestAssured
       end
 
       it 'builds application config' do
-        AppSession.stub(:new)
+        AppSession.stub(:new).as_null_object
 
         opts = { :port => 34545, :database => ':memory:' }
 
@@ -52,7 +52,7 @@ module RestAssured
 
       context 'sets up server address' do
         before do
-          AppSession.stub(:new)
+          AppSession.stub(:new).as_null_object
         end
 
         it 'uses 127.0.0.1 as hostname' do
@@ -83,7 +83,7 @@ module RestAssured
 
       describe 'async/sync start' do
         before do
-          AppSession.stub(:new).and_return(session = stub(:alive? => false))
+          AppSession.stub(:new).and_return(session = stub(:alive? => false).as_null_object)
           Utils::PortExplorer.stub(:port_free? => true)
 
           @t = Thread.new do
