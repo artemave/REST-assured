@@ -10,11 +10,9 @@ module RestAssured
 
     include Singleton
 
-    at_exit do
-      instance.stop
-    end
-
     def start!(opts = {})
+      at_exit { stop }
+
       stop if up?
 
       Config.build(opts)
