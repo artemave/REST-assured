@@ -1,13 +1,12 @@
 require 'childprocess'
 require File.expand_path('../../spec_helper', __FILE__)
 require File.expand_path('../../../lib/rest-assured/api/app_session', __FILE__)
-require File.expand_path('../../../lib/rest-assured/utils/drb_sniffer', __FILE__)
 
 module RestAssured
   describe AppSession do
-    context 'current process does NOT involve Drb (e.g. spork)' do
+    context 'OS supports forking' do
       before do
-        AppSession.any_instance.stub(:drb? => false)
+        AppSession.any_instance.stub(:can_fork? => true)
       end
 
       it 'start application in subprocess' do
@@ -25,9 +24,9 @@ module RestAssured
       end
     end
 
-    context 'current process relies on Drb (e.g. spork)' do
+    context 'OS does not support forking' do
       before do
-        AppSession.any_instance.stub(:drb? => true)
+        AppSession.any_instance.stub(:can_fork? => false)
       end
 
       it 'starts application in childprocess' do
