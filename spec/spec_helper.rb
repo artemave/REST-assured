@@ -4,6 +4,7 @@ require 'spork'
 $:.unshift(File.expand_path('../../lib'), __FILE__)
 
 Spork.prefork do
+  require 'rspec'
   require 'capybara/rspec'
   require 'rack/test'
   require 'database_cleaner'
