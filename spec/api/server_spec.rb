@@ -63,7 +63,7 @@ module RestAssured
 
         it 'uses port from config' do
           RestAssured::Double.should_receive(:site=).with(/#{AppConfig.port}/)
-          Server.start!
+            Server.start!
           Server.address.should =~ /#{AppConfig.port}/
         end
 
@@ -120,17 +120,19 @@ module RestAssured
     end
 
     it 'stops application subprocess when current process exits' do
-      res_file = Tempfile.new('res')
-      AppSession.stub(:new).and_return(session = mock.as_null_object)
-      session.stub(:stop) do
-        res_file.write "stopped"
-        res_file.rewind
+      unless drb? # drb breaks fork sandbox: at_exits a collected and fired all together on master process exit
+        res_file = Tempfile.new('res')
+        AppSession.stub(:new).and_return(session = mock.as_null_object)
+        session.stub(:stop) do
+          res_file.write "stopped"
+          res_file.rewind
+        end
+        fork do
+          Server.start!
+        end
+        Process.wait
+        res_file.read.should == 'stopped'
       end
-      fork do
-        Server.start!
-      end
-      Process.wait
-      res_file.read.should == 'stopped'
     end
   end
 end

@@ -11,6 +11,7 @@ Spork.prefork do
   require 'awesome_print'
   require File.expand_path('../support/custom_matchers', __FILE__)
   require File.expand_path('../support/reset-singleton', __FILE__)
+  require File.expand_path('../support/drb_sniffer', __FILE__)
 
   ENV['RACK_ENV'] = 'test'
 
@@ -26,6 +27,7 @@ Spork.prefork do
     c.include Capybara::DSL
     c.include Rack::Test::Methods
     c.include XhrHelpers
+    c.include DrbSniffer
 
     c.before(:each) do
       DatabaseCleaner.start

@@ -46,31 +46,31 @@ module RestAssured::Utils
 
     # I am not sure this is actually useful
     #describe 'commits seppuku' do
-      #it 'if child raises exception' do
-        #res_file = Tempfile.new('res')
-        #fork do
-          #at_exit { exit! }
-          #Subprocess.new { raise "!!NO PANIC!! This exception is part of test"; sleep 1 }
-          #sleep 0.5
-          #res_file.write('should not exist because this process should be killed by now')
-          #res_file.rewind
-        #end
-        #Process.wait
-        #res_file.read.should == ''
-      #end
+    #it 'if child raises exception' do
+    #res_file = Tempfile.new('res')
+    #fork do
+    #at_exit { exit! }
+    #Subprocess.new { raise "!!NO PANIC!! This exception is part of test"; sleep 1 }
+    #sleep 0.5
+    #res_file.write('should not exist because this process should be killed by now')
+    #res_file.rewind
+    #end
+    #Process.wait
+    #res_file.read.should == ''
+    #end
 
-      #it 'if child just quits' do
-        #res_file = Tempfile.new('res')
-        #fork do
-          #at_exit { exit! }
-          #Subprocess.new { 1 }
-          #sleep 0.5
-          #res_file.write('should not exist because this process should be killed by now')
-          #res_file.rewind
-        #end
-        #Process.wait
-        #res_file.read.should == ''
-      #end
+    #it 'if child just quits' do
+    #res_file = Tempfile.new('res')
+    #fork do
+    #at_exit { exit! }
+    #Subprocess.new { 1 }
+    #sleep 0.5
+    #res_file.write('should not exist because this process should be killed by now')
+    #res_file.rewind
+    #end
+    #Process.wait
+    #res_file.read.should == ''
+    #end
     #end
 
     context 'shuts down child process' do
@@ -102,33 +102,37 @@ module RestAssured::Utils
       end
 
       it 'when exits normally' do
-        child_pid # Magic touch. Literally. Else Tempfile gets created in fork and that messes things up
+        unless drb? # drb breaks fork sandbox: at_exits a collected and fired all together on master process exit
+          child_pid # Magic touch. Literally. Else Tempfile gets created in fork and that messes things up
 
-        fork do
-          at_exit { exit! }
-          child = Subprocess.new { sleep 2 }
-          child_pid.write(child.pid)
-          child_pid.rewind
+          fork do
+            at_exit { exit! }
+            child = Subprocess.new { sleep 2 }
+            child_pid.write(child.pid)
+            child_pid.rewind
+          end
+
+          sleep 0.5
+          child_alive?.should == false
         end
-
-        sleep 0.5
-        child_alive?.should == false
       end
 
       it 'when killed violently' do
-        child_pid
+        unless drb?
+          child_pid
 
-        fork do
-          at_exit { exit! }
-          child = Subprocess.new { sleep 2 }
-          child_pid.write(child.pid)
-          child_pid.rewind
+          fork do
+            at_exit { exit! }
+            child = Subprocess.new { sleep 2 }
+            child_pid.write(child.pid)
+            child_pid.rewind
 
-          Process.kill('TERM', Process.pid)
+            Process.kill('TERM', Process.pid)
+          end
+
+          sleep 0.5
+          child_alive?.should == false
         end
-        
-        sleep 0.5
-        child_alive?.should == false
       end
     end
   end
