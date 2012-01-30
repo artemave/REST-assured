@@ -1,14 +1,14 @@
 require 'rest-assured/utils/subprocess'
-require 'rest-assured/utils/env_awareness'
+require 'rest-assured/utils/drb_sniffer'
 require 'rest-assured/api/app_runner'
 require 'childprocess'
 
 module RestAssured
   class AppSession
-    include Utils::EnvAwareness
+    include Utils::DrbSniffer
 
     def initialize
-      @child = if can_fork?
+      @child = if not running_in_drb? and Process.respond_to?(:fork)
                  Utils::Subprocess.new do
                    AppRunner.run!
                  end
@@ -18,6 +18,12 @@ module RestAssured
                  child.start
                  child
                end
+    end
+
+    def alive?
+      @child.alive?
+    rescue Errno::ECHILD
+      false
     end
 
     def method_missing(*args)

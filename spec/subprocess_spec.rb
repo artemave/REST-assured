@@ -1,5 +1,4 @@
 require 'tempfile'
-require 'ostruct'
 require File.expand_path('../spec_helper', __FILE__)
 require File.expand_path('../../lib/rest-assured/utils/subprocess', __FILE__)
 
@@ -102,7 +101,7 @@ module RestAssured::Utils
       end
 
       it 'when exits normally' do
-        unless drb? # drb breaks fork sandbox: at_exits a collected and fired all together on master process exit
+        if not running_in_drb? # drb breaks fork sandbox: at_exits a collected and fired all together on master process exit
           child_pid # Magic touch. Literally. Else Tempfile gets created in fork and that messes things up
 
           fork do
@@ -118,7 +117,7 @@ module RestAssured::Utils
       end
 
       it 'when killed violently' do
-        unless drb?
+        if not running_in_drb?
           child_pid
 
           fork do

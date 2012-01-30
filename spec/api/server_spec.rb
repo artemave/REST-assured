@@ -111,7 +111,7 @@ module RestAssured
 
     context 'when stopped' do
       it 'stops application subprocess' do
-        AppSession.stub(:new).and_return(session = mock.as_null_object)
+        AppSession.stub(:new).and_return(session = stub(:alive? => false))
         Server.start!
 
         session.should_receive(:stop)
@@ -120,7 +120,7 @@ module RestAssured
     end
 
     it 'stops application subprocess when current process exits' do
-      unless drb? # drb breaks fork sandbox: at_exits a collected and fired all together on master process exit
+      if not running_in_drb? # drb breaks fork sandbox: at_exits a collected and fired all together on master process exit
         res_file = Tempfile.new('res')
         AppSession.stub(:new).and_return(session = mock.as_null_object)
         session.stub(:stop) do
