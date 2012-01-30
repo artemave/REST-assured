@@ -11,7 +11,7 @@ Spork.prefork do
   require 'awesome_print'
   require File.expand_path('../support/custom_matchers', __FILE__)
   require File.expand_path('../support/reset-singleton', __FILE__)
-  require File.expand_path('../support/drb_sniffer', __FILE__)
+  require 'rest-assured/utils/drb_sniffer'
 
   ENV['RACK_ENV'] = 'test'
 
@@ -27,7 +27,7 @@ Spork.prefork do
     c.include Capybara::DSL
     c.include Rack::Test::Methods
     c.include XhrHelpers
-    c.include DrbSniffer
+    c.include RestAssured::Utils::DrbSniffer
 
     c.before(:each) do
       DatabaseCleaner.start
@@ -45,9 +45,6 @@ Spork.prefork do
       header 'User-Agent', nil
     end
   end
-end
-
-Spork.each_run do
   require 'rest-assured/config'
   db_opts = { :dbuser => ENV['TRAVIS'] ? "''" : "root", :adapter => 'mysql' }
   RestAssured::Config.build(db_opts)
@@ -56,11 +53,23 @@ Spork.each_run do
   require 'rest-assured/application'
   require 'shoulda-matchers'
 
-  RSpec.configure do |c|
-    c.before(:each, "ruby-api" => true) do
-      RestAssured::Server.start(db_opts.merge(:port => 9876))
-    end
-  end
+  RestAssured::Server.start(db_opts.merge(:port => 9876))
+end
+
+Spork.each_run do
+  #require 'rest-assured/config'
+  #db_opts = { :dbuser => ENV['TRAVIS'] ? "''" : "root", :adapter => 'mysql' }
+  #RestAssured::Config.build(db_opts)
+
+  #require 'rest-assured'
+  #require 'rest-assured/application'
+  #require 'shoulda-matchers'
+
+  #RSpec.configure do |c|
+    #c.before(:each, "ruby-api" => true) do
+      #RestAssured::Server.start(db_opts.merge(:port => 9876))
+    #end
+  #end
 
   Capybara.app = RestAssured::Application
 

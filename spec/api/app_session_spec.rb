@@ -4,9 +4,9 @@ require File.expand_path('../../../lib/rest-assured/api/app_session', __FILE__)
 
 module RestAssured
   describe AppSession do
-    context 'OS supports forking' do
+    context 'either without spork or outside prefork block' do
       before do
-        AppSession.any_instance.stub(:can_fork? => true)
+        AppSession.any_instance.stub(:running_in_drb? => false)
       end
 
       it 'start application in subprocess' do
@@ -24,9 +24,9 @@ module RestAssured
       end
     end
 
-    context 'OS does not support forking' do
+    context 'within spork prefork block' do
       before do
-        AppSession.any_instance.stub(:can_fork? => false)
+        AppSession.any_instance.stub(:running_in_drb? => true)
       end
 
       it 'starts application in childprocess' do
