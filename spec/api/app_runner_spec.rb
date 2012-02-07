@@ -5,6 +5,7 @@ module RestAssured
   describe AppRunner do
     before do
       Application.stub(:run!)
+      Config.stub(:included)
     end
 
     it 'requires Application' do
