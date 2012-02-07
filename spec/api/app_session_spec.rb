@@ -14,7 +14,7 @@ module RestAssured
         Utils::Subprocess.should_receive(:new) do |&block|
           state << 'called from block'
           block.call
-          state.clear
+          state = ''
         end
         AppRunner.should_receive(:run!) do
           state.should == 'called from block'
