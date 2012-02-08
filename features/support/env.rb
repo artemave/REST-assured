@@ -9,6 +9,7 @@ Spork.prefork do
   require 'capybara/firebug'
   require 'capybara/cucumber'
   require 'database_cleaner'
+  require 'awesome_print'
   require File.dirname(__FILE__) + '/world_helpers'
 
   ENV['RACK_ENV'] = 'test'

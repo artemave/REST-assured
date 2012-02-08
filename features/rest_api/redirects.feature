@@ -1,3 +1,4 @@
+@now
 Feature: manage redirect rules
   In order to be able to mock only part of api
   As a developer
@@ -10,21 +11,21 @@ Feature: manage redirect rules
 
   Scenario: add redirect rule
     Given blank slate
-    When I register redirect with pattern "^/api" and uri "http://real.api.co.uk"
+    When I create redirect from "^/api/(.*)" to "http://example.com/\1"
     And I request "/api/something"
-    Then it should redirect to "http://real.api.co.uk/api/something"
+    Then it should redirect to "http://example.com/something"
 
   Scenario: add second redirect that match the same request
-    Given there is redirect with pattern "/api/something" and uri "http://real.api.co.uk"
-    When I register redirect with pattern "/api/some.*" and uri "http://real.com"
+    Given there is redirect from "/api/something" to "http://example.com"
+    When I create redirect from "/api/some.*" to "http://real.com"
     And I request "/api/something"
-    Then it should redirect to "http://real.api.co.uk/api/something"
+    Then it should redirect to "http://example.com/"
 
   Scenario: add second redirect that does not match the same request
-    Given there is redirect with pattern "/api/something" and uri "http://real.api.co.uk"
-    When I register redirect with pattern "/api/some" and uri "http://real.com"
-    And I request "/api/someth"
-    Then it should redirect to "http://real.com/api/someth"
+    Given there is redirect from "/api/thing" to "http://real.com"
+    When I create redirect from "/api/some.*" to "http://example.com"
+    And I request "/api/something"
+    Then it should redirect to "http://example.com/"
 
   Scenario: clear redirects
     Given there are some redirects

@@ -2,18 +2,14 @@ Then /^I should get (\d+)$/ do |code|
   last_response.status.should.to_s == code
 end
 
-Given /^there is redirect with pattern "([^"]*)" and uri "([^"]*)"$/ do |pattern, url|
+When /^(?:I create|there is) redirect from "([^"]*)" to "([^"]*)"$/ do |pattern, url|
   post '/redirects', { :pattern => pattern, :to => url }
   last_response.should be_ok
 end
 
-When /^I register redirect with pattern "([^"]*)" and uri "([^"]*)"$/ do |pattern, url|
-  step %{there is redirect with pattern "#{pattern}" and uri "#{url}"}
-end
-
 Then /^it should redirect to "([^"]*)"$/ do |real_api_url|
   follow_redirect!
-  last_response.header['Location'].should == real_api_url
+  last_request.url.should == real_api_url
 end
 
 Given /^the following redirects exist:$/ do |redirects|

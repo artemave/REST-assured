@@ -37,5 +37,27 @@ module RestAssured::Models
 
       Redirect.update_order([nil, 34]).should == false
     end
+
+    context 'redirect url' do
+      it 'constructs url to redirect to' do
+        path = rand(1000)
+        r = Redirect.create :pattern => '/api/(.*)\?.*', :to => 'http://external.com/some/url/\1?p=5'
+        Redirect.find_redirect_url_for("/api/#{path}?param=1").should == "http://external.com/some/url/#{path}?p=5"
+      end
+
+      it 'returns the one that matches the substring' do
+        r1 = Redirect.create :pattern => '/ai/path', :to => 'someurl'
+        r2 = Redirect.create :pattern => '/api/path', :to => 'someurl'
+
+        Redirect.find_redirect_url_for('/api/path').should == 'someurl'
+      end
+
+      it 'returns the oldest one that match' do
+        r1 = Redirect.create :pattern => '/api', :to => 'someurl'
+        r2 = Redirect.create :pattern => '/api/path', :to => 'otherurl'
+
+        Redirect.find_redirect_url_for('/api/path').should == 'someurl/path'
+      end
+    end
   end
 end

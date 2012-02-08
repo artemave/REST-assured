@@ -63,11 +63,13 @@ module RestAssured
     end
 
     it "redirects if double not hit but there is redirect that matches request" do
-      r = Models::Redirect.create :to => 'http://exmple.com/api', :pattern => '.*'
+      #r = Models::Redirect.create :to => 'http://exmple.com/api', :pattern => '.*'
+      #
       fullpath = '/some/other/path'
       request.stub(:fullpath).and_return(fullpath)
+      Models::Redirect.stub(:find_redirect_url_for).with(fullpath).and_return('new_url')
 
-      rest_assured_app.should_receive(:redirect).with(r.to + fullpath)
+      rest_assured_app.should_receive(:redirect).with('new_url')
 
       Response.perform(rest_assured_app)
     end
@@ -78,6 +80,7 @@ module RestAssured
       Response.perform(rest_assured_app)
     end
 
+    # TODO change to instead exclude anything that does not respond_to?(:to_s)
     it 'excludes "rack.input" and "rack.errors" as they break with "IOError - not opened for reading:" on consequent #to_json (as they are IO and StringIO)' do
       requests = double.as_null_object
       Models::Double.stub_chain('where.first').and_return(double(:requests => requests).as_null_object)

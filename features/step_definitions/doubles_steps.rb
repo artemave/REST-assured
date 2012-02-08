@@ -39,6 +39,10 @@ When /^I request "([^"]*)"$/ do |fullpath|
   get fullpath
 end
 
+When /sleep (\d+)/ do |n|
+  sleep n
+end
+
 When /^I "([^"]*)" "([^"]*)"$/ do |verb, fullpath|
   send(verb.downcase, fullpath)
 end

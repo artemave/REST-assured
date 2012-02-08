@@ -163,7 +163,7 @@ For those using rest-assured from non-ruby environments.
 
 It is sometimes desirable to only double certain calls while letting others through to the 'real' services. Meet Redirects. Kind of "rewrite rules" for requests that didn't match any double. 
 
-Another potential use for redirects is setting up a 'default' double that matches multiple fullpaths. This is of course given your app does not mind an extra redirect. Also note that 'default' double still covers only one http verb so requests with different methods won't match.
+Another potential use for redirects is setting up a 'default' double that matches multiple fullpaths. This is of course given your app does not mind an extra redirect. Also note that 'default' double still covers single http verb so requests with different methods won't match.
 
 Here is the rest API for managing redirects:
 
@@ -179,7 +179,7 @@ Here is the rest API for managing redirects:
   
     bash$ curl -d 'pattern=^/auth&to=https://myserver.com/api' http://localhost:4578/redirects
 
-  Now request (any verb) to 'http://localhost:4578/auth/services/1' will get redirected to 'https://myserver.com/api/auth/services/1.' Provided of course there is no double matched for that fullpath and verb.
+  Now request (any verb) to 'http://localhost:4578/auth/services/1' will get redirected to 'https://myserver.com/api/'. Provided of course there is no double matched for that fullpath and verb. Captured group in pattern can be referenced from replacement e.g. \\1, \\2, etc.
   Much like rewrite rules, redirects are evaluated in order (of creation). In UI you can manually rearrange the order.
 
 ### Delete all redirects

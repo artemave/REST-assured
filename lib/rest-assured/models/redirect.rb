@@ -9,6 +9,12 @@ module RestAssured
 
       before_create :assign_position
 
+      def self.find_redirect_url_for(fullpath)
+        if redirect = ordered.find { |r| fullpath =~ /#{r.pattern}/ }
+          fullpath.sub /#{redirect.pattern}/, redirect.to
+        end
+      end
+
       def self.update_order(ordered_redirect_ids)
         success = true
 

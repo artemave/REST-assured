@@ -3,6 +3,7 @@ source "http://rubygems.org"
 # Specify your gem's dependencies in rest-assured.gemspec
 gemspec
 
+gem 'awesome_print'
 gem 'cucumber'
 gem 'database_cleaner'
 gem 'rspec'
