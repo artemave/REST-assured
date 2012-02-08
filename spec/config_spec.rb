@@ -2,6 +2,7 @@ require File.expand_path('../../lib/rest-assured/config', __FILE__)
 require 'rack'
 require 'openssl'
 require 'webrick'
+require 'enumerator'
 
 module RestAssured
   describe Config do
@@ -141,7 +142,9 @@ module RestAssured
 
       it 'converts key value pairs in form of "key => value" => ["--#{key}", "value"]' do
         Config.build(:port => 1234, :database => ':memory:')
-        Config.to_cmdargs.should == ['--port', '1234', '--database', ':memory:']
+        Config.to_cmdargs.each_slice(2) do |a|
+          (a == ['--port', '1234'] || a == ['--database', ':memory:']).should == true
+        end
       end
     end
   end
