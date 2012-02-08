@@ -120,7 +120,7 @@ module RestAssured
     end
 
     it 'stops application subprocess when current process exits' do
-      if not running_in_drb? # drb breaks fork sandbox: at_exits a collected and fired all together on master process exit
+      if not running_in_spork?
         res_file = Tempfile.new('res')
         AppSession.stub(:new).and_return(session = mock.as_null_object)
         session.stub(:stop) do
@@ -132,6 +132,8 @@ module RestAssured
         end
         Process.wait
         res_file.read.should == 'stopped'
+      else
+        pending "Skipped: drb/spork breaks fork sandbox (at_exits are collected and fired all together on master process exit)"
       end
     end
   end
