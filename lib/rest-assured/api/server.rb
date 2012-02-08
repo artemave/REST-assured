@@ -10,8 +10,9 @@ module RestAssured
 
     include Singleton
 
+    at_exit { puts "Stopping at exit"; instance.stop if instance }
+
     def start!(opts = {})
-      at_exit { stop }
 
       stop if up?
 
