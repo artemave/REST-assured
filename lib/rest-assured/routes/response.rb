@@ -14,11 +14,8 @@ module RestAssured
         app.body d.content
         app.status d.status
       elsif redirect_url = Models::Redirect.find_redirect_url_for(request.fullpath)
-        puts redirect_url
         if !(redirect_url =~ /^http/)
-          puts 'local redirect'
           if  d = Models::Double.where(:fullpath => redirect_url, :active => true, :verb => request.request_method).first
-            puts 'rewrite redirect'
             request.body.rewind
             body = request.body.read #without temp variable ':body = > body' is always nil. mistery
             env  = request.env.except('rack.input', 'rack.errors', 'rack.logger')
@@ -29,11 +26,9 @@ module RestAssured
             app.body d.content
             app.status d.status
           else
-            puts 'double not found for local redirect, doing real redirect'
             app.redirect redirect_url
           end
         else
-          puts 'real redirect'
           app.redirect redirect_url
         end
       else
