@@ -14,8 +14,7 @@ module RestAssured
         app.body d.content
         app.status d.status
       elsif redirect_url = Models::Redirect.find_redirect_url_for(request.fullpath)
-        puts app
-        app.redirect redirect_url
+        app.redirect redirect_url, 302
       else
         app.status 404
       end
