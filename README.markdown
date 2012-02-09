@@ -19,7 +19,7 @@ Rest-assured requires a database to run. Either sqlite or mysql. So, make sure t
 
     bash$ gem install sqlite3 # or mysql2
 
-If using mysql, rest-assured expects database 'rest\_assured' to be accessible by user 'root' with no password. Those are defaults and can be changed with cli options.
+If using mysql, rest-assured expects database `rest_assured` to be accessible by user `root` with no password. Those are defaults and can be changed with cli options.
 
 It is also recommended to have thin installed. This improves startup time (over default webrick) and also it works with in-memory sqlite (which webrick does not):
 
@@ -36,11 +36,11 @@ Or clone from github and run:
     bash$ cd rest-assured && bundle install
     bash$ ./bin/rest-assured -d :memory: & # in-memory sqlite db
 
-This starts up an instance of rest-assured on port 4578. It is accessible via REST or web interfaces on 'http://localhost:4578'
+This starts up an instance of rest-assured on port 4578. It is accessible via REST or web interfaces on `http://localhost:4578`
 
 Various options (such as ssl, port, db credentials, etc.) are available through command line options. Check out `rest-assured -h` to see what they are.
 
-NOTE that although sqlite is an extremely handy option (especially with :memory:), I found it sometimes locking tables under non-trivial load. Hence there is a Plan B - mysql. But may be that is just me sqliting it wrong.
+NOTE that although sqlite is an extremely handy option (especially with `-d :memory:`), I found it sometimes locking tables under non-trivial load. Hence there is a Plan B - mysql. But may be that is just me sqliting it wrong.
 
 ## Doubles
 
@@ -50,9 +50,10 @@ Double is a stub/spy of HTTP request. Create a double that has the same request 
 
 Rest-assured provides client library to work with doubles. Check out 'Ruby API' section in [documentation](https://www.relishapp.com/artemave/rest-assured) for full reference.
 
-Set it up first in env.rb/spec_helper.rb:
+Set it up first in:
 
 ```ruby
+# env.rb/spec_helper.rb
 require 'rest-assured/client'
 
 RestAssured::Client.config.server_address = 'http://localhost:4578' # or wherever your rest-assured is
@@ -64,7 +65,7 @@ You can then create doubles in your tests:
 RestAssured::Double.create(fullpath: '/products', content: 'this is content')
 ```
 
-Now GET 'http://localhost:4578/products' will be returning 'this is content'.
+Now GET `http://localhost:4578/products` will be returning `this is content`.
 
 You can also verify what requests happen on a double, or, in other words, spy on a double. Say this is a Given part of a test:
 
@@ -72,7 +73,7 @@ You can also verify what requests happen on a double, or, in other words, spy on
 @double = RestAssured::Double.create(fullpath: '/products', verb: 'POST')
 ```
 
-Then let us assume that 'http://localhost:4578/products' got POSTed as a result of some actions in When part. Now we can examine requests happened on that double in Then part:
+Then let us assume that `http://localhost:4578/products` got POSTed as a result of some actions in When part. Now we can examine requests happened on that double in Then part:
 
 ```ruby
 @double.wait_for_requests(1, timeout: 10) # defaults to 5 seconds
@@ -97,13 +98,13 @@ For those using rest-assured from non-ruby environments.
 
 #### Create double
 
-  HTTP POST to '/doubles' creates a double and returns its json representation.
+  HTTP POST to `/doubles` creates a double and returns its json representation.
   The following options can be passed as request parameters:
 
-  - __fullpath__ - e.g., '/some/api/object', or with parameters in query string (useful for doubling GETs) - '/some/other/api/object?a=2&b=c'. Mandatory.
+  - __fullpath__ - e.g., `/some/api/object`, or with parameters in query string (useful for doubling GETs) - `/some/other/api/object?a=2&b=c`. Mandatory.
   - __content__ - whatever you want this double to respond with. Optional.
-  - __verb__ - one of http the following http verbs: GET, POST, PUT, DELETE. Optional. GET is default.
-  - __status__ - status returned when double is requested. Optional. 200 is default.
+  - __verb__ - one of http the following http verbs: `GET`, `POST`, `PUT`, `DELETE`. Optional. `GET` is default.
+  - __status__ - status returned when double is requested. Optional. `200` is default.
   - __response_headers__ - key/value map of headers. Optional.
   
   Example:
@@ -118,7 +119,7 @@ For those using rest-assured from non-ruby environments.
 
 #### Get double state
 
-  HTTP GET to '/doubles/:id.json' returns json with double current state. Use id from create json as :id.
+  HTTP GET to `/doubles/:id.json` returns json with double current state. Use id from create json as `:id`.
   
   Example:
     
@@ -148,7 +149,7 @@ For those using rest-assured from non-ruby environments.
         }
     }
 
-  The above assumes that that double has been requested once. Request history is in "requests" array (in chronological order). Each element contains the following data (keys):
+  The above assumes that that double has been requested once. Request history is in `requests` array (in chronological order). Each element contains the following data (keys):
   
   - __body__ - request payload
   - __params__ - request parameters. json
@@ -157,34 +158,34 @@ For those using rest-assured from non-ruby environments.
 
 #### Delete all doubles
 
-  HTTP DELETE to '/doubles/all' deletes all doubles. Useful for cleaning up between tests.
+  HTTP DELETE to `/doubles/all` deletes all doubles. Useful for cleaning up between tests.
 
 ## Redirects
 
-It is sometimes desirable to only double certain calls while letting others through to the 'real' services. Meet Redirects. Kind of "rewrite rules" for requests that didn't match any double. 
+It is sometimes desirable to only double certain calls while letting others through to the "real" services. Meet Redirects. Kind of "rewrite rules" for requests that didn't match any double. 
 
-Another potential use for redirects is setting up a 'default' double that matches multiple fullpaths. This is of course given your app does not mind an extra redirect. Also note that 'default' double still covers single http verb so requests with different methods won't match.
+Another potential use for redirects is setting up a "default" double that matches multiple fullpaths. This is of course given your app does not mind an extra redirect. Also note that such "default" double still only covers single http verb so requests with different methods won't match (hint: need an extra double).
 
 Here is the rest API for managing redirects:
 
 ### Create redirect
 
-  HTTP POST to '/redirects' creates redirect.
+  HTTP POST to `/redirects` creates redirect.
   The following options can be passed as request parameters:
 
-  - __pattern__ - regex (perl5 style) tested against request fullpath. Mandatory
-  - __to__ - url base e.g., 'https://myserver:8787/api'. Mandatory
+  - __pattern__ - regex (perl5 style) tested against request fullpath. e.g, `^/auth/(.*)`. Mandatory
+  - __to__ - url base e.g, `http://example.com/api/\1?p=1` where `\1` is a reference to captured group from the pattern. Mandatory
 
   Example:
   
     bash$ curl -d 'pattern=^/auth&to=https://myserver.com/api' http://localhost:4578/redirects
 
-  Now request (any verb) to 'http://localhost:4578/auth/services/1' will get redirected to 'https://myserver.com/api/'. Provided of course there is no double matched for that fullpath and verb. Captured group in pattern can be referenced from replacement e.g. \\1, \\2, etc.
+  Now request (any verb) to `http://localhost:4578/auth/services/1` will get redirected to `https://myserver.com/api/`. Provided of course there is no double matched for that fullpath and verb. Captured group in pattern can be referenced from replacement e.g. `\1`, `\2`, etc.
   Much like rewrite rules, redirects are evaluated in order (of creation). In UI you can manually rearrange the order.
 
 ### Delete all redirects
 
-  HTTP DELETE to '/redirects/all' deletes all redirects. Useful for cleaning up between tests.
+  HTTP DELETE to `/redirects/all` deletes all redirects. Useful for cleaning up between tests.
 
 ## Author
 
