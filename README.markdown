@@ -9,7 +9,7 @@ There are three main use cases:
 
 * stubbing out external data sources with predefined data
 * verify requests to external services (aka spying)
-* quickly simulate different behavior of external services using web UI; useful in development
+* simulate different behavior of external services using web UI; useful in development
 
 ## Usage
 
@@ -74,7 +74,7 @@ RestAssured::Double.create(fullpath: '/products', content: 'this is content')
 
 Now GET `http://localhost:4578/products` will be returning `this is content`.
 
-You can also verify what requests happen on a double, or, in other words, spy on a double. Say this is a Given part of a test:
+You can also verify what requests happen on a double, or, if you like, spy on a it. Say this is a Given part of a test:
 
 ```ruby
 @double = RestAssured::Double.create(fullpath: '/products', verb: 'POST')
@@ -87,12 +87,12 @@ Then let us assume that `http://localhost:4578/products` got POSTed as a result 
 
 req = @double.requests.first
 
-req.body.should == expected_payload
+req.body.should == some_expected_payload
 JSON.parse(req.params).should == expected_params_hash
-JSON.parse(req.rack_env)['ACCEPT'].should == 'text/html'
+JSON.parse(req.rack_env)['HTTP_ACCEPT'].should == 'text/html'
 ```
 
-Use plain rest api to clear doubles/redirects between tests:
+Use plain REST api to clear doubles/redirects between tests:
 
 ```ruby
 RestClient.delete "#{RestAssured::Server.address}/redirects/all"
