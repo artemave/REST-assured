@@ -7,7 +7,7 @@ module RestAssured
 
       serialize :response_headers, Hash
 
-      VERBS = %w{GET POST PUT DELETE}
+      VERBS = %w{GET POST PUT DELETE HEAD}
       STATUSES = Net::HTTPResponse::CODE_TO_OBJ.keys.map(&:to_i)
 
       validates_presence_of :fullpath
