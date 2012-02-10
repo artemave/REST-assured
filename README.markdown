@@ -200,6 +200,20 @@ Here is the rest API for managing redirects:
 
 ## Changelog
 
+#### 1.0.0.rc1 (13 Feb 2012)
+
+* start/stop rest-assured via api
+* redirects support pattern/replacement
+
+#### 0.3.2 (23 Jan 2012)
+
+* double 'activeness' does not take verb into account (bugfix)
+
+#### 0.3.1 (09 Jan 2012)
+
+* lock rack version to <= 1.3.6 until they release fix for
+https://github.com/rack/rack/issues/299
+
 #### 0.3 (12 Dec 2011)
 
 * you can now specify response headers for double to respond with
