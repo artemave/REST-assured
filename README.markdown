@@ -27,7 +27,7 @@ It is also recommended to have thin installed. This improves startup time (over 
 
 Then install gem and run:
 
-    bash$ gem install rest-assured
+    bash$ gem install rest-assured --pre
     bash$ rest-assured -a mysql &
 
 Or clone from github and run:
