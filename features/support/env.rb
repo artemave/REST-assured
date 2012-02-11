@@ -44,7 +44,6 @@ Spork.prefork do
   RestAssured::Config.build(db_opts)
 
   require 'rest-assured'
-  require 'rest-assured/application'
   require 'shoulda-matchers'
 
   RestAssured::Server.start(db_opts.merge(:port => 9876))
@@ -58,6 +57,8 @@ Spork.prefork do
 end
 
 Spork.each_run do
+  require 'rest-assured/application'
+
   def app
     RestAssured::Application
   end
@@ -67,10 +68,6 @@ Spork.each_run do
 
   Before do
     DatabaseCleaner.start
-  end
-
-  Before "@ruby_api" do
-    RestAssured::Server.start(:port => 9876, :dbuser => ENV['TRAVIS'] ? "''" : "root")
   end
 
   Before "@ui" do
