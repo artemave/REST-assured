@@ -1,7 +1,8 @@
+@api_server
 Feature: test server
   In order to have easy integration with my test code
   As a ruby developer
-  I want to have a client library take care of starting/stopping an instance of rest-assured appropriately
+  I want to have a client library take care of starting/stopping an instance of rest-assured
 
   Scenario: start rest-assured server
     Given there is free tcp port

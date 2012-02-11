@@ -53,24 +53,10 @@ Spork.prefork do
   require 'rest-assured/application'
   require 'shoulda-matchers'
 
-  RestAssured::Server.start(db_opts.merge(:port => 9876))
+  RestAssured::Server.start(db_opts.merge(:port => 9877))
 end
 
 Spork.each_run do
-  #require 'rest-assured/config'
-  #db_opts = { :dbuser => ENV['TRAVIS'] ? "''" : "root", :adapter => 'mysql' }
-  #RestAssured::Config.build(db_opts)
-
-  #require 'rest-assured'
-  #require 'rest-assured/application'
-  #require 'shoulda-matchers'
-
-  #RSpec.configure do |c|
-    #c.before(:each, "ruby-api" => true) do
-      #RestAssured::Server.start(db_opts.merge(:port => 9876))
-    #end
-  #end
-
   Capybara.app = RestAssured::Application
 
   def app

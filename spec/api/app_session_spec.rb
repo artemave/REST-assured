@@ -6,7 +6,7 @@ module RestAssured
   describe AppSession do
     context 'either without spork or outside prefork block' do
       before do
-        AppSession.any_instance.stub(:running_in_drb? => false)
+        AppSession.any_instance.stub(:running_in_spork? => false)
       end
 
       it 'start application in subprocess' do
@@ -26,7 +26,7 @@ module RestAssured
 
     context 'within spork prefork block' do
       before do
-        AppSession.any_instance.stub(:running_in_drb? => true)
+        AppSession.any_instance.stub(:running_in_spork? => true)
       end
 
       it 'starts application in childprocess' do

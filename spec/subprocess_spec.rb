@@ -101,7 +101,7 @@ module RestAssured::Utils
       end
 
       it 'when exits normally' do
-        if not running_in_drb? # drb breaks fork sandbox: at_exits a collected and fired all together on master process exit
+        if not running_in_spork?
           child_pid # Magic touch. Literally. Else Tempfile gets created in fork and that messes things up
 
           fork do
@@ -113,11 +113,13 @@ module RestAssured::Utils
 
           sleep 0.5
           child_alive?.should == false
+        else
+          pending "Skipped: drb/spork breaks fork sandbox (at_exits are collected and fired all together on master process exit)"
         end
       end
 
       it 'when killed violently' do
-        if not running_in_drb?
+        if not running_in_spork?
           child_pid
 
           fork do
@@ -131,6 +133,8 @@ module RestAssured::Utils
 
           sleep 0.5
           child_alive?.should == false
+        else
+          pending "Skipped: drb/spork breaks fork sandbox (at_exits are collected and fired all together on master process exit)"
         end
       end
     end

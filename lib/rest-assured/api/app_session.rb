@@ -8,7 +8,7 @@ module RestAssured
     include Utils::DrbSniffer
 
     def initialize
-      @child = if not running_in_drb? and Process.respond_to?(:fork)
+      @child = if not running_in_spork? and Process.respond_to?(:fork)
                  Utils::Subprocess.new do
                    AppRunner.run!
                  end
