@@ -4,3 +4,5 @@ pkg/*
 bundle_bin
 *.db
 .sass-cache
+test.log
+Gemfile.lock
