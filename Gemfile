@@ -33,3 +33,6 @@ group :local do
   end
   gem 'sinatra-activerecord'
 end
+
+gem 'simplecov', :require => false, :group => :test
+
