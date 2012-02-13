@@ -60,6 +60,17 @@ module RestAssured
 
         Response.perform(rest_assured_app)
       end
+    
+      it "returns double when redirect matches double" do
+        fullpath = '/some/other/path'
+        request.stub(:fullpath).and_return(fullpath)
+        Models::Redirect.stub(:find_redirect_url_for).with(fullpath).and_return('/some/path')
+
+        rest_assured_app.should_receive(:body).with(@double.content)
+
+        Response.perform(rest_assured_app)
+      end
+
     end
 
     it "redirects if double not hit but there is redirect that matches request" do
