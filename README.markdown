@@ -169,7 +169,7 @@ For those using rest-assured from non-ruby environments.
 
 It is sometimes desirable to only double certain calls while letting others through to the "real" services. Meet Redirects. Kind of "rewrite rules" for requests that didn't match any double. 
 
-Another potential use for redirects is setting up a "default" double that matches multiple fullpaths. This is of course given your app does not mind an extra redirect. Also note that such "default" double still only covers single http verb so requests with different methods won't match (hint: need an extra double).
+Another use for redirects is setting up a "default" double that matches multiple fullpaths. This is limited to GETs since by definition temporary redirects are converted to GETs.
 
 Here is the rest API for managing redirects:
 
