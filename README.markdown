@@ -27,8 +27,8 @@ It is also recommended to have thin installed. This improves startup time (over 
 
 Then install gem and run:
 
-    bash$ gem install rest-assured --pre
-    bash$ rest-assured -a mysql &
+    bash$ gem install rest-assured
+    bash$ rest-assured &
 
 Or clone from github and run:
 
@@ -39,8 +39,6 @@ Or clone from github and run:
 This starts up an instance of rest-assured on port 4578. It is accessible via REST or web interfaces on `http://localhost:4578`
 
 Various options (such as ssl, port, db credentials, etc.) are available through command line options. Check out `rest-assured -h` to see what they are.
-
-NOTE that although sqlite is an extremely handy option (especially with `-d :memory:`), I found it sometimes locking tables under non-trivial load. Hence there is a Plan B - mysql. But may be that is just me sqliting it wrong.
 
 ## Doubles
 
@@ -200,7 +198,7 @@ Here is the rest API for managing redirects:
 
 ## Changelog
 
-#### 1.0.0.rc1 (13 Feb 2012)
+#### 1.0.0 (14 Feb 2012)
 
 * start/stop rest-assured via api
 * redirects support pattern/replacement
