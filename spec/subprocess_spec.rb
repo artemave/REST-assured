@@ -97,6 +97,7 @@ module RestAssured::Utils
           res_file.rewind
         end
         Process.wait
+        sleep 0.5
         res_file.read.should == 'false'
       end
 
