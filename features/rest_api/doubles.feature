@@ -15,6 +15,7 @@ Feature: use doubles via api
       | /api/some          | text content | GET    | GET         | 303    | 303           |
       | /api/some?a=3&b=dd | more content |        | GET         |        | 200           |
       | /api/empty         |              | POST   | POST        |        | 200           |
+      | /api/file          |              | HEAD   | HEAD        |        | 200           |
 
   Scenario: view created double details
     When I create a double
