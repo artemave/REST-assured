@@ -32,4 +32,6 @@ group :local do
     gem 'rb-readline'
   end
   gem 'sinatra-activerecord'
+  gem 'simplecov', :require => false, :platforms => :ruby_19
 end
+
