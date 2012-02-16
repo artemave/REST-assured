@@ -67,6 +67,8 @@ module RestAssured
         Models::Redirect.stub(:find_redirect_url_for).with(fullpath).and_return('/some/path')
 
         rest_assured_app.should_receive(:body).with(@double.content)
+        rest_assured_app.should_receive(:status).with(@double.status)
+        rest_assured_app.should_receive(:headers).with(@double.response_headers)
 
         Response.perform(rest_assured_app)
       end
