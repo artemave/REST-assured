@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.authors               = ['Artem Avetisyan']
   s.email                 = ['artem.avetisyan@bbc.co.uk']
   s.homepage              = "https://github.com/BBC/rest-assured"
-  s.summary               = %q{A tool for high level mocking/stubbing HTTP based REST services}
+  s.summary               = %q{Real stubs and spies for HTTP(S) services}
   #s.description          = %q{TODO: Write a gem description}
 
   s.rubyforge_project     = "rest-assured"

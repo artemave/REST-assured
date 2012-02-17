@@ -198,6 +198,10 @@ Here is the rest API for managing redirects:
 
 ## Changelog
 
+#### 1.1.0 (17 Feb 2012)
+
+* Redirects supports 'real' (without http redirect) rewrite to local double
+
 #### 1.0.0 (14 Feb 2012)
 
 * start/stop rest-assured via api
@@ -209,8 +213,7 @@ Here is the rest API for managing redirects:
 
 #### 0.3.1 (09 Jan 2012)
 
-* lock rack version to <= 1.3.6 until they release fix for
-https://github.com/rack/rack/issues/299
+* lock rack version to <= 1.3.6 until they release fix for https://github.com/rack/rack/issues/299
 
 #### 0.3 (12 Dec 2011)
 
