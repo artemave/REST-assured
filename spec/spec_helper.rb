@@ -1,9 +1,13 @@
+require 'rubygems'
+
 if RUBY_VERSION =~ /^1.9/
-  require 'simplecov'
-  SimpleCov.start
+  begin
+    require 'simplecov'
+    SimpleCov.start
+  rescue LoadError
+  end
 end
 
-require 'rubygems'
 require 'spork'
 
 $:.unshift(File.expand_path('../../lib'), __FILE__)
