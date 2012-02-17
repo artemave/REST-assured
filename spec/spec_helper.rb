@@ -3,7 +3,11 @@ require 'rubygems'
 if RUBY_VERSION =~ /^1.9/
   begin
     require 'simplecov'
-    SimpleCov.start
+    SimpleCov.start do
+      at_exit {} # reset built in at_exit or else it gets triggered when RestAssured::Server.stop is called from tests
+      add_filter "/spec/"
+      add_filter "/sinatra/"
+    end
   rescue LoadError
   end
 end
@@ -52,6 +56,12 @@ Spork.prefork do
 
     c.before(:each, :ui => false) do
       header 'User-Agent', nil
+    end
+
+    if defined?(SimpleCov)
+      c.after(:suite) do
+        SimpleCov.result.format!
+      end
     end
   end
   require 'rest-assured/config'

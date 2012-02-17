@@ -54,7 +54,7 @@ Then /^it should wait for (#{CAPTURE_A_NUMBER}) seconds(?: \(default timeout\))?
   @t.join
   wait_time = Time.now - @wait_start
   #(timeout..(timeout+1)).should cover(wait_time) # cover() only avilable in 1.9
-  wait_time.should >= timeout - 0.5
+  wait_time.should >= timeout
   wait_time.should < timeout + 1.5
 end
 

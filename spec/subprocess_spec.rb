@@ -43,35 +43,6 @@ module RestAssured::Utils
       res_file.read.should == 'true'
     end
 
-    # I am not sure this is actually useful
-    #describe 'commits seppuku' do
-    #it 'if child raises exception' do
-    #res_file = Tempfile.new('res')
-    #fork do
-    #at_exit { exit! }
-    #Subprocess.new { raise "!!NO PANIC!! This exception is part of test"; sleep 1 }
-    #sleep 0.5
-    #res_file.write('should not exist because this process should be killed by now')
-    #res_file.rewind
-    #end
-    #Process.wait
-    #res_file.read.should == ''
-    #end
-
-    #it 'if child just quits' do
-    #res_file = Tempfile.new('res')
-    #fork do
-    #at_exit { exit! }
-    #Subprocess.new { 1 }
-    #sleep 0.5
-    #res_file.write('should not exist because this process should be killed by now')
-    #res_file.rewind
-    #end
-    #Process.wait
-    #res_file.read.should == ''
-    #end
-    #end
-
     context 'shuts down child process' do
       let(:child_pid) do
         Tempfile.new('child_pid')
