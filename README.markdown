@@ -7,13 +7,13 @@
 A tool for stubbing/spying on http(s) based services that your app under test interacts with. This is useful for blackbox/integration testing.
 There are three main use cases:
 
-* stubbing out external data sources with predefined data
+* stub out external data sources with predefined data
 * verify requests to external services (aka spying)
 * simulate different behavior of external services using web UI; useful in development
 
 ## Usage
 
-You are going to need ruby >= 1.8.7.
+You are going to need MRI ruby >= 1.8.7 on Linux/MacOS.
 
 Rest-assured requires a database to run. Either sqlite or mysql. So, make sure there is one and its backed with corresponding client gem:
 
