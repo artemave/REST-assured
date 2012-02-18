@@ -7,6 +7,12 @@
   %textarea.wide#double_content{:name => 'double[content]', :rows => 10}= @double.content
 
 %p
+  %label{:for => 'double_verb'} Verb
+  %select#double_verb{:name => 'double[verb]'}
+    - verbs.each do |v|
+      %option{:name => v, :selected => (@double.verb == v)}= v
+
+%p
   %label{:for => 'double_description'} Description
   %textarea.wide#double_description{:name => 'double[description]', :rows => 3}= @double.description
 

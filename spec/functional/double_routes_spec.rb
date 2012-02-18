@@ -6,6 +6,7 @@ module RestAssured
       {
         :fullpath         => '/api/google?a=5',
         :content          => 'some awesome content',
+        :description      => 'awesome double',
         :verb             => 'POST',
         :status           => '201',
         :response_headers => { 'ACCEPT' => 'text/html' }
@@ -18,6 +19,7 @@ module RestAssured
         'double[content]'          => test_double[:content],
         'double[verb]'             => test_double[:verb],
         'double[status]'           => test_double[:status],
+        'double[description]'      => test_double[:description],
         'double[response_headers]' => test_double[:response_headers]
       }
 
@@ -28,25 +30,33 @@ module RestAssured
       valid_params.except('double[fullpath]')
     end
 
-    describe "through ui", :ui => true do
-      it "shows doubles page by default" do
+    context "Web UI", :ui => true do
+      it "makes doubles index root page" do
         visit '/'
         current_path.should == '/doubles'
       end
 
-      it "shows list of doubles" do
-        f = Models::Double.create test_double
+      # this is tested in cucumber
+      it "renders doubles index" do
+        f  = Models::Double.create test_double
+        f1 = Models::Double.create test_double.merge(:verb => 'GET')
 
         visit '/doubles'
 
         page.should have_content(f.fullpath)
+        page.should have_content(f.description)
+        page.should have_content(f.verb)
+        page.should have_content(f1.fullpath)
+        page.should have_content(f1.description)
+        page.should have_content(f1.verb)
       end
 
-      it "shows form for creating new double" do
+      it "renders form for creating new double" do
         visit '/doubles/new'
 
         page.should have_css('#double_fullpath')
         page.should have_css('#double_content')
+        page.should have_css('#double_verb')
         page.should have_css('#double_description')
       end
 
@@ -68,7 +78,7 @@ module RestAssured
         last_response.body.should =~ /Crumps!.*Fullpath can't be blank/
       end
 
-      it "brings up double edit form" do
+      it "renders double edit form" do
         f = Models::Double.create test_double
         visit "/doubles/#{f.id}/edit"
 
@@ -84,7 +94,11 @@ module RestAssured
 
         last_request.fullpath.should == '/doubles'
         last_response.body.should =~ /Double updated/
-        f.reload.fullpath.should == '/some/other/api'
+        f.reload.fullpath.should  == '/some/other/api'
+        f.content.should          == test_double[:content]
+        f.verb.should             == test_double[:verb]
+        f.status.to_s.should      == test_double[:status]
+        f.response_headers.should == test_double[:response_headers]
       end
 
       it "chooses active double" do
@@ -109,7 +123,7 @@ module RestAssured
       end
     end
 
-    describe "through REST api", :ui => false do
+    context "REST api", :ui => false do
       it "creates double" do
         post '/doubles', test_double
 
@@ -136,7 +150,7 @@ module RestAssured
       end
     end
 
-    describe 'through REST (ActiveResource compatible) json api', :ui => false do
+    context 'REST (ActiveResource compatible) json api', :ui => false do
       it "creates double as AR resource" do
         post '/doubles.json', { :double => test_double }.to_json, 'CONTENT_TYPE' => 'Application/json'
 

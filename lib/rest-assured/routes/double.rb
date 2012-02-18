@@ -3,6 +3,12 @@ require 'json'
 module RestAssured
   module DoubleRoutes
     def self.included(router)
+      router.helpers do
+        def verbs
+          RestAssured::Models::Double::VERBS
+        end
+      end
+
       router.get '/' do
         redirect to('/doubles')
       end

@@ -6,29 +6,29 @@ Feature: manage doubles via ui
 
   Scenario: view existing doubles
     Given the following doubles exist:
-      | fullpath       | description  | content      |
-      | /url1/aaa | twitter      | test content |
-      | /url2/bbb | geo location | more content |
-      | /u/b?c=1  | wikipedia    | article      |
+      | fullpath  | description  | content      | verb |
+      | /url1/aaa | twitter      | test content | GET  |
+      | /url2/bbb | geo location | more content | POST |
+      | /u/b?c=1  | wikipedia    | article      | PUT  |
     When I visit "doubles" page
     Then I should see that I am on "doubles" page
     And I should see existing doubles:
-      | fullpath       | description  |
-      | /url1/aaa | twitter      |
-      | /url2/bbb | geo location |
-      | /u/b?c=1  | wikipedia    |
+      | fullpath  | description  | verb |
+      | /url1/aaa | twitter      | GET  |
+      | /url2/bbb | geo location | POST |
+      | /u/b?c=1  | wikipedia    | PUT  |
 
   Scenario: add new double
     Given I am on "doubles" page
     When I choose to create a double
     And I enter double details:
-      | fullpath           | description | content      |
-      | /url2/bb?a=b5 | google api  | test content |
+      | fullpath      | description | content      | verb |
+      | /url2/bb?a=b5 | google api  | test content | POST |
     And I save it
     Then I should see "Double created"
     And I should see existing doubles:
-      | fullpath           | description |
-      | /url2/bb?a=b5 | google api  |
+      | fullpath      | description | verb |
+      | /url2/bb?a=b5 | google api  | POST |
 
   @javascript
   Scenario: choose active double
@@ -41,16 +41,16 @@ Feature: manage doubles via ui
 
   Scenario: edit double
     Given the following doubles exist:
-      | fullpath       | description  | content      |
-      | /url1/aaa | twitter      | test content |
+      | fullpath  | description | content      | verb |
+      | /url1/aaa | twitter     | test content | POST |
     And I visit "doubles" page
     And I choose to edit double
     When I change "double" "description" to "google"
     And I save it
     Then I should see that I am on "doubles" page
     And I should see existing doubles:
-      | fullpath       | description  |
-      | /url1/aaa | google       |
+      | fullpath  | description | verb |
+      | /url1/aaa | google      | POST |
 
   @javascript
   Scenario: delete double

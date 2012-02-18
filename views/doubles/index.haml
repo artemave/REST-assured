@@ -4,6 +4,7 @@
   %thead
     %tr
       %th Request fullpath
+      %th Verb
       %th Description
       %th Active?
       %th &nbsp;
@@ -13,6 +14,7 @@
         %tr{:id => "double_row_#{f.id}"}
           - if i == 0
             %td{:rowspan => fs.size}= fullpath
+          %td= f.verb
           %td= f.description
           %td.label.text-center
             %input.active-double-toggle{:type => 'radio', :name => fullpath, :checked => f.active, :data => { :double_id => f.id }}

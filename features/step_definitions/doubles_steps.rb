@@ -71,7 +71,12 @@ end
 
 Given /^the following doubles exist:$/ do |doubles|
   doubles.hashes.each do |row|
-    RestAssured::Models::Double.create(:fullpath => row['fullpath'], :description => row['description'], :content => row['content'])
+    RestAssured::Models::Double.create(
+      :fullpath    => row['fullpath'],
+      :description => row['description'],
+      :content     => row['content'],
+      :verb        => row['verb']
+    )
   end
 end
 
@@ -83,6 +88,7 @@ Then /^I should see existing doubles:$/ do |doubles|
   doubles.hashes.each do |row|
     page.should have_content(row[:fullpath])
     page.should have_content(row[:description])
+    page.should have_content(row[:verb])
   end
 end
 
@@ -99,6 +105,7 @@ When /^I enter double details:$/ do |details|
 
   fill_in 'Request fullpath', :with => double['fullpath']
   fill_in 'Content', :with => double['content']
+  select  double['verb'], :from => 'Verb'
   fill_in 'Description', :with => double['description']
 end
 

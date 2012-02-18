@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require 'rubygems'
 require "irb"
 
 $:.push File.expand_path('../../lib', __FILE__)
@@ -6,6 +7,6 @@ $:.push File.expand_path('../../lib', __FILE__)
 require 'rest-assured/config'
 RestAssured::Config.build :database => ( ENV['FRS_DB'] || File.expand_path('../../db/development.db', __FILE__) )
 
-require 'rest-assured'
+require 'rest-assured/application'
 
 IRB.start(__FILE__)
