@@ -72,7 +72,7 @@ RestAssured::Double.create(fullpath: '/products', content: 'this is content')
 
 Now GET `http://localhost:4578/products` will be returning `this is content`.
 
-You can also verify what requests happen on a double, or, if you like, spy on a it. Say this is a Given part of a test:
+You can also verify what requests happen on a double (spy on it). Say this is a Given part of a test:
 
 ```ruby
 @double = RestAssured::Double.create(fullpath: '/products', verb: 'POST')
