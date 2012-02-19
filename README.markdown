@@ -200,7 +200,7 @@ Here is the rest API for managing redirects:
 
 #### 1.1.0 (17 Feb 2012)
 
-* Redirects supports 'real' (without http redirect) rewrite to local double
+* Redirects support 'real' (without http redirect) rewrite to local double
 
 #### 1.0.0 (14 Feb 2012)
 
