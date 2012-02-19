@@ -58,18 +58,18 @@ module RestAssured::Utils
       end
 
       it 'when stopped' do
-        res_file = Tempfile.new('res')
+        child_pid
+
         fork do
           at_exit { exit! }
           child = Subprocess.new { sleep 2 }
+          child_pid.write(child.pid)
+          child_pid.rewind
           child.stop
-          sleep 1
-          res_file.write(child.alive?)
-          res_file.rewind
         end
         Process.wait
         sleep 0.5
-        res_file.read.should == 'false'
+        child_alive?.should == false
       end
 
       it 'when exits normally' do
@@ -82,7 +82,7 @@ module RestAssured::Utils
             child_pid.write(child.pid)
             child_pid.rewind
           end
-
+          Process.wait
           sleep 0.5
           child_alive?.should == false
         else
