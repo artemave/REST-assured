@@ -3,15 +3,15 @@ require File.expand_path('../../../lib/rest-assured/api/server', __FILE__)
 
 module RestAssured
   describe Server do
-    after do
+    before do
       Server.reset_instance
     end
 
     it 'khows when it is up' do
       AppSession.stub(:new).and_return(session = stub(:alive? => true).as_null_object)
       Utils::PortExplorer.stub(:port_free? => false)
-      Server.start
 
+      Server.start
       Server.up?.should == true
     end
 
@@ -120,21 +120,18 @@ module RestAssured
     end
 
     it 'stops application subprocess when current process exits' do
-      if not running_in_spork?
-        res_file = Tempfile.new('res')
-        AppSession.stub(:new).and_return(session = mock.as_null_object)
-        session.stub(:stop) do
-          res_file.write "stopped"
-          res_file.rewind
-        end
-        fork do
-          Server.start!
-        end
-        Process.wait
-        res_file.read.should == 'stopped'
-      else
-        pending "Skipped: drb/spork breaks fork sandbox (at_exits are collected and fired all together on master process exit)"
+      res_file = Tempfile.new('res')
+      AppSession.stub(:new).and_return(session = mock.as_null_object)
+      session.stub(:alive?).and_return(false)
+      session.stub(:stop) do
+        res_file.write "stopped"
+        res_file.rewind
       end
+      fork do
+        Server.start!
+      end
+      Process.wait
+      res_file.read.should == 'stopped'
     end
   end
 end

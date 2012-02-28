@@ -24,7 +24,6 @@ Spork.prefork do
   require 'awesome_print'
   require File.expand_path('../support/custom_matchers', __FILE__)
   require File.expand_path('../support/reset-singleton', __FILE__)
-  require 'rest-assured/utils/drb_sniffer'
 
   ENV['RACK_ENV'] = 'test'
 
@@ -40,7 +39,6 @@ Spork.prefork do
     c.include Capybara::DSL
     c.include Rack::Test::Methods
     c.include XhrHelpers
-    c.include RestAssured::Utils::DrbSniffer
 
     c.before(:each) do
       DatabaseCleaner.start
@@ -73,9 +71,7 @@ Spork.prefork do
   require 'shoulda-matchers'
 
   RestAssured::Server.start(db_opts.merge(:port => 9877))
-end
 
-Spork.each_run do
   Capybara.app = RestAssured::Application
 
   def app
@@ -83,4 +79,7 @@ Spork.each_run do
   end
 
   DatabaseCleaner.strategy = :truncation
+end
+
+Spork.each_run do
 end
