@@ -198,6 +198,11 @@ Here is the rest API for managing redirects:
 
 ## Changelog
 
+#### 1.1.1 (01 Mar 2012)
+
+* Add 'verb' to UI
+* No more forked version of Server
+
 #### 1.1.0 (17 Feb 2012)
 
 * Redirects support 'real' (without http redirect) rewrite to local double
