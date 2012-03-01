@@ -63,14 +63,12 @@ Spork.prefork do
     end
   end
   require 'rest-assured/config'
-  db_opts = { :dbuser => ENV['TRAVIS'] ? "''" : "root", :adapter => 'mysql' }
-  RestAssured::Config.build(db_opts)
+  DB_OPTS = { :dbuser => ENV['TRAVIS'] ? "''" : "root", :adapter => 'mysql' }
+  RestAssured::Config.build(DB_OPTS)
 
   require 'rest-assured'
   require 'rest-assured/application'
   require 'shoulda-matchers'
-
-  RestAssured::Server.start(db_opts.merge(:port => 9877))
 
   Capybara.app = RestAssured::Application
 

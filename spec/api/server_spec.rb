@@ -3,7 +3,9 @@ require File.expand_path('../../../lib/rest-assured/api/server', __FILE__)
 
 module RestAssured
   describe Server do
-    before do
+    around do |example|
+      Server.reset_instance
+      example.run
       Server.reset_instance
     end
 

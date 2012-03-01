@@ -3,6 +3,13 @@ require File.expand_path('../../spec_helper', __FILE__)
 
 module RestAssured
   describe Double, 'ruby-api' => true do
+    before(:all) do
+      Server.start(DB_OPTS.merge(:port => 9877))
+    end
+    after(:all) do
+      Server.stop
+    end
+
     it { should be_kind_of ActiveResource::Base }
 
     it 'creates new double' do
