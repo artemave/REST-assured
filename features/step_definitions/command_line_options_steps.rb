@@ -19,17 +19,17 @@ Then /^database options should be:$/ do |table|
   res = table.hashes.first
 
   empty_to_nil = lambda do |string|
-    string.empty? ? nil : string
+    string.try(:empty?) ? nil : string
   end
   
-  @app_config[:db_config][:adapter].should == 'mysql2'
+  @app_config[:db_config][:adapter].should  == res['adapter']
   @app_config[:db_config][:database].should == res['dbname']
-  @app_config[:db_config][:user].should == res['dbuser']
+  @app_config[:db_config][:user].should     == res['dbuser']
   @app_config[:db_config][:password].should == empty_to_nil[res['dbpass']]
-  @app_config[:db_config][:host].should == empty_to_nil[res['dbhost']]
-  @app_config[:db_config][:port].should == empty_to_nil[res['dbport']].try(:to_i)
+  @app_config[:db_config][:host].should     == empty_to_nil[res['dbhost']]
+  @app_config[:db_config][:port].should     == empty_to_nil[res['dbport']].try(:to_i)
   @app_config[:db_config][:encoding].should == empty_to_nil[res['dbencoding']]
-  @app_config[:db_config][:socket].should == empty_to_nil[res['dbsocket']]
+  @app_config[:db_config][:socket].should   == empty_to_nil[res['dbsocket']]
 end
 
 Then /^ssl certificate used should be "([^"]*)" and ssl key should be "([^"]*)"$/ do |ssl_cert, ssl_key|

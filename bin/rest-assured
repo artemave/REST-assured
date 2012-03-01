@@ -11,7 +11,7 @@ user_opts = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: rest-assured [options]"
 
-  opts.on('-a', '--adapter mysql|sqlite') do |adapter|
+  opts.on('-a', '--adapter mysql|sqlite|postgresql') do |adapter|
     user_opts[:adapter] = adapter
   end
 
@@ -19,23 +19,23 @@ OptionParser.new do |opts|
     user_opts[:database] = fname
   end
 
-  opts.on('-u', '--dbuser DBUSER', "Db username (mysql only)") do |user|
+  opts.on('-u', '--dbuser DBUSER', "Db username (mysql, postgresql only)") do |user|
     user_opts[:user] = user
   end
 
-  opts.on('--dbpass DBPASSWORD', 'Db password (mysql only). Defaults to empty') do |password|
+  opts.on('--dbpass DBPASSWORD', 'Db password (mysql, postgresql only). Defaults to empty') do |password|
     user_opts[:dbpass] = password
   end
 
-  opts.on('--dbhost DBHOST', 'Db host (mysql only). Defaults to mysql default host (localhost)') do |dbhost|
+  opts.on('--dbhost DBHOST', 'Db host (mysql, postgresql only). Defaults to mysql default host (localhost)') do |dbhost|
     user_opts[:dbhost] = dbhost
   end
 
-  opts.on('--dbport DBPORT', Integer, 'Db port (mysql only). Defaults to mysql default port (3306)') do |dbport|
+  opts.on('--dbport DBPORT', Integer, 'Db port (mysql, postgresql only). Defaults to adapters default port') do |dbport|
     user_opts[:dbport] = dbport
   end
 
-  opts.on('--dbencoding DBENCODING', 'Db encoding (mysql only). Defaults to mysql default encoding') do |dbencoding|
+  opts.on('--dbencoding DBENCODING', 'Db encoding (mysql, postgresql only). Defaults to adapters default encoding') do |dbencoding|
     user_opts[:dbencoding] = dbencoding
   end
 

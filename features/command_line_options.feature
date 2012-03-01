@@ -36,21 +36,39 @@ Feature: command line options
   Scenario Outline: mysql options
     When I start rest-assured with -a mysql <options>
     Then database options should be:
-      | dbname   | dbuser   | dbpass   | dbhost   | dbport   | dbencoding   | dbsocket   |
-      | <dbname> | <dbuser> | <dbpass> | <dbhost> | <dbport> | <dbencoding> | <dbsocket> |
+      | dbname   | dbuser   | dbpass   | dbhost   | dbport   | dbencoding   | dbsocket   | adapter    |
+      | <dbname> | <dbuser> | <dbpass> | <dbhost> | <dbport> | <dbencoding> | <dbsocket> | <adapter> |
 
     Examples:
-      | options                    | dbname       | dbuser | dbpass | dbhost | dbport | dbencoding | dbsocket        |
-      |                            | rest_assured | root   |        |        |        |            |                 |
-      | -d resta                   | resta        | root   |        |        |        |            |                 |
-      | --database resta           | resta        | root   |        |        |        |            |                 |
-      | -u bob                     | rest_assured | bob    |        |        |        |            |                 |
-      | --dbuser bob               | rest_assured | bob    |        |        |        |            |                 |
-      | --dbpass pswd              | rest_assured | root   | pswd   |        |        |            |                 |
-      | --dbhost remote            | rest_assured | root   |        | remote |        |            |                 |
-      | --dbport 5555              | rest_assured | root   |        |        | 5555   |            |                 |
-      | --dbencoding utf16le       | rest_assured | root   |        |        |        | utf16le    |                 |
-      | --dbsocket /tmp/mysql.sock | rest_assured | root   |        |        |        |            | /tmp/mysql.sock |
+      | options                    | dbname       | dbuser | dbpass | dbhost | dbport | dbencoding | dbsocket        | adapter |
+      |                            | rest_assured | root   |        |        |        |            |                 | mysql2  |
+      | -d resta                   | resta        | root   |        |        |        |            |                 | mysql2  |
+      | --database resta           | resta        | root   |        |        |        |            |                 | mysql2  |
+      | -u bob                     | rest_assured | bob    |        |        |        |            |                 | mysql2  |
+      | --dbuser bob               | rest_assured | bob    |        |        |        |            |                 | mysql2  |
+      | --dbpass pswd              | rest_assured | root   | pswd   |        |        |            |                 | mysql2  |
+      | --dbhost remote            | rest_assured | root   |        | remote |        |            |                 | mysql2  |
+      | --dbport 5555              | rest_assured | root   |        |        | 5555   |            |                 | mysql2  |
+      | --dbencoding utf16le       | rest_assured | root   |        |        |        | utf16le    |                 | mysql2  |
+      | --dbsocket /tmp/mysql.sock | rest_assured | root   |        |        |        |            | /tmp/mysql.sock | mysql2  |
+
+  Scenario Outline: postgresql options
+    When I start rest-assured with -a postgresql <options>
+    Then database options should be:
+      | dbname   | dbuser   | dbpass   | dbhost   | dbport   | dbencoding   | adapter   |
+      | <dbname> | <dbuser> | <dbpass> | <dbhost> | <dbport> | <dbencoding> | <adapter> |
+
+    Examples:
+      | options              | dbname       | dbuser   | dbpass | dbhost | dbport | dbencoding | adapter    |
+      |                      | rest_assured | postgres |        |        |        |            | postgresql |
+      | -d resta             | resta        | postgres |        |        |        |            | postgresql |
+      | --database resta     | resta        | postgres |        |        |        |            | postgresql |
+      | -u bob               | rest_assured | bob      |        |        |        |            | postgresql |
+      | --dbuser bob         | rest_assured | bob      |        |        |        |            | postgresql |
+      | --dbpass pswd        | rest_assured | postgres | pswd   |        |        |            | postgresql |
+      | --dbhost remote      | rest_assured | postgres |        | remote |        |            | postgresql |
+      | --dbport 5555        | rest_assured | postgres |        |        | 5555   |            | postgresql |
+      | --dbencoding utf16le | rest_assured | postgres |        |        |        | utf16le    | postgresql |
 
   Scenario Outline: use ssl option
     When I start rest-assured with <option>

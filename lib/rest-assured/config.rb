@@ -138,7 +138,9 @@ module RestAssured
                                   :adapter => 'sqlite3',
                                   :database => AppConfig.database || default_database
                                 }
-                              elsif AppConfig.adapter =~ /mysql/i
+                              elsif AppConfig.adapter =~ /postgresql|mysql/i
+                                adapter = $&.downcase
+
                                 default_database = if AppConfig.environment != 'production'
                                                      "rest_assured_#{AppConfig.environment}"
                                                    else
@@ -146,18 +148,25 @@ module RestAssured
                                                    end
 
                                 opts = {
-                                  :adapter => 'mysql2',
-                                  :reconnect => true,
-                                  :pool => 20,
-                                  :user => AppConfig.user || 'root',
+                                  :adapter  => 'postgresql',
+                                  :user     => AppConfig.user || 'postgres',
                                   :database => AppConfig.database || default_database
                                 }
 
+                                if adapter =~ /mysql/
+                                  opts.merge!(
+                                    :adapter   => 'mysql2',
+                                    :reconnect => true,
+                                    :pool      => 20,
+                                    :user      => AppConfig.user || 'root'
+                                  )
+                                  opts[:socket] = AppConfig.dbsocket if AppConfig.dbsocket
+                                end
+
                                 opts[:password] = AppConfig.dbpass if AppConfig.dbpass
-                                opts[:host] = AppConfig.dbhost if AppConfig.dbhost
-                                opts[:port] = AppConfig.dbport if AppConfig.dbport
+                                opts[:host]     = AppConfig.dbhost if AppConfig.dbhost
+                                opts[:port]     = AppConfig.dbport if AppConfig.dbport
                                 opts[:encoding] = AppConfig.dbencoding if AppConfig.dbencoding
-                                opts[:socket] = AppConfig.dbsocket if AppConfig.dbsocket
                                 opts
                               else
                                 raise "Unsupported db adapter '#{AppConfig.adapter}'. Valid adapters are sqlite and mysql"
