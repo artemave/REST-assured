@@ -20,7 +20,7 @@ gem 'relish'
 gem "spork", "> 0.9.0.rc"
 gem 'childprocess'
 
-group :local do
+group :development do
   gem 'ruby-debug', :platform => :mri_18
   gem 'ruby-debug19', :platform => :mri_19
   gem 'awesome_print'
