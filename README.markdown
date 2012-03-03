@@ -15,11 +15,11 @@ There are three main use cases:
 
 You are going to need MRI ruby >= 1.8.7 on Linux/MacOS.
 
-Rest-assured requires a database to run. Either sqlite or mysql. So, make sure there is one and its backed with corresponding client gem:
+Rest-assured requires a database to run. Either sqlite, mysql or postgres. So, make sure there is one and its backed with corresponding client gem:
 
-    bash$ gem install sqlite3 # or mysql2
+    bash$ gem install sqlite3 # or mysql2 or pg
 
-If using mysql, rest-assured expects database `rest_assured` to be accessible by user `root` with no password. Those are defaults and can be changed with cli options.
+If using mysql/postgres, rest-assured expects database `rest_assured` to be accessible by user `root` with no password. Those are defaults and can be changed with cli options.
 
 It is also recommended to have thin installed. This improves startup time (over default webrick) and also it works with in-memory sqlite (which webrick does not):
 
