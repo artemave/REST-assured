@@ -27,11 +27,9 @@ group :development do
   gem 'interactive_editor'
   gem 'launchy'
   gem "guard-spork"
-  if RUBY_PLATFORM =~ /darwin/
-    gem 'growl'
-    gem 'rb-fsevent'
-    gem 'rb-readline'
-  end
+  gem 'growl'
+  gem 'rb-fsevent'
+  gem 'rb-readline'
   gem 'sinatra-activerecord'
   gem 'simplecov', :platforms => :ruby_19
 end
