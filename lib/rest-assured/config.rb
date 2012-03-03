@@ -138,7 +138,7 @@ module RestAssured
                                   :adapter => 'sqlite3',
                                   :database => AppConfig.database || default_database
                                 }
-                              elsif AppConfig.adapter =~ /postgresql|mysql/i
+                              elsif AppConfig.adapter =~ /postgres|mysql/i
                                 adapter = $&.downcase
 
                                 default_database = if AppConfig.environment != 'production'
@@ -149,7 +149,7 @@ module RestAssured
 
                                 opts = {
                                   :adapter  => 'postgresql',
-                                  :user     => AppConfig.user || 'postgres',
+                                  :user     => AppConfig.user || 'root',
                                   :database => AppConfig.database || default_database
                                 }
 
@@ -157,8 +157,7 @@ module RestAssured
                                   opts.merge!(
                                     :adapter   => 'mysql2',
                                     :reconnect => true,
-                                    :pool      => 20,
-                                    :user      => AppConfig.user || 'root'
+                                    :pool      => 20
                                   )
                                   opts[:socket] = AppConfig.dbsocket if AppConfig.dbsocket
                                 end

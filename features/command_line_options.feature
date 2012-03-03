@@ -59,16 +59,16 @@ Feature: command line options
       | <dbname> | <dbuser> | <dbpass> | <dbhost> | <dbport> | <dbencoding> | <adapter> |
 
     Examples:
-      | options              | dbname       | dbuser   | dbpass | dbhost | dbport | dbencoding | adapter    |
-      |                      | rest_assured | postgres |        |        |        |            | postgresql |
-      | -d resta             | resta        | postgres |        |        |        |            | postgresql |
-      | --database resta     | resta        | postgres |        |        |        |            | postgresql |
-      | -u bob               | rest_assured | bob      |        |        |        |            | postgresql |
-      | --dbuser bob         | rest_assured | bob      |        |        |        |            | postgresql |
-      | --dbpass pswd        | rest_assured | postgres | pswd   |        |        |            | postgresql |
-      | --dbhost remote      | rest_assured | postgres |        | remote |        |            | postgresql |
-      | --dbport 5555        | rest_assured | postgres |        |        | 5555   |            | postgresql |
-      | --dbencoding utf16le | rest_assured | postgres |        |        |        | utf16le    | postgresql |
+      | options              | dbname       | dbuser | dbpass | dbhost | dbport | dbencoding | adapter    |
+      |                      | rest_assured | root   |        |        |        |            | postgresql |
+      | -d resta             | resta        | root   |        |        |        |            | postgresql |
+      | --database resta     | resta        | root   |        |        |        |            | postgresql |
+      | -u bob               | rest_assured | bob    |        |        |        |            | postgresql |
+      | --dbuser bob         | rest_assured | bob    |        |        |        |            | postgresql |
+      | --dbpass pswd        | rest_assured | root   | pswd   |        |        |            | postgresql |
+      | --dbhost remote      | rest_assured | root   |        | remote |        |            | postgresql |
+      | --dbport 5555        | rest_assured | root   |        |        | 5555   |            | postgresql |
+      | --dbencoding utf16le | rest_assured | root   |        |        |        | utf16le    | postgresql |
 
   Scenario Outline: use ssl option
     When I start rest-assured with <option>

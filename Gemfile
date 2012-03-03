@@ -14,6 +14,7 @@ gem 'capybara-firebug'
 gem 'rake'
 gem 'mysql2'
 gem 'sqlite3'
+gem 'pg'
 gem 'thin'
 gem 'relish'
 gem "spork", "> 0.9.0.rc"

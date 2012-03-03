@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+$:.push File.expand_path('../../lib', __FILE__)
+
+require 'rest-assured/config'
+require 'uri'
+
+db = URI.parse(ENV['DATABASE_URL'])
+
+opts = {
+      port: ENV['PORT'],
+   adapter: 'postgresql',
+    dbhost: db.host,
+      user: db.user,
+    dbpass: db.password,
+  database: db.path[1..-1],
+  encoding: 'utf8'
+}
+
+RestAssured::Config.build(opts)
+
+require 'rest-assured/application'
+RestAssured::Application.run!
