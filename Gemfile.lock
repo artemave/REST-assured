@@ -157,7 +157,6 @@ DEPENDENCIES
   awesome_print
   capybara
   capybara-firebug
-  childprocess
   cucumber
   database_cleaner
   growl
