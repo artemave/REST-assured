@@ -40,7 +40,7 @@ Spork.prefork do
   World(Capybara, Rack::Test::Methods, RackHeaderHack, WorldHelpers)
 
   require 'rest-assured/config'
-  db_opts = { :dbuser => ENV['TRAVIS'] ? "''" : "root", :adapter => 'mysql' }
+  db_opts = { :adapter => 'mysql' }
   RestAssured::Config.build(db_opts)
 
   require 'rest-assured'

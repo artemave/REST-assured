@@ -63,7 +63,7 @@ Spork.prefork do
     end
   end
   require 'rest-assured/config'
-  DB_OPTS = { :dbuser => ENV['TRAVIS'] ? "''" : "root", :adapter => 'mysql' }
+  DB_OPTS = { :adapter => 'mysql' }
   RestAssured::Config.build(DB_OPTS)
 
   require 'rest-assured'
