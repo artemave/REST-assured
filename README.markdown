@@ -33,7 +33,7 @@ Then install gem and run:
 
 Or clone and run:
 
-    bash$ git clone git@github.com:BBC/rest-assured.git
+    bash$ git clone git://github.com/BBC/REST-assured.git
     bash$ cd rest-assured && bundle install
     bash$ ./bin/rest-assured -d :memory: & # in-memory sqlite db
 
@@ -43,7 +43,7 @@ Various options (such as ssl, port, db credentials, etc.) are available through 
 
 You can also deploy it to heroku:
 
-    bash$ git clone git@github.com:BBC/rest-assured.git
+    bash$ git clone git://github.com/BBC/REST-assured.git
     bash$ cd rest-assured
 
     bash$ gem install heroku
@@ -210,7 +210,7 @@ Here is the rest API for managing redirects:
 
 Tests require there to be mysql database `rest_assured_test` accessible by `root` with no password. Cucumber tests also need firefox.
 
-    bash$ git clone git@github.com:BBC/rest-assured.git
+    bash$ git clone git://github.com/BBC/REST-assured.git
     bash$ cd rest-assured && bundle install
     bash$ bundle exec rspec spec
     bash$ bundle exec cucumber
