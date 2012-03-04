@@ -207,7 +207,7 @@ Here is the rest API for managing redirects:
   
 ## Running tests
 
-Tests require there to be mysql database `rest_assured_test` accessible for `root` with no password. Cucumber tests also need firefox.
+Tests require there to be mysql database `rest_assured_test` accessible by `root` with no password. Cucumber tests also need firefox.
 
     bash$ git clone git@github.com:BBC/rest-assured.git
     bash$ cd rest-assured && bundle install
