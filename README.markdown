@@ -93,6 +93,8 @@ Then let us assume that `http://localhost:4578/products` got POSTed as a result 
 
 ```ruby
 @double.wait_for_requests(1, timeout: 10) # defaults to 5 seconds
+# or, if waiting for specific amount of requests does not suit the test, just
+@double.reload # before verifying
 
 req = @double.requests.first
 
