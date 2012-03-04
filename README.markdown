@@ -204,12 +204,26 @@ Here is the rest API for managing redirects:
 ### Delete all redirects
 
   HTTP DELETE to `/redirects/all` deletes all redirects. Useful for cleaning up between tests.
+  
+## Running tests
+
+Tests require there to be mysql database `rest_assured_test` accessible for `root` with no password. Cucumber tests also need firefox.
+
+    bash$ git clone git@github.com:BBC/rest-assured.git
+    bash$ cd rest-assured && bundle install
+    bash$ bundle exec rspec spec
+    bash$ bundle exec cucumber
 
 ## Author
 
 [Artem Avetisyan](https://github.com/artemave)
 
 ## Changelog
+
+#### 1.1.2 (04 Mar 2012)
+
+* support postgres
+* heroku deployable
 
 #### 1.1.1 (01 Mar 2012)
 
