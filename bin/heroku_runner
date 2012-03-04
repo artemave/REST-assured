@@ -5,6 +5,9 @@ $:.push File.expand_path('../../lib', __FILE__)
 require 'rest-assured/config'
 require 'uri'
 
+# disable buffering to have log messages sent straight to Heroku’s logging infrastructure
+$stdout.sync = true
+
 db = URI.parse(ENV['DATABASE_URL'])
 
 opts = {

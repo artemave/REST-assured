@@ -24,7 +24,7 @@ Then /^database options should be:$/ do |table|
   
   @app_config[:db_config][:adapter].should  == res['adapter']
   @app_config[:db_config][:database].should == res['dbname']
-  @app_config[:db_config][:user].should     == res['dbuser']
+  @app_config[:db_config][:username].should == res['dbuser']
   @app_config[:db_config][:password].should == empty_to_nil[res['dbpass']]
   @app_config[:db_config][:host].should     == empty_to_nil[res['dbhost']]
   @app_config[:db_config][:port].should     == empty_to_nil[res['dbport']].try(:to_i)

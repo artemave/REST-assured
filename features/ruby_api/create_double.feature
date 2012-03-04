@@ -23,14 +23,14 @@ Feature: create double
   Scenario: specify response headers
     When I create a double:
     """
-    @double = RestAssured::Double.create(:fullpath => '/some/api', :response_headers => { 'Content-Type' => 'text/html' })
+    @double = RestAssured::Double.create(:fullpath => '/some/api', :response_headers => { 'Content-Type2' => 'text/html' })
     """
     Then the following should be true:
     """
-    @double.response_headers.should == { 'Content-Type' => 'text/html' }
+    @double.response_headers.should == { 'Content-Type2' => 'text/html' }
 
     get @double.fullpath
-    last_response.headers['Content-Type'].should == 'text/html'
+    last_response.headers['Content-Type2'].should == 'text/html'
     """
 
   Scenario: specify content

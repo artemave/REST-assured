@@ -17,6 +17,7 @@ module RestAssured
       before_save :toggle_active
       before_validation :set_verb
       before_validation :set_status
+      before_validation :set_response_headers
       after_destroy :set_active
 
       has_many :requests, :dependent => :destroy
@@ -29,6 +30,10 @@ module RestAssured
           if active && Double.where("fullpath = ? AND verb = ? AND active = ? AND id #{ne} ?", fullpath, verb, true, id).exists?
             Double.where("fullpath = ? AND verb = ? AND id #{ne} ?", fullpath, verb, id).update_all :active => false
           end
+        end
+
+        def set_response_headers
+          self.response_headers = {} unless response_headers.present?
         end
 
         def set_verb

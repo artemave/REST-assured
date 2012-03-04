@@ -1,4 +1,5 @@
 require 'json'
+require 'active_support/core_ext/hash/slice'
 
 module RestAssured
   module DoubleRoutes
@@ -36,15 +37,14 @@ module RestAssured
         begin
           data = request.body.read
           d = JSON.parse(data)['double']
+
+          # fix acitve resource dumbness
+          if d['response_headers'] and d['response_headers']['response_headers']
+            d['response_headers'] = d['response_headers']['response_headers']
+          end
         rescue
-          d = params['double'] || {
-            :fullpath               => params['fullpath'],
-            :content                => params['content'],
-            :description            => params['description'],
-            :verb                   => params['verb'],
-            :status                 => params['status']
-          }
-          d.merge!(:response_headers => params['response_headers']) if params['response_headers']
+          d = params['double'] ||
+            params.slice(*%w[fullpath content description verb status response_headers])
         end
 
         @double = Models::Double.create(d) 

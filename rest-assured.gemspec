@@ -20,11 +20,11 @@ Gem::Specification.new do |s|
   s.executables           = ['rest-assured']
   s.require_paths         = ['lib']
 
-  s.add_dependency 'sinatra', '>= 1.3.2'
+  s.add_dependency 'sinatra', '~> 1.3.2'
   s.add_dependency 'childprocess', '~> 0.3.0'
   s.add_dependency 'sinatra-flash'
   s.add_dependency 'haml', '>= 3.1.3'
-  s.add_dependency 'activerecord', '~> 3.1.0'
-  s.add_dependency 'activeresource', '~> 3.1.0'
+  s.add_dependency 'activerecord', '~> 3.2.0'
+  s.add_dependency 'activeresource', '~> 3.2.0'
 end
 

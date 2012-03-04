@@ -14,12 +14,12 @@ module RestAssured
     let(:env) { stub(:to_json => 'env').as_null_object }
     let(:request) {
       double('Request',
-             :request_method => 'GET',
-             :fullpath => '/api',
-             :env => env,
-             :body => stub(:read => 'body').as_null_object,
-             :params => stub(:to_json => 'params')
-            )
+        :request_method => 'GET',
+        :fullpath       => '/api',
+        :env            => env,
+        :body           => stub(:read    => 'body').as_null_object,
+        :params         => stub(:to_json => 'params')
+      )
     }
     let(:rest_assured_app) { double('App', :request => request).as_null_object }
 
