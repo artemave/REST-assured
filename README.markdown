@@ -4,7 +4,7 @@
 
 ## Overview
 
-A tool for stubbing/spying on http(s) based services that your app under test interacts with. This is useful for blackbox/integration testing.
+Stub/spy http(s) based external dependencies in your integration/acceptance tests.
 There are three main use cases:
 
 * stub out external data sources with predefined data
@@ -30,7 +30,7 @@ Then install gem and run:
     bash$ gem install rest-assured
     bash$ rest-assured &
 
-Or clone from github and run:
+Or clone and run:
 
     bash$ git clone git@github.com:BBC/rest-assured.git
     bash$ cd rest-assured && bundle install
@@ -39,6 +39,17 @@ Or clone from github and run:
 This starts up an instance of rest-assured on port 4578. It is accessible via REST or web interfaces on `http://localhost:4578`
 
 Various options (such as ssl, port, db credentials, etc.) are available through command line options. Check out `rest-assured -h` to see what they are.
+
+You can also deploy it to heroku:
+
+    bash$ git clone git@github.com:BBC/rest-assured.git
+    bash$ cd rest-assured
+
+    bash$ gem install heroku
+    bash$ heroku login # assuming you already have an account
+    bash$ heroku create --stack cedar
+    
+    bash$ git push heroku master
 
 ## Doubles
 
