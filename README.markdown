@@ -5,7 +5,7 @@
 ## Overview
 
 Stub/spy http(s) based external dependencies in your integration/acceptance tests.
-There are three main use cases:
+In essense, here is what it could be useful for:
 
 * stub out external data sources with predefined data
 * verify requests to external services (aka spying)
