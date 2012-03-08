@@ -12,6 +12,9 @@ In a nutshell, here is how you can use it:
 * verify requests to external services (spying)
 * simulate different behavior of external services using web UI; useful in development
 
+Check out [example](https://github.com/artemave/REST-assured-example)
+
+
 ## Usage
 
 You are going to need MRI ruby >= 1.8.7 on Linux/MacOS.
@@ -58,7 +61,7 @@ Double is a stub/spy of HTTP request. Create a double that has the same request 
 
 ### Ruby Client API
 
-Rest-assured provides client library to work with doubles. Check out 'Ruby API' section in [documentation](https://www.relishapp.com/artemave/rest-assured) for full reference.
+Rest-assured provides client library to work with doubles. Check out 'Ruby API' section in [live documentation](https://www.relishapp.com/artemave/rest-assured) for full reference.
 
 Start up the server:
 
