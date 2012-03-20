@@ -46,19 +46,17 @@ Given /^I choose to delete redirect with pattern "([^"]*)"$/ do |pattern|
 end
 
 When /^I reorder second redirect to be the first one$/ do
-  handler = find("#redirects #redirect_#{RestAssured::Models::Redirect.last.id} td.handle")
-  target = find('#redirects thead')
-
-  handler.drag_to target
+  page.execute_script %{
+    $('#redirects #redirect_#{RestAssured::Models::Redirect.order('position').last.id}').simulateDragSortable({move: -1, handle: '.handle'})
+  }
+  sleep 2
 end
 
 Then /^"([^"]*)" should be redirected to "([^"]*)"$/ do |missing_request, url|
-  pending('This does not pass due to Capybara/Selelium broken drag and drop support')
-
   get missing_request
   follow_redirect!
 
-  last_request.url.should == "#{url}#{missing_request}"
+  last_request.url.should == url
 end
 
 Given /^blank slate$/ do

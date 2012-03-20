@@ -6,11 +6,13 @@
     %link{:rel => 'stylesheet', :href => url('/css/grid.inuit.css'), :type => 'text/css'}
     %link{:rel => 'stylesheet', :href => url('/css/base.css'), :type => 'text/css'}
     %link{:rel => 'stylesheet', :href => url('/css/jquery.jgrowl.css'), :type => 'text/css'}
-    %link{:rel => 'stylesheet', :href => 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/themes/base/jquery-ui.css', :type => 'text/css'}
-    %script{:src => 'http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js', :type => 'text/javascript'}
-    %script{:src => 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js', :type => 'text/javascript'}
+    %link{:rel => 'stylesheet', :href => 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/base/jquery-ui.css', :type => 'text/css'}
+    %script{:src => 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', :type => 'text/javascript'}
+    %script{:src => 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js', :type => 'text/javascript'}
     %script{:src => url('/javascript/jquery.jgrowl_minimized.js'), :type => 'text/javascript'}
     %script{:src => url('/javascript/application.js'), :type => 'text/javascript'}
+    - if ENV['RACK_ENV'] != 'production'
+      %script{:src => url('/javascript/jquery.simulate.drag-sortable.js'), :type => 'text/javascript'}
   %body.wrapper
     %ul.nav
       %li

@@ -49,9 +49,9 @@ Feature: manage redirects via ui
       | /api/bbb | http://twitter.com/api |
     And I am on "redirects" page
     When I reorder second redirect to be the first one
-    Then "/api/bbb" should be redirected to "http://twitter.com/api"
+    Then "/api/bbb/ccc" should be redirected to "http://twitter.com/api/ccc"
     When I reorder second redirect to be the first one
-    Then "/api/bbb" should be redirected to "http://google.com/api"
+    Then "/api/bbb/ccc" should be redirected to "http://google.com/api"
 
   @javascript
   Scenario: delete redirect
