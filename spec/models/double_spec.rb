@@ -86,6 +86,13 @@ module RestAssured::Models
         f3.reload.active.should be true
         f4.reload.active.should be true
       end
+
+      it "handles long paths (more than 255 characters)" do
+        long_path = 'a' * 260
+        f1 = Double.create valid_params.merge(:fullpath => long_path)
+        f1.reload.save
+        f1.reload.fullpath.should == long_path
+      end
     end
 
     describe 'when destroying' do
