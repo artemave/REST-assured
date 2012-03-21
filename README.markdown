@@ -37,7 +37,7 @@ Then install gem and run:
 Or clone and run:
 
     bash$ git clone git://github.com/BBC/REST-assured.git
-    bash$ cd rest-assured && bundle install
+    bash$ cd REST-assured && bundle install
     bash$ ./bin/rest-assured -d :memory: & # in-memory sqlite db
 
 This starts up an instance of rest-assured on port 4578. It is accessible via REST or web interfaces on `http://localhost:4578`
@@ -47,7 +47,7 @@ Various options (such as ssl, port, db credentials, etc.) are available through 
 You can also deploy it to heroku:
 
     bash$ git clone git://github.com/BBC/REST-assured.git
-    bash$ cd rest-assured
+    bash$ cd REST-assured
 
     bash$ gem install heroku
     bash$ heroku login # assuming you already have an account
@@ -223,6 +223,10 @@ Tests require there to be mysql database `rest_assured_test` accessible by `root
 [Artem Avetisyan](https://github.com/artemave)
 
 ## Changelog
+
+#### 1.1.3 (21 Mar 2012)
+
+* support long (>256 chars) fullpath
 
 #### 1.1.2 (04 Mar 2012)
 
