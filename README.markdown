@@ -12,12 +12,32 @@ In a nutshell, here is how you can use it:
 * verify requests to external services (spying)
 * simulate different behavior of external services using web UI; useful in development
 
+Here is how it works. REST-assured starts standalone webapp that can be instructed (via ruby client or plain REST api) to respond to any request with anything. You configure api endpoints in the application under test to point to that webapp instead. Then create particular stubs in particular tests. Clean in between. Profit.
+
 Check out [example](https://github.com/artemave/REST-assured-example)
 
 
 ## Usage
 
 You are going to need MRI ruby >= 1.8.7 on Linux/MacOS.
+
+### Ruby Client
+
+```ruby
+# Gemfile
+gem 'sqlite3' # or mysql2 or pg
+gem 'thin'    # make it quick; optional
+gem 'rest-assured'
+
+# env.rb/spec_helper.rb
+require 'rest-assured'
+
+RestAssured::Server.start(database: ':memory:', port: 7899) # or any other option available on command line
+# Alternatively, if you want to use existing server instance:
+RestAssured::Server.address = 'http://localhost:4578' # or wherever it is
+```
+
+### Standalone instance
 
 Rest-assured requires a database to run. Either sqlite, mysql or postgres. So, make sure there is one and its backed with corresponding client gem:
 
@@ -59,27 +79,11 @@ You can also deploy it to heroku:
 
 Double is a stub/spy of HTTP request. Create a double that has the same request fullpath and method as the one your app is sending to a dependant service and then convience your app that rest-assured is that dependency (hint: by making endpoints configurable).
 
-### Ruby Client API
+### Ruby Client
 
 Rest-assured provides client library to work with doubles. Check out 'Ruby API' section in [live documentation](https://www.relishapp.com/artemave/rest-assured) for full reference.
 
-Start up the server:
-
-```ruby
-# env.rb/spec_helper.rb
-require 'rest-assured'
-
-RestAssured::Server.start(database: ':memory:', port: 7899) # or any other option available on command line
-```
-This server will be automatically shut down when your tests are done.
-
-Alternatively, if you want to use existing server instance:
-
-```ruby
-RestAssured::Server.address = 'http://localhost:4578' # or wherever it is
-```
-
-You can now create doubles in your tests:
+Create double:
 
 ```ruby
 RestAssured::Double.create(fullpath: '/products', content: 'this is content')
