@@ -12,7 +12,7 @@ In a nutshell, here is how you can use it:
 * verify requests to external services (spying)
 * simulate different behavior of external services using web UI; useful in development
 
-Here is how it works. REST-assured starts standalone webapp that can be instructed (via ruby client or plain REST api) to respond to any request with anything. You configure api endpoints in the application under test to point to that webapp instead. Then create particular stubs in particular tests. Clean in between. Profit.
+Here is how it works. REST-assured starts a webapp that can be instructed (via ruby client or plain REST api) to respond to any request with anything. You configure api endpoints in the application under test to point to that webapp instead. Then in your tests create doubles to match whatever the app is supposed to be requesting. Double is a data stub and can also verify whether and how it has been requested.
 
 Check out [example](https://github.com/artemave/REST-assured-example)
 
