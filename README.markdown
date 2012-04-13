@@ -17,9 +17,9 @@ Here is how it works. REST-assured starts a webapp that can be instructed (via r
 Check out [example](https://github.com/artemave/REST-assured-example)
 
 
-## Usage
+## Set up
 
-You are going to need MRI ruby >= 1.8.7 on Linux/MacOS.
+You are going to need ruby >= 1.8.7 on Linux/MacOS. Also, either sqlite3, postgres or mysql is required.
 
 ### Ruby Client
 
@@ -75,13 +75,13 @@ You can also deploy it to heroku:
     
     bash$ git push heroku master
 
-## Doubles
+## Usage
 
-Double is a stub/spy of HTTP request. Create a double that has the same request fullpath and method as the one your app is sending to a dependant service and then convience your app that rest-assured is that dependency (hint: by making endpoints configurable).
+REST-assured is all about doubles. Double is a stub/spy of HTTP request. Create one that has the same request fullpath and method as the one your app is sending to a dependant service and then convience your app that REST-assured is that dependency (hint: by making endpoints configurable).
 
 ### Ruby Client
 
-Rest-assured provides client library to work with doubles. Check out 'Ruby API' section in [live documentation](https://www.relishapp.com/artemave/rest-assured) for full reference.
+REST-assured provides client library to work with doubles. Check out 'Ruby API' section in [live documentation](https://www.relishapp.com/artemave/rest-assured) for full reference.
 
 Create double:
 
@@ -120,7 +120,7 @@ RestClient.delete "#{RestAssured::Server.address}/doubles/all"
 
 ### Plain REST API
 
-For those using rest-assured from non-ruby environments.
+For those using REST-assured from non-ruby environments.
 
 #### Create double
 
