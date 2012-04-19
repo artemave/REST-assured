@@ -14,9 +14,13 @@ module RestAssured
         redirect to('/doubles')
       end
 
-      router.get '/doubles' do
+      router.get %r{^/doubles(\.json)?$} do |is_json|
         @doubles = Models::Double.all
-        haml :'doubles/index'
+        if not is_json
+          haml :'doubles/index'
+        else
+          body @doubles.to_json
+        end
       end
 
       router.get '/doubles/new' do
