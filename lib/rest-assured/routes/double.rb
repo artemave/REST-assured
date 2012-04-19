@@ -98,10 +98,10 @@ module RestAssured
         end
       end
 
-      router.delete %r{/doubles/(\d+)} do |id|
+      router.delete %r{/doubles/(\d+)(\.json)?$} do |id, is_json|
         if Models::Double.destroy(id)
           flash[:notice] = 'Double deleted'
-          redirect '/doubles'
+          redirect '/doubles' unless is_json
         end
       end
 

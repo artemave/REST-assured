@@ -140,6 +140,16 @@ module RestAssured
         last_response.body.should =~ /\{"fullpath":\["can't be blank"\]\}/
       end
 
+      it "deletes double" do
+        f = Models::Double.create test_double
+
+        delete "/doubles/#{f.id}.json"
+
+        last_response.should be_ok
+
+        Models::Double.exists?(test_double.except(:response_headers)).should be_false
+      end
+
       it "deletes all doubles" do
         Models::Double.create test_double
 
@@ -151,6 +161,18 @@ module RestAssured
     end
 
     context 'REST (ActiveResource compatible) json api', :ui => false do
+      it "gets list of doubles" do
+        f  = Models::Double.create test_double
+        f1 = Models::Double.create test_double.merge(:verb => 'GET')
+
+        get '/doubles.json'
+
+        json = JSON.parse(last_response.body)
+
+        json.first['double']['verb'].should == 'POST'
+        json.last['double']['verb'].should == 'GET'
+      end
+
       it "creates double as AR resource" do
         post '/doubles.json', { :double => test_double }.to_json, 'CONTENT_TYPE' => 'Application/json'
 
