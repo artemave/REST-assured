@@ -155,3 +155,8 @@ Then /^I should be asked to confirm delete$/ do
   page.driver.browser.switch_to.alert.accept
 end
 
+Given /^there are the following doubles:$/ do |table|
+  table.hashes.each do |row|
+    RestAssured::Models::Double.create :fullpath => row['fullpath']
+  end
+end

@@ -111,3 +111,7 @@ end
 Then /^it should be stopped:$/ do |code|
   eval code
 end
+
+When /^I get the list of doubles:$/ do |code|
+  eval code
+end
