@@ -115,3 +115,7 @@ end
 When /^I get the list of doubles:$/ do |code|
   eval code
 end
+
+When /^I destroy that double:$/ do |code|
+  eval code
+end

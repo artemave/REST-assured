@@ -1,4 +1,4 @@
-@ruby_api @now
+@ruby_api
 Feature: list doubles
   As api user
   I want to be able to get list of doubles
