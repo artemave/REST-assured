@@ -39,7 +39,7 @@ RestAssured::Server.address = 'http://localhost:4578' # or wherever it is
 
 ### Standalone instance
 
-Rest-assured requires a database to run. Either sqlite, mysql or postgres. So, make sure there is one and its backed with corresponding client gem:
+Install db client gem:
 
     bash$ gem install sqlite3 # or mysql2 or pg
 
