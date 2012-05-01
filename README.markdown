@@ -19,7 +19,7 @@ Check out [example](https://github.com/artemave/REST-assured-example)
 
 ## Set up
 
-You are going to need ruby >= 1.8.7 on Linux/MacOS. Also, either sqlite3, postgres or mysql is required.
+You are going to need ruby >= 1.8.7 on Linux/MacOS. Also, one of sqlite3, postgres or mysql.
 
 ### Ruby Client
 
