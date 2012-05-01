@@ -6,13 +6,13 @@
 
 Stub/spy http(s) based external dependencies in your integration/acceptance tests.
 
-In a nutshell, here is how you can use it:
+In a nutshell, you can:
 
 * replace external data sources with predefined data (stubbing)
 * verify requests to external services (spying)
 * simulate different behavior of external services using web UI; useful in development
 
-Here is how it works. REST-assured starts a webapp that can be instructed (via ruby client library or plain REST api) to respond to any request in any way. You configure api endpoints of the application under test to point to that webapp instead of real dependencies. Then in your tests create doubles to match whatever the app is supposed to be requesting. Double is more than just a data stub, it also keeps track of its request history. So that it can be verified.
+Here is how it works. REST-assured starts an application that can be instructed (via ruby client library or plain REST api) to respond to any request with arbitrary content, status, headers, etc. Configure api endpoints of the application under test to point to that application instead of real services. Then in tests use the API (create doubles) that match requests your application is supposed to be firing. Either to stub content or to verify various aspects of how your application requests dependencies (headers, payload, etc).
 
 Check out [example](https://github.com/artemave/REST-assured-example)
 
