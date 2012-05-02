@@ -135,11 +135,13 @@ For those using REST-assured from non-ruby environments.
   
   Example:
 
+```
     bash$ curl -d 'fullpath=/api/something&content=awesome&response_headers%5BContent-Type%5D=text%2Fhtml' http://localhost:4578/doubles
     {"double":{"active":true,"content":"awesome","description":null,"fullpath":"/api/something","id":1,"response_headers":{"Content-Type":"text/html"},"status":200,"verb":"GET"}}
 
     bash$ curl http://localhost:4578/api/something
     awesome
+```
 
   If there is more than one double for the same fullpath and verb, the last created one gets served. In UI you can manually control which double is 'active' (gets served).
 
