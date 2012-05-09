@@ -6,3 +6,4 @@ bundle_bin
 .sass-cache
 test.log
 coverage
+.rvmrc
