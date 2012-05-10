@@ -14,7 +14,8 @@
       - fs.each_with_index do |f, i|
         %tr{:id => "double_row_#{f.id}"}
           - if i == 0
-            %td{:rowspan => fs.size}= fullpath
+            %td{:rowspan => fs.size}
+              %a{:href => fullpath, :target => '_blank'}= fullpath
           %td= f.verb
           %td= f.description
           %td= f.status
