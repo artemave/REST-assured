@@ -6,6 +6,7 @@
       %th Request fullpath
       %th Verb
       %th Description
+      %th Status
       %th Active?
       %th &nbsp;
   %tbody
@@ -16,6 +17,7 @@
             %td{:rowspan => fs.size}= fullpath
           %td= f.verb
           %td= f.description
+          %td= f.status
           %td.label.text-center
             %input.active-double-toggle{:type => 'radio', :name => fullpath, :checked => f.active, :data => { :double_id => f.id }}
           %td.edit-link.text-center.white-space-nowrap

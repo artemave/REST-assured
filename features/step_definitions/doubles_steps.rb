@@ -75,7 +75,8 @@ Given /^the following doubles exist:$/ do |doubles|
       :fullpath    => row['fullpath'],
       :description => row['description'],
       :content     => row['content'],
-      :verb        => row['verb']
+      :verb        => row['verb'],
+      :status      => row['status']
     )
   end
 end
@@ -89,6 +90,7 @@ Then /^I should see existing doubles:$/ do |doubles|
     page.should have_content(row[:fullpath])
     page.should have_content(row[:description])
     page.should have_content(row[:verb])
+    page.should have_content(row[:status])
   end
 end
 
@@ -107,6 +109,7 @@ When /^I enter double details:$/ do |details|
   fill_in 'Content', :with => double['content']
   select  double['verb'], :from => 'Verb'
   fill_in 'Description', :with => double['description']
+  select  double['status'], :from => 'Status'
 end
 
 When /^I save it$/ do

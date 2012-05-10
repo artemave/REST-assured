@@ -8,6 +8,10 @@ module RestAssured
         def verbs
           RestAssured::Models::Double::VERBS
         end
+
+        def statuses
+          RestAssured::Models::Double::STATUSES.sort
+        end
       end
 
       router.get '/' do

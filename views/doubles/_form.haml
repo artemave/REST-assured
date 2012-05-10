@@ -17,6 +17,12 @@
   %textarea.wide#double_description{:name => 'double[description]', :rows => 3}= @double.description
 
 %p
+  %label{:for => 'double_status'} Status
+  %select#double_status{:name => 'double[status]'}
+    - statuses.each do |s|
+      %option{:name => s, :selected => ((@double.status || 200) == s)}= s
+
+%p
   %input{:type => 'submit', :value => 'Save'}
   |
   %a{:href => 'javascript:history.back()'} back
