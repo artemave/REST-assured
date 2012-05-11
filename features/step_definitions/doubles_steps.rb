@@ -151,7 +151,7 @@ When /^I change "([^"]*)" "([^"]*)" to "([^"]*)"$/ do |obj, prop, value|
 end
 
 Given /^I choose to delete double with fullpath "([^"]*)"$/ do |fullpath|
-  find(:xpath, "//tr[td[text()='#{fullpath}']]//a[text()='Delete']").click
+  find(:xpath, "//tr[td[a[text()='#{fullpath}']]]//a[text()='Delete']").click
 end
 
 Then /^I should be asked to confirm delete$/ do
