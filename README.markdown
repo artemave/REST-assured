@@ -230,6 +230,14 @@ Tests require there to be mysql database `rest_assured_test` accessible by `root
 
 ## Changelog
 
+#### 1.1.6 (11 May 2012)
+
+* add status to UI
+
+#### 1.1.5 (19 Apr 2012)
+
+* add Double.all and Double#destroy
+
 #### 1.1.3 (21 Mar 2012)
 
 * support long (>256 chars) fullpath
