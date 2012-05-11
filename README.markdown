@@ -230,7 +230,7 @@ Tests require there to be mysql database `rest_assured_test` accessible by `root
 
 ## Changelog
 
-#### 1.1.6 (11 May 2012)
+#### 1.1.7 (11 May 2012)
 
 * add status to UI
 
