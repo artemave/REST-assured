@@ -4,8 +4,8 @@
   %thead
     %tr
       %th Request fullpath
-      %th Verb
       %th Description
+      %th Verb
       %th Status
       %th Active?
       %th &nbsp;
@@ -16,11 +16,14 @@
           - if i == 0
             %td{:rowspan => fs.size}
               %a{:href => fullpath, :target => '_blank'}= fullpath
-          %td= f.verb
           %td= f.description
+          %td= f.verb
           %td= f.status
           %td.label.text-center
-            %input.active-double-toggle{:type => 'radio', :name => fullpath, :checked => f.active, :data => { :double_id => f.id }}
+            - if fs.size > 1
+              %input.active-double-toggle{:type => 'radio', :name => fullpath, :checked => f.active, :data => { :double_id => f.id }}
+            - else
+              yes
           %td.edit-link.text-center.white-space-nowrap
             %a{:href => "/doubles/#{f.id}/edit"} Edit
             |
