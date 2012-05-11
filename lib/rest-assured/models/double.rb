@@ -14,10 +14,11 @@ module RestAssured
       validates_inclusion_of :verb, :in => VERBS
       validates_inclusion_of :status, :in => STATUSES
 
+      after_initialize :set_status
+      after_initialize :set_verb
+      after_initialize :set_response_headers
+
       before_save :toggle_active
-      before_validation :set_verb
-      before_validation :set_status
-      before_validation :set_response_headers
       after_destroy :set_active
 
       has_many :requests, :dependent => :destroy
@@ -33,7 +34,7 @@ module RestAssured
         end
 
         def set_response_headers
-          self.response_headers = {} unless response_headers.present?
+          self.response_headers = {} unless response_headers.present? # present? protects against empty strings that may come in parameters
         end
 
         def set_verb
