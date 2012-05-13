@@ -26,7 +26,7 @@ You are going to need ruby >= 1.8.7 on Linux/MacOS. Also, one of sqlite3, postgr
 ```ruby
 # Gemfile
 gem 'sqlite3' # or mysql2 or pg
-gem 'thin'    # make it quick; optional
+gem 'thin'    # to make it faster; optional
 gem 'rest-assured'
 
 # env.rb/spec_helper.rb
