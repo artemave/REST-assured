@@ -15,7 +15,10 @@
         %tr{:id => "double_row_#{f.id}"}
           - if i == 0
             %td{:rowspan => fs.size}
-              %a{:href => fullpath, :target => '_blank'}= fullpath
+              - if f.verb == 'GET'
+                %a{:href => f.fullpath, :target => '_blank'}= f.fullpath
+              - else
+                = f.fullpath
           %td= f.description
           %td= f.verb
           %td= f.status
