@@ -41,24 +41,24 @@ RestAssured::Server.address = 'http://localhost:4578' # or wherever it is
 
 Install db client gem:
 
-    bash$ gem install sqlite3 # or mysql2 or pg
+    $ gem install sqlite3 # or mysql2 or pg
 
 If using mysql/postgres, rest-assured expects database `rest_assured` to be accessible by user `root` with no password. Those are defaults and can be changed with cli options.
 
 It is also recommended to have thin installed. This improves startup time (over default webrick) and also it works with in-memory sqlite (which webrick does not):
 
-    bash$ gem install thin
+    $ gem install thin
 
 Then install gem and run:
 
-    bash$ gem install rest-assured
-    bash$ rest-assured &
+    $ gem install rest-assured
+    $ rest-assured &
 
 Or clone and run:
 
-    bash$ git clone git://github.com/BBC/REST-assured.git
-    bash$ cd REST-assured && bundle install
-    bash$ ./bin/rest-assured -d :memory: & # in-memory sqlite db
+    $ git clone git://github.com/BBC/REST-assured.git
+    $ cd REST-assured && bundle install
+    $ ./bin/rest-assured -d :memory: & # in-memory sqlite db
 
 This starts up an instance of rest-assured on port 4578. It is accessible via REST or web interfaces on `http://localhost:4578`
 
@@ -66,14 +66,14 @@ Various options (such as ssl, port, db credentials, etc.) are available through 
 
 You can also deploy it to heroku:
 
-    bash$ git clone git://github.com/BBC/REST-assured.git
-    bash$ cd REST-assured
+    $ git clone git://github.com/BBC/REST-assured.git
+    $ cd REST-assured
 
-    bash$ gem install heroku
-    bash$ heroku login # assuming you already have an account
-    bash$ heroku create --stack cedar
+    $ gem install heroku
+    $ heroku login # assuming you already have an account
+    $ heroku create --stack cedar
     
-    bash$ git push heroku master
+    $ git push heroku master
 
 ## Usage
 
@@ -136,10 +136,10 @@ For those using REST-assured from non-ruby environments.
   Example:
 
 ```
-    bash$ curl -d 'fullpath=/api/something&content=awesome&response_headers%5BContent-Type%5D=text%2Fhtml' http://localhost:4578/doubles
+    $ curl -d 'fullpath=/api/something&content=awesome&response_headers%5BContent-Type%5D=text%2Fhtml' http://localhost:4578/doubles
     {"double":{"active":true,"content":"awesome","description":null,"fullpath":"/api/something","id":1,"response_headers":{"Content-Type":"text/html"},"status":200,"verb":"GET"}}
 
-    bash$ curl http://localhost:4578/api/something
+    $ curl http://localhost:4578/api/something
     awesome
 ```
 
@@ -151,7 +151,7 @@ For those using REST-assured from non-ruby environments.
   
   Example:
     
-    bash$ curl http://localhost:4578/doubles/1.json | prettify_json.rb
+    $ curl http://localhost:4578/doubles/1.json | prettify_json.rb
     {
         "double": {
             "verb": "GET",
@@ -205,8 +205,10 @@ Here is the rest API for managing redirects:
   - __to__ - url base e.g, `http://example.com/api/\1?p=1` where `\1` is a reference to captured group from the pattern. Mandatory
 
   Example:
-  
-    bash$ curl -d 'pattern=^/auth&to=https://myserver.com/api' http://localhost:4578/redirects
+
+```  
+    $ curl -d 'pattern=^/auth&to=https://myserver.com/api' http://localhost:4578/redirects
+```
 
   Now request (any verb) to `http://localhost:4578/auth/services/1` will get redirected to `https://myserver.com/api/`. Provided of course there is no double matched for that fullpath and verb. Captured group in pattern can be referenced from replacement e.g. `\1`, `\2`, etc.
   Much like rewrite rules, redirects are evaluated in order (of creation). In UI you can manually rearrange the order.
@@ -219,10 +221,10 @@ Here is the rest API for managing redirects:
 
 Tests require there to be mysql database `rest_assured_test` accessible by `root` with no password. Cucumber tests also need firefox.
 
-    bash$ git clone git://github.com/BBC/REST-assured.git
-    bash$ cd rest-assured && bundle install
-    bash$ bundle exec rspec spec
-    bash$ bundle exec cucumber
+    $ git clone git://github.com/BBC/REST-assured.git
+    $ cd rest-assured && bundle install
+    $ bundle exec rspec spec
+    $ bundle exec cucumber
 
 ## Author
 
