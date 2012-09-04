@@ -15,7 +15,6 @@ group :test do
   gem 'shoulda-matchers'
   gem 'rack-test'
   gem 'capybara'
-  gem 'capybara-firebug'
   gem 'rake'
   gem 'mysql2'
   gem 'sqlite3'
@@ -23,12 +22,11 @@ group :test do
   gem 'sinatra-activerecord'
   gem "spork", "> 0.9.0.rc"
   gem 'simplecov', :platforms => :ruby_19
+  gem 'chromedriver-helper'
 end
 
 # skipped for heroku and travis
 group :development do
-  gem 'ruby-debug', :platform => :mri_18
-  gem 'ruby-debug19', :platform => :mri_19
   gem 'interactive_editor'
   gem 'launchy'
   gem "guard-spork"

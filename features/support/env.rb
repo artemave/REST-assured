@@ -7,13 +7,11 @@ Spork.prefork do
   require 'rspec'
   require 'rack/test'
   require 'capybara'
-  require 'capybara/firebug'
   require 'capybara/cucumber'
   require 'database_cleaner'
   require 'awesome_print'
   require 'rest-assured/utils/port_explorer'
   require File.dirname(__FILE__) + '/world_helpers'
-
 
   ENV['RACK_ENV'] = 'test'
 
@@ -31,10 +29,7 @@ Spork.prefork do
   end
 
   Capybara.register_driver :selenium do |app|
-    profile = Selenium::WebDriver::Firefox::Profile.new
-    profile.enable_firebug
-
-    Capybara::Selenium::Driver.new(app, :browser => :firefox, :profile => profile) 
+    Capybara::Selenium::Driver.new(app, :browser => :chrome)
   end
 
   World(Capybara, Rack::Test::Methods, RackHeaderHack, WorldHelpers)
