@@ -8,7 +8,6 @@ gem 'thin'
 
 # skipped for heroku
 group :test do
-  gem 'awesome_print'
   gem 'cucumber'
   gem 'database_cleaner'
   gem 'rspec'
@@ -18,15 +17,16 @@ group :test do
   gem 'rake'
   gem 'mysql2'
   gem 'sqlite3'
-  gem 'relish'
-  gem 'sinatra-activerecord'
-  gem "spork", "> 0.9.0.rc"
-  gem 'simplecov', :platforms => :ruby_19
   gem 'chromedriver-helper'
+
+  gem 'simplecov', :platforms => :ruby_19
+  gem 'awesome_print'
+  gem "spork", "> 0.9.0.rc"
 end
 
 # skipped for heroku and travis
 group :development do
+  gem 'relish'
   gem 'interactive_editor'
   gem 'launchy'
   gem "guard-spork"
