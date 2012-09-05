@@ -1,6 +1,6 @@
 # REST assured
 
-[![Build status](https://secure.travis-ci.org/BBC/REST-assured.png)](https://secure.travis-ci.org/BBC/REST-assured)
+[![Build status](https://secure.travis-ci.org/artemave/REST-assured.png)](https://secure.travis-ci.org/artemave/REST-assured)
 
 ## Overview
 
@@ -56,7 +56,7 @@ Then install gem and run:
 
 Or clone and run:
 
-    $ git clone git://github.com/BBC/REST-assured.git
+    $ git clone git://github.com/artemave/REST-assured.git
     $ cd REST-assured && bundle install
     $ ./bin/rest-assured -d :memory: & # in-memory sqlite db
 
@@ -66,7 +66,7 @@ Various options (such as ssl, port, db credentials, etc.) are available through 
 
 You can also deploy it to heroku:
 
-    $ git clone git://github.com/BBC/REST-assured.git
+    $ git clone git://github.com/artemave/REST-assured.git
     $ cd REST-assured
 
     $ gem install heroku
@@ -221,7 +221,7 @@ Here is the rest API for managing redirects:
 
 Tests require there to be mysql database `rest_assured_test` accessible by `root` with no password. Cucumber tests also need firefox.
 
-    $ git clone git://github.com/BBC/REST-assured.git
+    $ git clone git://github.com/artemave/REST-assured.git
     $ cd rest-assured && bundle install
     $ bundle exec rspec spec
     $ bundle exec cucumber
