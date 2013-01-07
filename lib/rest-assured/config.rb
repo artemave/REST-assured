@@ -157,10 +157,14 @@ module RestAssured
                                   :username => AppConfig.user || 'root',
                                   :database => AppConfig.database || default_database
                                 }
-
                                 if adapter =~ /mysql/
+                                  if RUBY_PLATFORM == "java"
+                                    adapter = "jdbcmysql"
+                                  else
+                                    adapter = "mysql2"
+                                  end
                                   opts.merge!(
-                                    :adapter   => 'mysql2',
+                                    :adapter   => adapter,
                                     :reconnect => true,
                                     :pool      => 20
                                   )
