@@ -9,6 +9,7 @@ Spork.prefork do
   require 'capybara'
   require 'capybara/cucumber'
   require 'database_cleaner'
+  require 'anticipate'
   require 'awesome_print'
   require 'rest-assured/utils/port_explorer'
   require File.dirname(__FILE__) + '/world_helpers'
@@ -32,7 +33,7 @@ Spork.prefork do
     Capybara::Selenium::Driver.new(app, :browser => :chrome)
   end
 
-  World(Capybara, Rack::Test::Methods, RackHeaderHack, WorldHelpers)
+  World(Capybara, Rack::Test::Methods, RackHeaderHack, WorldHelpers, Anticipate)
 
   require 'rest-assured/config'
   db_opts = { :adapter => 'mysql' }
