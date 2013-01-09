@@ -1,0 +1,66 @@
+1.1.10 (09 Jan 2013)
+
+- support jruby versions of sqlite and myslq gems
+
+1.1.9 (17 May 2012)
+
+- minor UI tweaks
+
+1.1.8 (11 May 2012)
+
+- add status to UI
+- support PATCH
+- minor UI tweeks
+
+1.1.5 (19 Apr 2012)
+
+- add Double.all and Double#destroy
+
+1.1.3 (21 Mar 2012)
+
+- support long (>256 chars) fullpath
+
+1.1.2 (04 Mar 2012)
+
+- support postgres
+- heroku deployable
+
+1.1.1 (01 Mar 2012)
+
+- Add 'verb' to UI
+- No more forked version of Server
+
+1.1.0 (17 Feb 2012)
+
+- Redirects support 'real' (without http redirect) rewrite to local double
+
+1.0.0 (14 Feb 2012)
+
+- start/stop rest-assured via api
+- redirects support pattern/replacement
+
+0.3.2 (23 Jan 2012)
+
+- double 'activeness' does not take verb into account (bugfix)
+
+0.3.1 (09 Jan 2012)
+
+- lock rack version to <= 1.3.6 until they release fix for https://github.com/rack/rack/issues/299
+
+0.3 (12 Dec 2011)
+
+- you can now specify response headers for double to respond with
+
+0.2
+
+- adds verifications
+- adds ruby client
+- adds custom return statuses
+- adds ssl
+- adds mysql support
+
+0.1
+
+- initial public release
+
+
