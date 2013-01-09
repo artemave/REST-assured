@@ -134,8 +134,13 @@ module RestAssured
                                                    else
                                                      File.expand_path("../../../db/#{AppConfig.environment}.db", __FILE__)
                                                    end
+                                if RUBY_PLATFORM == "java"
+                                  adapter = "jdbcsqlite3"
+                                else
+                                  adapter = "sqlite3"
+                                end
                                 {
-                                  :adapter => 'sqlite3',
+                                  :adapter => adapter,
                                   :database => AppConfig.database || default_database
                                 }
                               elsif AppConfig.adapter =~ /postgres|mysql/i
@@ -152,10 +157,14 @@ module RestAssured
                                   :username => AppConfig.user || 'root',
                                   :database => AppConfig.database || default_database
                                 }
-
                                 if adapter =~ /mysql/
+                                  if RUBY_PLATFORM == "java"
+                                    adapter = "jdbcmysql"
+                                  else
+                                    adapter = "mysql2"
+                                  end
                                   opts.merge!(
-                                    :adapter   => 'mysql2',
+                                    :adapter   => adapter,
                                     :reconnect => true,
                                     :pool      => 20
                                   )
