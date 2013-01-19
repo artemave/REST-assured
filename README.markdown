@@ -1,6 +1,6 @@
 # REST assured
 
-[![Build status](https://secure.travis-ci.org/artemave/REST-assured.png)](https://secure.travis-ci.org/artemave/REST-assured)
+[![Build status](https://secure.travis-ci.org/artemave/REST-assured.png)](https://travis-ci.org/artemave/REST-assured)
 
 ## Overview
 
