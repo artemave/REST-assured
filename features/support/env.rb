@@ -29,9 +29,9 @@ Spork.prefork do
     end
   end
 
-  Capybara.register_driver :selenium do |app|
-    Capybara::Selenium::Driver.new(app, :browser => :chrome)
-  end
+  # Capybara.register_driver :selenium do |app|
+  #   Capybara::Selenium::Driver.new(app, :browser => :chrome)
+  # end
 
   World(Capybara, Rack::Test::Methods, RackHeaderHack, WorldHelpers, Anticipate)
 
