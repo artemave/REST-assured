@@ -1,5 +1,4 @@
 require 'sinatra/base'
-require 'sinatra/handler_options_patch'
 require 'haml'
 require 'sinatra/flash'
 require 'sinatra/partials'

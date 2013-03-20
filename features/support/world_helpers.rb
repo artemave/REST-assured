@@ -8,7 +8,7 @@ module WorldHelpers
 
     code.sub!(/(.*)/, "\\1\nENV['RACK_ENV'] = 'production'")
     code.sub!(/require 'rest-assured\/application'/, '')
-    code.sub!(/RestAssured::Application.run!/, 'puts AppConfig.to_yaml')
+    code.sub!(/RestAssured::Application.run!.*/m, 'puts AppConfig.to_yaml')
 
     new_exec = "#{rest_assured_exec}_temp"
     File.open(new_exec, 'w') do |file|

@@ -28,7 +28,6 @@ You are going to need ruby >= 1.8.7 on Linux/MacOS. Also, one of sqlite3, postgr
 gem 'sqlite3' # or mysql2 or pg
 # for jruby, use 'jdbcsqlite3' and 'jdbcmysql'
 
-gem 'thin'    # to make it faster; optional
 gem 'rest-assured'
 
 # env.rb/spec_helper.rb
@@ -46,10 +45,6 @@ Install db client gem:
     $ gem install sqlite3 # or mysql2 or pg
 
 If using mysql/postgres, rest-assured expects database `rest_assured` to be accessible by user `root` with no password. Those are defaults and can be changed with cli options.
-
-It is also recommended to have thin installed. This improves startup time (over default webrick) and also it works with in-memory sqlite (which webrick does not):
-
-    $ gem install thin
 
 Then install gem and run:
 
@@ -131,7 +126,7 @@ For those using REST-assured from non-ruby environments.
 
   - __fullpath__ - e.g., `/some/api/object`, or with parameters in query string (useful for doubling GETs) - `/some/other/api/object?a=2&b=c`. Mandatory.
   - __content__ - whatever you want this double to respond with. Optional.
-  - __verb__ - one of http the following http verbs: `GET`, `POST`, `PUT`, `DELETE`. Optional. `GET` is default.
+  - __verb__ - one of http the following http verbs: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`. Optional. `GET` is default.
   - __status__ - status returned when double is requested. Optional. `200` is default.
   - __response_headers__ - key/value map of headers. Optional.
   

@@ -24,7 +24,7 @@
           %td= f.status
           %td.label.text-center
             - if fs.size > 1
-              %input.active-double-toggle{:type => 'radio', :name => group, :checked => f.active, :data => { :double_id => f.id }}
+              %input.active-double-toggle{:type => 'radio', :name => group, :checked => f.active, :data => { 'double-id' => f.id }}
             - else
               yes
           %td.edit-link.text-center.white-space-nowrap
@@ -42,11 +42,9 @@
         e.stopPropagation();
 
         $.post(
-          '/doubles/' + this.getAttribute('data-double_id'),
+          '/doubles/' + $(this).data('doubleId'),
           { _method: 'put', active: 't' },
-          function(data) {
-            $.jGrowl(data);
-          }
+          function(data) { $.jGrowl(data) }
         );
     });
   });

@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version               = RestAssured::VERSION
   s.platform              = Gem::Platform::RUBY
   s.authors               = ['Artem Avetisyan']
-  s.email                 = ['artem.avetisyan@bbc.co.uk']
+  s.email                 = ['artemave@gmail.com']
   s.homepage              = "https://github.com/artemave/rest-assured"
   s.summary               = %q{Real stubs and spies for HTTP(S) services}
   #s.description          = %q{TODO: Write a gem description}
@@ -20,12 +20,13 @@ Gem::Specification.new do |s|
   s.executables           = ['rest-assured']
   s.require_paths         = ['lib']
 
-  s.add_dependency 'sinatra', '~> 1.3.2'
-  s.add_dependency 'childprocess', '~> 0.3.0'
+  s.add_dependency 'sinatra', '~> 1.4.0'
+  s.add_dependency 'childprocess', '~> 0.3'
   s.add_dependency 'sinatra-flash'
-  s.add_dependency 'haml', '>= 3.1.3'
+  s.add_dependency 'haml', '~> 4.0'
   s.add_dependency 'activerecord', '~> 3.2.0'
   s.add_dependency 'activeresource', '~> 3.2.0'
+  s.add_dependency 'thin', '~> 1.5'
   s.add_dependency 'json'
 end
 

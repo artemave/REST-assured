@@ -46,7 +46,6 @@ module RestAssured
     def self.included(klass)
       init_logger
       setup_db
-      setup_ssl(klass) if AppConfig.ssl
 
       klass.set :port, AppConfig.port
       klass.set :environment, AppConfig.environment
@@ -68,19 +67,6 @@ module RestAssured
     end
 
     private
-
-      def self.setup_ssl(klass)
-        ssl_config = {
-          :SSLEnable => true,
-          :SSLCertificate => OpenSSL::X509::Certificate.new( File.read( AppConfig.ssl_cert ) ),
-          :SSLPrivateKey => OpenSSL::PKey::RSA.new( File.read( AppConfig.ssl_key ) ),
-          :SSLCertName => [ ["CN", WEBrick::Utils::getservername] ],
-          :SSLVerifyClient => OpenSSL::SSL::VERIFY_NONE 
-        }
-
-        klass.set :server, %[webrick]
-        klass.set :webrick, ssl_config
-      end
 
       def self.setup_db
         setup_db_logging

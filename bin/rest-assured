@@ -15,7 +15,7 @@ OptionParser.new do |opts|
     user_opts[:adapter] = adapter
   end
 
-  opts.on('-d', '--database FILENAME', "Either path to database file (sqlite, defaults to ./rest-assured.db) or db name (defaults to rest_assured)") do |fname|
+  opts.on('-d', '--database FILENAME', "Either path to database file (sqlite, defaults to ./rest-assured.db) or db name (defaults to rest_assured) or :memory: for in-memory sqlite") do |fname|
     user_opts[:database] = fname
   end
 
@@ -72,4 +72,12 @@ end.parse!
 RestAssured::Config.build(user_opts)
 
 require 'rest-assured/application'
-RestAssured::Application.run!
+RestAssured::Application.run!(:threaded => false, :server => 'thin') do |server|
+  ssl_options = {
+    :cert_chain_file => AppConfig.ssl_cert,
+    :private_key_file => AppConfig.ssl_key,
+    :verify_peer => false
+  }
+  server.ssl = AppConfig.ssl
+  server.ssl_options = ssl_options
+end

@@ -1,10 +1,8 @@
-source "http://rubygems.org"
+source "https://rubygems.org"
 
-# Specify your gem's dependencies in rest-assured.gemspec
 gemspec
 
 gem 'pg'
-gem 'thin'
 
 # skipped for heroku
 group :test do
