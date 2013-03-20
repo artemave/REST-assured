@@ -6,7 +6,6 @@ PATH
       activeresource (~> 3.2.0)
       childprocess (~> 0.3)
       haml (~> 4.0)
-      json
       sinatra (~> 1.4.0)
       sinatra-flash
       thin (~> 1.5)

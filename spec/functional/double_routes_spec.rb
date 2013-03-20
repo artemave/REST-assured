@@ -167,7 +167,7 @@ module RestAssured
 
         get '/doubles.json'
 
-        json = JSON.parse(last_response.body)
+        json = MultiJson.load(last_response.body)
 
         json.first['double']['verb'].should == 'POST'
         json.last['double']['verb'].should == 'GET'

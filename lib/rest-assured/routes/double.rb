@@ -44,7 +44,7 @@ module RestAssured
       router.post /^\/doubles(\.json)?$/ do
         begin
           data = request.body.read
-          d = JSON.parse(data)['double']
+          d = MultiJson.load(data)['double']
 
           # fix acitve resource dumbness
           if d['response_headers'] and d['response_headers']['response_headers']
