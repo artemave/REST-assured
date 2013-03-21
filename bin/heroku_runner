@@ -24,4 +24,4 @@ opts = {
 RestAssured::Config.build(opts)
 
 require 'rest-assured/application'
-RestAssured::Application.run!
+RestAssured::Application.run!(:threaded => false)
