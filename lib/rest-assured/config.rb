@@ -1,8 +1,6 @@
 require 'logger'
 require 'active_record'
 require 'active_support/core_ext/kernel/reporting'
-require 'webrick'
-require 'webrick/https'
 
 module RestAssured
   module Config
