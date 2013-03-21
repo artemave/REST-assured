@@ -1,4 +1,3 @@
-require 'json'
 require 'active_support/core_ext/hash/slice'
 
 module RestAssured
