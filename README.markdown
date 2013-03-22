@@ -14,28 +14,30 @@ In a nutshell, you can:
 
 Here is how it works. REST-assured starts an application that can be instructed (via ruby client library or plain REST api) to respond to any request with arbitrary content, status, headers, etc. Configure api endpoints of the application under test to point to that application instead of real services. Then in tests use the API (create doubles) that match requests your application is supposed to be firing. Either to stub content or to verify various aspects of how your application requests dependencies (headers, payload, etc).
 
-Check out [example](https://github.com/artemave/REST-assured-example)
+<br>
+[Playground](http://rest-assured.herokuapp.com) (might take few seconds to load while heroku is taking off)
+
+[Example project](https://github.com/artemave/REST-assured-example)
 
 
 ## Set up
 
 You are going to need ruby >= 1.8.7 on Linux/MacOS. Also, one of sqlite3, postgres or mysql.
 
-### Ruby Client
+### In ruby project
 
 ```ruby
 # Gemfile
 gem 'sqlite3' # or mysql2 or pg
-# for jruby, use 'jdbcsqlite3' and 'jdbcmysql'
-
+              # use 'jdbcsqlite3' and 'jdbcmysql' for jruby
 gem 'rest-assured'
 
 # env.rb/spec_helper.rb
 require 'rest-assured'
 
 RestAssured::Server.start(database: ':memory:', port: 7899) # or any other option available on command line
-# Alternatively, if you want to use existing server instance:
-RestAssured::Server.address = 'http://localhost:4578' # or wherever it is
+# Or, you can specify an instance that is already running somewhere:
+RestAssured::Server.address = 'http://wacky-duckling.herokuapp.com'
 ```
 
 ### Standalone instance
@@ -44,7 +46,7 @@ Install db client gem:
 
     $ gem install sqlite3 # or mysql2 or pg
 
-If using mysql/postgres, rest-assured expects database `rest_assured` to be accessible by user `root` with no password. Those are defaults and can be changed with cli options.
+If using mysql/postgres, create database `rest_assured` accessible by user `root` with no password. Those are defaults and can be changed with cli options.
 
 Then install gem and run:
 
