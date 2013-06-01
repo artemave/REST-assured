@@ -12,7 +12,7 @@ In a nutshell, you can:
 * verify requests to external services (spying)
 * simulate different behavior of external services using web UI; useful in development
 
-Here is how it works. REST-assured starts an application that can be instructed (via ruby client library or plain REST api) to respond to any request with arbitrary content, status, headers, etc. Configure api endpoints of the application under test to point to that application instead of real services. Then in tests use the API (create doubles) that match requests your application is supposed to be firing. Either to stub content or to verify various aspects of how your application requests dependencies (headers, payload, etc).
+Here is how it works. REST-assured starts a web server whose routes can be configured at runtime (via ruby client library or REST api) to respond to any request with arbitrary content, status, headers, etc. Configure api endpoints of the application under test to point to REST-assured instead of real services. Now, in tests use the api to create routes (doubles) that match requests your application is supposed to be firing. Either to stub content or to verify various aspects of how your application requests dependencies (headers, payload, etc).
 
 <br>
 [Playground](http://rest-assured.herokuapp.com) (might take few seconds to load while heroku is taking off)
