@@ -1,6 +1,7 @@
 # REST assured
 
 [![Build status](https://secure.travis-ci.org/artemave/REST-assured.png)](https://travis-ci.org/artemave/REST-assured)
+[![Gem Version](https://badge.fury.io/rb/rest-assured.png)](http://badge.fury.io/rb/rest-assured)
 
 ## Overview
 
