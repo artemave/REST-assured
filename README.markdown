@@ -13,7 +13,7 @@ In a nutshell, you can:
 * verify requests to external services (spying)
 * simulate different behavior of external services using web UI; useful in development
 
-Here is how it works. REST-assured starts a web server whose routes can be configured at runtime (via ruby client library or REST api) to respond to any request with arbitrary content, status, headers, etc. Configure api endpoints of the application under test to point to REST-assured instead of real services. Now, in tests use the api to create routes (doubles) that match requests your application is supposed to be firing. Either to stub content or to verify various aspects of how your application requests dependencies (headers, payload, etc).
+Here is how it works. REST-assured starts a web server whose routes can be configured at runtime (via ruby client library or REST api) to respond to any request with arbitrary content, status, headers, etc. Configure api endpoints of the application under test to point to REST-assured instead of real services. Now in tests use the REST-assured api to create routes (doubles) that match requests your application is firing. Either to stub content or to verify various aspects of how your application requests dependencies (headers, payload, etc).
 
 <br>
 [Playground](http://rest-assured.herokuapp.com) (might take few seconds to load while heroku is taking off)
@@ -77,7 +77,7 @@ You can also deploy it to heroku:
 
 ## Usage
 
-REST-assured is all about doubles. Double is a stub/spy of HTTP request. Create one that has the same request fullpath and method as the one your app is sending to a dependant service and then convience your app that REST-assured is that dependency (hint: by making endpoints configurable).
+REST-assured is all about doubles. Double is a stub/spy of HTTP request. Create one that has the same request fullpath and method as the one your app is sending to a service it depends on (e.g. twitter) and then convience your app that REST-assured is that dependency (e.g. by swapping endpoints - twitter.com to localhost:4578 - in test environment).
 
 ### Ruby Client
 
