@@ -2,6 +2,7 @@
 
 [![Build status](https://secure.travis-ci.org/artemave/REST-assured.png)](https://travis-ci.org/artemave/REST-assured)
 [![Gem Version](https://badge.fury.io/rb/rest-assured.png)](http://badge.fury.io/rb/rest-assured)
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/artemave/rest-assured/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 ## Overview
 
