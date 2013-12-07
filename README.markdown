@@ -229,3 +229,7 @@ Tests require there to be mysql database `rest_assured_test` accessible by `root
 ## Author
 
 [Artem Avetisyan](https://github.com/artemave)
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/artemave/rest-assured/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
