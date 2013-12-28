@@ -24,8 +24,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'childprocess', '~> 0.3'
   s.add_dependency 'sinatra-flash'
   s.add_dependency 'haml', '~> 4.0'
-  s.add_dependency 'activerecord', '~> 3.2.0'
-  s.add_dependency 'activeresource', '~> 3.2.0'
-  s.add_dependency 'thin', '~> 1.5'
+  s.add_dependency 'activerecord', '~> 3.0'
+  s.add_dependency 'activeresource', '~> 3.0'
+  s.add_dependency 'thin', '~> 1.6'
 end
 
