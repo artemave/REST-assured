@@ -8,7 +8,7 @@ module RestAssured
       cmdargs = %w{-d :memory: -p 6666}
       Config.stub(:to_cmdargs => cmdargs)
 
-      ChildProcess.should_receive(:build).with('rest-assured', *cmdargs).and_return(child = mock(:io => mock))
+      ChildProcess.should_receive(:build).with('rest-assured', *cmdargs).and_return(child = double(:io => double))
 
       state = ''
       child.io.should_receive(:inherit!) do

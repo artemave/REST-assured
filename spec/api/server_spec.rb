@@ -10,7 +10,7 @@ module RestAssured
     end
 
     it 'khows when it is up' do
-      AppSession.stub(:new).and_return(session = stub(:alive? => true).as_null_object)
+      AppSession.stub(:new).and_return(session = double(:alive? => true).as_null_object)
       Utils::PortExplorer.stub(:port_free? => false)
 
       Server.start
@@ -23,7 +23,7 @@ module RestAssured
       end
 
       it 'if it is starting at the moment' do
-        AppSession.stub(:new).and_return(session = stub(:alive? => true).as_null_object)
+        AppSession.stub(:new).and_return(session = double(:alive? => true).as_null_object)
         Utils::PortExplorer.stub(:port_free? => true)
         Server.start!
 
@@ -33,7 +33,7 @@ module RestAssured
 
     context 'when starts' do
       it 'makes sure no previous session is running' do
-        session = mock.as_null_object
+        session = double.as_null_object
         session.stub(:alive?).and_return(true, false)
         Utils::PortExplorer.stub(:port_free? => false)
         AppSession.stub(:new).and_return(session)
@@ -85,7 +85,7 @@ module RestAssured
 
       describe 'async/sync start' do
         before do
-          AppSession.stub(:new).and_return(session = stub(:alive? => false).as_null_object)
+          AppSession.stub(:new).and_return(session = double(:alive? => false).as_null_object)
           Utils::PortExplorer.stub(:port_free? => true)
 
           @t = Thread.new do
@@ -113,7 +113,7 @@ module RestAssured
 
     context 'when stopped' do
       it 'stops application subprocess' do
-        AppSession.stub(:new).and_return(session = stub(:alive? => false))
+        AppSession.stub(:new).and_return(session = double(:alive? => false))
         Server.start!
 
         session.should_receive(:stop)
@@ -123,7 +123,7 @@ module RestAssured
 
     it 'stops application subprocess when current process exits' do
       res_file = Tempfile.new('res')
-      AppSession.stub(:new).and_return(session = mock.as_null_object)
+      AppSession.stub(:new).and_return(session = double.as_null_object)
       session.stub(:alive?).and_return(false)
       session.stub(:stop) do
         res_file.write "stopped"
