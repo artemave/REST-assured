@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rest-assured (1.2.2)
+    rest-assured (2.0.0)
       activerecord (~> 3.0)
       activeresource (~> 3.0)
       childprocess (~> 0.3)
