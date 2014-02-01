@@ -10,8 +10,7 @@ Feature: manage redirects via ui
       | /url1/.*  | http://google.com/api  |
       | /url2/bbb | http://twitter.com/api |
     When I visit "redirects" page
-    Then I should see that I am on "redirects" page
-    And I should see existing redirects:
+    Then I should see existing redirects:
       | pattern   | to                     |
       | /url1/.*  | http://google.com/api  |
       | /url2/bbb | http://twitter.com/api |
@@ -36,8 +35,7 @@ Feature: manage redirects via ui
     And I choose to edit redirect
     When I change "redirect" "pattern" to "/some/remote.*"
     And I save it
-    Then I should see that I am on "redirects" page
-    And I should see existing redirects:
+    Then I should see existing redirects:
       | pattern  | to                    |
       | /some/remote.* | http://google.com/api |
 

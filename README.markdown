@@ -112,20 +112,20 @@ JSON.parse(req.params).should == expected_params_hash
 JSON.parse(req.rack_env)['HTTP_ACCEPT'].should == 'text/html'
 ```
 
-Use plain REST api to clear doubles/redirects between tests:
+Use REST api to clear doubles/redirects between tests:
 
 ```ruby
 RestClient.delete "#{RestAssured::Server.address}/redirects/all"
 RestClient.delete "#{RestAssured::Server.address}/doubles/all"
 ```
 
-### Plain REST API
+### REST API
 
 For those using REST-assured from non-ruby environments.
 
 #### Create double
 
-  HTTP POST to `/doubles` creates a double and returns its json representation.
+  HTTP POST to `/doubles.json` creates a double and returns its json representation.
   The following options can be passed as request parameters:
 
   - __fullpath__ - e.g., `/some/api/object`, or with parameters in query string (useful for doubling GETs) - `/some/other/api/object?a=2&b=c`. Mandatory.
@@ -199,7 +199,7 @@ Here is the rest API for managing redirects:
 
 ### Create redirect
 
-  HTTP POST to `/redirects` creates redirect.
+  HTTP POST to `/redirects.json` creates redirect.
   The following options can be passed as request parameters:
 
   - __pattern__ - regex (perl5 style) tested against request fullpath. e.g, `^/auth/(.*)`. Mandatory

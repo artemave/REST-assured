@@ -11,8 +11,7 @@ Feature: manage doubles via ui
       | /url2/bbb | geo location | more content | POST |
       | /u/b?c=1  | wikipedia    | article      | PUT  |
     When I visit "doubles" page
-    Then I should see that I am on "doubles" page
-    And I should see existing doubles:
+    Then I should see existing doubles:
       | fullpath  | description  | verb |
       | /url1/aaa | twitter      | GET  |
       | /url2/bbb | geo location | POST |
@@ -47,8 +46,7 @@ Feature: manage doubles via ui
     And I choose to edit double
     When I change "double" "description" to "google"
     And I save it
-    Then I should see that I am on "doubles" page
-    And I should see existing doubles:
+    Then I should see existing doubles:
       | fullpath  | description | verb | status |
       | /url1/aaa | google      | POST | 404    |
 

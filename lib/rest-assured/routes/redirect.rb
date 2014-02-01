@@ -11,21 +11,21 @@ module RestAssured
         haml :'redirects/new'
       end
 
-      router.post '/redirects' do
+      router.post /^\/redirects(.json)?$/ do |needs_json|
         @redirect = Models::Redirect.create(params['redirect'] || { :pattern => params['pattern'], :to => params['to'] })
 
-        if browser?
+        if needs_json
+          if @redirect.errors.present?
+            status 400
+            body @redirect.errors.full_messages.join("\n")
+          end
+        else
           if @redirect.errors.blank?
             flash[:notice] = "Redirect created"
             redirect '/redirects'
           else
             flash.now[:error] = "Crumps! " + @redirect.errors.full_messages.join("; ")
             haml :'redirects/new'
-          end
-        else
-          if @redirect.errors.present?
-            status 400
-            body @redirect.errors.full_messages.join("\n")
           end
         end
       end

@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-require 'rubygems'
 require "irb"
 
 $:.push File.expand_path('../../lib', __FILE__)

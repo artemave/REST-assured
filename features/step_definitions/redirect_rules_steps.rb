@@ -3,7 +3,7 @@ Then /^I should get (\d+)$/ do |code|
 end
 
 When /^(?:I create|there is) redirect from "([^"]*)" to "([^"]*)"$/ do |pattern, url|
-  post '/redirects', { :pattern => pattern, :to => url }
+  post '/redirects.json', { :pattern => pattern, :to => url }
   last_response.should be_ok
 end
 

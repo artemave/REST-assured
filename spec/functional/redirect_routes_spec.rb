@@ -93,14 +93,14 @@ module RestAssured
 
     context 'via api', :ui => false do
       it "creates redirect" do
-        post '/redirects', redirect
+        post '/redirects.json', redirect
 
         last_response.should be_ok
         Models::Redirect.count.should == 1
       end
 
       it "reports failure when creating with invalid parameters" do
-        post '/redirects', redirect.except(:pattern)
+        post '/redirects.json', redirect.except(:pattern)
 
         last_response.should_not be_ok
         last_response.body.should =~ /Pattern can't be blank/

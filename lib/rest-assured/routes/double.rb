@@ -17,12 +17,12 @@ module RestAssured
         redirect to('/doubles')
       end
 
-      router.get %r{^/doubles(\.json)?$} do |is_json|
+      router.get %r{^/doubles(\.json)?$} do |needs_json|
         @doubles = Models::Double.all
-        if not is_json
-          haml :'doubles/index'
-        else
+        if needs_json
           body @doubles.to_json
+        else
+          haml :'doubles/index'
         end
       end
 
@@ -40,7 +40,7 @@ module RestAssured
         end
       end
 
-      router.post /^\/doubles(\.json)?$/ do
+      router.post /^\/doubles(\.json)?$/ do |needs_json|
         begin
           data = request.body.read
           d = MultiJson.load(data)['double']
@@ -56,20 +56,20 @@ module RestAssured
 
         @double = Models::Double.create(d) 
 
-        if browser?
+        if needs_json
+          if @double.errors.present?
+            status 422
+            body @double.errors.to_json
+          else
+            body @double.to_json
+          end
+        else
           if @double.errors.blank?
             flash[:notice] = "Double created"
             redirect '/doubles'
           else
             flash.now[:error] = "Crumps! " + @double.errors.full_messages.join("; ")
             haml :'doubles/new'
-          end
-        else
-          if @double.errors.present?
-            status 422
-            body @double.errors.to_json
-          else
-            body @double.to_json
           end
         end
       end
@@ -101,10 +101,10 @@ module RestAssured
         end
       end
 
-      router.delete %r{/doubles/(\d+)(\.json)?$} do |id, is_json|
+      router.delete %r{/doubles/(\d+)(\.json)?$} do |id, needs_json|
         if Models::Double.destroy(id)
           flash[:notice] = 'Double deleted'
-          redirect '/doubles' unless is_json
+          redirect '/doubles' unless needs_json
         end
       end
 

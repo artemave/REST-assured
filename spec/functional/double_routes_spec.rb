@@ -125,7 +125,7 @@ module RestAssured
 
     context "REST api", :ui => false do
       it "creates double" do
-        post '/doubles', test_double
+        post '/doubles.json', test_double
 
         last_response.should be_ok
 
@@ -134,7 +134,7 @@ module RestAssured
       end
 
       it "reports failure when creating with invalid parameters" do
-        post '/doubles', test_double.except(:fullpath)
+        post '/doubles.json', test_double.except(:fullpath)
 
         last_response.should_not be_ok
         last_response.body.should =~ /\{"fullpath":\["can't be blank"\]\}/

@@ -5,12 +5,12 @@ Given /^there are no doubles$/ do
 end
 
 When /^I create a double with "([^""]*)" as fullpath, "([^""]*)" as response content, "([^""]*)" as request verb and status as "([^""]*)"$/ do |fullpath, content, verb, status|
-  post '/doubles', { :fullpath => fullpath, :content => content, :verb => verb, :status => status }
+  post '/doubles.json', { :fullpath => fullpath, :content => content, :verb => verb, :status => status }
   last_response.should be_ok
 end
 
 When /^I create a double$/ do
-  post '/doubles', { :fullpath => '/api/something' }
+  post '/doubles.json', { :fullpath => '/api/something' }
   @create_a_double_response = last_response.body
 end
 
@@ -81,10 +81,6 @@ Given /^the following doubles exist:$/ do |doubles|
   end
 end
 
-Then /^I should see that I am on "([^""]*)" page$/ do |name|
-  find('title').text.should =~ /#{name} -/
-end
-
 Then /^I should see existing doubles:$/ do |doubles|
   doubles.hashes.each do |row|
     page.should have_content(row[:fullpath])
@@ -144,7 +140,7 @@ Then /^(first|second) double should be served$/ do |ord|
 end
 
 Given /^I choose to edit (?:double|redirect)$/ do
-  find('.edit-link a').click
+  all('.edit-link a').first.click
 end
 
 When /^I change "([^"]*)" "([^"]*)" to "([^"]*)"$/ do |obj, prop, value|
