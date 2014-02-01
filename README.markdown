@@ -17,7 +17,7 @@ In a nutshell, you can:
 Here is how it works. REST-assured starts a web server whose routes can be configured at runtime (via ruby client library or REST api) to respond to any request with arbitrary content, status, headers, etc. Configure api endpoints of the application under test to point to REST-assured instead of real services. Now in tests use the REST-assured api to create routes (doubles) that match requests your application is firing. Either to stub content or to verify various aspects of how your application requests dependencies (headers, payload, etc).
 
 <br>
-[Playground](http://rest-assured.herokuapp.com) (might take few seconds to load while heroku is taking off)
+[Playground](http://rest-assured.herokuapp.com)
 
 [Example project](https://github.com/artemave/REST-assured-example)
 
