@@ -24,7 +24,7 @@ Here is how it works. REST-assured starts a web server whose routes can be confi
 
 ## Set up
 
-You are going to need ruby >= 1.8.7 on Linux/MacOS. Also, one of sqlite3, postgres or mysql.
+You are going to need ruby >= 1.9.2 on Linux/MacOS. Also, one of sqlite3, postgres or mysql.
 
 ### In ruby project
 
