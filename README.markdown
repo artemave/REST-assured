@@ -2,11 +2,12 @@
 
 [![Build status](https://secure.travis-ci.org/artemave/REST-assured.png)](https://travis-ci.org/artemave/REST-assured)
 [![Gem Version](https://badge.fury.io/rb/rest-assured.png)](http://badge.fury.io/rb/rest-assured)
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/artemave/rest-assured/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 ## Overview
 
 Stub/spy http(s) based external dependencies in your integration/acceptance tests.
+
+## Description
 
 In a nutshell, you can:
 
@@ -14,7 +15,9 @@ In a nutshell, you can:
 * verify requests to external services (spying)
 * simulate different behavior of external services using web UI; useful in development
 
-Here is how it works. REST-assured starts a web server whose routes can be configured at runtime (via ruby client library or REST api) to respond to any request with arbitrary content, status, headers, etc. Configure api endpoints of the application under test to point to REST-assured instead of real services. Now in tests use the REST-assured api to create routes (doubles) that match requests your application is firing. Either to stub content or to verify various aspects of how your application requests dependencies (headers, payload, etc).
+REST-assured runs in a standalone process. It can be configured at runtime (via ruby client library or REST api) to respond to any request with arbitrary content, status, headers, etc. 
+
+The idea is that in "test" environment your app is making calls to REST-assured rather than to real external services.
 
 <br>
 [Playground](http://rest-assured.herokuapp.com)
