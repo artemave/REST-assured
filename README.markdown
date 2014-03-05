@@ -19,7 +19,6 @@ REST-assured runs in a standalone process. It can be configured at runtime (via 
 
 The idea is that in "test" environment your app is making calls to REST-assured rather than to real external services.
 
-<br>
 [Playground](http://rest-assured.herokuapp.com)
 
 [Example project](https://github.com/artemave/REST-assured-example)
@@ -68,6 +67,8 @@ This starts up an instance of rest-assured on port 4578. It is accessible via RE
 
 Various options (such as ssl, port, db credentials, etc.) are available through command line options. Check out `rest-assured -h` to see what they are.
 
+### Heroku
+
 You can also deploy it to heroku:
 
     $ git clone git://github.com/artemave/REST-assured.git
@@ -81,9 +82,9 @@ You can also deploy it to heroku:
 
 ## Usage
 
-REST-assured is all about doubles. Double is a stub/spy of HTTP request. Create one that has the same request fullpath and method as the one your app is sending to a service it depends on (e.g. twitter) and then convience your app that REST-assured is that dependency (e.g. by swapping endpoints - twitter.com to localhost:4578 - in test environment).
+REST-assured uses doubles to stub/spy on HTTP request. Create one that has the same request fullpath and method as the one your app is sending to a service it depends on (e.g. twitter) and then convience your app that REST-assured is that dependency (e.g. by swapping endpoints - twitter.com to localhost:4578 - in test environment).
 
-### Ruby Client
+### Ruby API
 
 REST-assured provides client library to work with doubles. Check out 'Ruby API' section in [live documentation](https://www.relishapp.com/artemave/rest-assured) for full reference.
 
