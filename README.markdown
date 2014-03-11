@@ -15,7 +15,7 @@ In a nutshell, you can:
 * verify requests to external services (spying)
 * simulate different behavior of external services using web UI; useful in development
 
-REST-assured runs in a standalone process. It can be configured at runtime (via ruby client library or REST api) to respond to any request with arbitrary content, status, headers, etc. 
+REST-assured runs in a standalone process. It can be configured at runtime (via ruby client library or REST api) to respond to any request with arbitrary content, status, headers, etc.
 
 The idea is that in "test" environment your app is making calls to REST-assured rather than to real external services.
 
@@ -77,16 +77,16 @@ You can also deploy it to heroku:
     $ gem install heroku
     $ heroku login # assuming you already have an account
     $ heroku create --stack cedar
-    
+
     $ git push heroku master
 
 ## Usage
 
-REST-assured uses doubles to stub/spy on HTTP request. Create one that has the same request fullpath and method as the one your app is sending to a service it depends on (e.g. twitter) and then convience your app that REST-assured is that dependency (e.g. by swapping endpoints - twitter.com to localhost:4578 - in test environment).
+REST-assured can do two things: respond to a particular path and method (e.g. GET /stuff/v2?thing=1) and redirect requests based on a pattern (e.g. all /foo\* will redirect to http://example.com/bar). Both of these are available to create/read/delete in runtime via api.
 
 ### Ruby API
 
-REST-assured provides client library to work with doubles. Check out 'Ruby API' section in [live documentation](https://www.relishapp.com/artemave/rest-assured) for full reference.
+REST-assured provides ruby client library to work with doubles (but not redirects). Check out 'Ruby API' section in [live documentation](https://www.relishapp.com/artemave/rest-assured) for full reference.
 
 Create double:
 
@@ -125,7 +125,7 @@ RestClient.delete "#{RestAssured::Server.address}/doubles/all"
 
 ### REST API
 
-For those using REST-assured from non-ruby environments.
+For using REST-assured from non-ruby environments.
 
 #### Create double
 
