@@ -19,7 +19,7 @@ REST-assured runs in a standalone process. It can be configured at runtime (via 
 
 The idea is that in "test" environment your app is making calls to REST-assured rather than to real external services.
 
-[Playground](http://rest-assured.herokuapp.com)
+[Playground](http://fakesh.it/)
 
 [Example project](https://github.com/artemave/REST-assured-example)
 
