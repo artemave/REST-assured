@@ -6,6 +6,7 @@ module RestAssured
     before(:all) do
       Server.start(DB_OPTS.merge(:port => 9877))
     end
+
     after(:all) do
       Server.stop
     end
@@ -13,12 +14,12 @@ module RestAssured
     it { should be_kind_of ActiveResource::Base }
 
     it 'creates new double' do
-      d = Double.create :fullpath => '/some/api', :content => 'content'
+      d = Models::Double.create! :fullpath => '/some/api', :content => 'content'
       Models::Double.where(:fullpath => d.fullpath, :content => d.content).should exist
     end
 
     it 'finds exising double' do
-      d = Models::Double.create :fullpath => '/some/api', :content => 'content'
+      d = Models::Double.create! :fullpath => '/some/api', :content => 'content'
 
       dd = Double.find(d.id)
 

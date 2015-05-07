@@ -10,12 +10,12 @@ group :test do
   gem 'selenium-webdriver'
   gem 'database_cleaner'
   gem 'rspec'
-  gem 'shoulda-matchers'
+  gem 'shoulda-matchers', require: false
   gem 'anticipate'
   gem 'rack-test'
   gem 'capybara'
   gem 'rake'
-  gem 'mysql2'
+  #gem 'mysql2'
   gem 'sqlite3'
   gem 'chromedriver-helper'
   gem 'simplecov'
@@ -26,9 +26,7 @@ end
 group :development do
   gem 'relish'
   gem 'pry'
-  gem 'pry-doc'
-  gem 'pry-stack_explorer'
-  gem 'pry-debugger'
+  gem 'pry-byebug'
   gem 'launchy'
 end
 

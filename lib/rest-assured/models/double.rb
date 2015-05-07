@@ -3,8 +3,6 @@ require 'net/http'
 module RestAssured
   module Models
     class Double < ActiveRecord::Base
-      attr_accessible :fullpath, :content, :description, :verb, :status, :response_headers
-
       serialize :response_headers, Hash
 
       VERBS = %w{GET POST PUT DELETE HEAD PATCH}

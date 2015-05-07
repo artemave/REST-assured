@@ -9,9 +9,6 @@ module RestAssured::Models
 
     it { should validate_presence_of(:pattern) }
     it { should validate_presence_of(:to) }
-    it { should allow_mass_assignment_of(:pattern) }
-    it { should allow_mass_assignment_of(:to) }
-    it { should allow_mass_assignment_of(:position) }
 
     it 'assigns incremental position on create' do
       r1 = Redirect.create :pattern => '.*', :to => 'someurl'

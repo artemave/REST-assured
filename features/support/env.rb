@@ -33,7 +33,7 @@ end
 World(Capybara, Rack::Test::Methods, RackHeaderHack, WorldHelpers, Anticipate)
 
 require 'rest-assured/config'
-db_opts = { :adapter => 'mysql' }
+db_opts = { :adapter => 'postgresql' }
 RestAssured::Config.build(db_opts)
 
 require 'rest-assured'

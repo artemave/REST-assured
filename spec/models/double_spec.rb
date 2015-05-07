@@ -13,13 +13,8 @@ module RestAssured::Models
     end
 
     it { should validate_presence_of(:fullpath) }
-    it { should validate_inclusion_of(:verb, Double::VERBS) }
-    it { should validate_inclusion_of(:status, Double::STATUSES) }
-    it { should allow_mass_assignment_of(:fullpath) }
-    it { should allow_mass_assignment_of(:content) }
-    it { should allow_mass_assignment_of(:verb) }
-    it { should allow_mass_assignment_of(:status) }
-    it { should allow_mass_assignment_of(:response_headers) }
+    it { should validate_inclusion_of(:verb).in_array Double::VERBS }
+    it { should validate_inclusion_of(:status).in_array Double::STATUSES }
 
     it { should have_many(:requests) }
 

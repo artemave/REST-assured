@@ -35,12 +35,15 @@ RSpec.configure do |c|
   c.include Rack::Test::Methods
   c.include XhrHelpers
 
-  c.before(:each) do
-    DatabaseCleaner.start
+  c.before(:suite) do
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.clean_with(:truncation)
   end
 
-  c.after(:each) do
-    DatabaseCleaner.clean
+  c.around(:each) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
   end
 
   c.before(:each, :ui => true) do
@@ -58,17 +61,15 @@ RSpec.configure do |c|
   end
 end
 require 'rest-assured/config'
-DB_OPTS = { :adapter => 'mysql' }
+DB_OPTS = { :adapter => 'postgresql' }
 RestAssured::Config.build(DB_OPTS)
 
 require 'rest-assured'
 require 'rest-assured/application'
-require 'shoulda-matchers'
+require 'shoulda/matchers'
 
 Capybara.app = RestAssured::Application
 
 def app
   RestAssured::Application
 end
-
-DatabaseCleaner.strategy = :truncation

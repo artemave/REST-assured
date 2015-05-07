@@ -135,7 +135,8 @@ module RestAssured
                                 opts = {
                                   :adapter  => 'postgresql',
                                   :username => AppConfig.user || 'root',
-                                  :database => AppConfig.database || default_database
+                                  :database => AppConfig.database || default_database,
+                                  :pool     => 20
                                 }
                                 if adapter =~ /mysql/
                                   adapter = RUBY_PLATFORM == "java" ? 'jdbcmysql' : 'mysql2'
