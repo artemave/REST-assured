@@ -6,7 +6,7 @@ module RestAssured
     [:get, :post, :put, :delete].each do |verb|
       it "processes an unknown request" do
 
-        Response.should_receive(:perform).with(an_instance_of(RestAssured::Application))
+        expect(Response).to receive(:perform).with(an_instance_of(RestAssured::Application))
         send verb, '/some/path'
       end
     end
@@ -31,44 +31,44 @@ module RestAssured
           :response_headers => { 'ACCEPT' => 'text/html' },
           :status           => 201
 
-        request.stub(:fullpath).and_return(@double.fullpath)
+        allow(request).to receive(:fullpath).and_return(@double.fullpath)
       end
 
       it "returns double content" do
-        rest_assured_app.should_receive(:body).with(@double.content)
+        expect(rest_assured_app).to receive(:body).with(@double.content)
 
         Response.perform(rest_assured_app)
       end
 
       it 'sets response status to the one from double' do
-        rest_assured_app.should_receive(:status).with(@double.status)
+        expect(rest_assured_app).to receive(:status).with(@double.status)
 
         Response.perform(rest_assured_app)
       end
 
       it 'sets response headers to those in Double#response_headers' do
-        rest_assured_app.should_receive(:headers).with(@double.response_headers)
+        expect(rest_assured_app).to receive(:headers).with(@double.response_headers)
 
         Response.perform(rest_assured_app)
       end
 
       it 'records request' do
         requests = double
-        Models::Double.stub_chain('where.first').and_return(double(:requests => requests).as_null_object)
+        allow(Models::Double).to receive_message_chain('where.first').and_return(double(:requests => requests).as_null_object)
 
-        requests.should_receive(:create!).with(:rack_env => 'env', :body => 'body', :params => 'params')
+        expect(requests).to receive(:create!).with(:rack_env => 'env', :body => 'body', :params => 'params')
 
         Response.perform(rest_assured_app)
       end
     
       it "returns double when redirect matches double" do
         fullpath = '/some/other/path'
-        request.stub(:fullpath).and_return(fullpath)
-        Models::Redirect.stub(:find_redirect_url_for).with(fullpath).and_return('/some/path')
+        allow(request).to receive(:fullpath).and_return(fullpath)
+        allow(Models::Redirect).to receive(:find_redirect_url_for).with(fullpath).and_return('/some/path')
 
-        rest_assured_app.should_receive(:body).with(@double.content)
-        rest_assured_app.should_receive(:status).with(@double.status)
-        rest_assured_app.should_receive(:headers).with(@double.response_headers)
+        expect(rest_assured_app).to receive(:body).with(@double.content)
+        expect(rest_assured_app).to receive(:status).with(@double.status)
+        expect(rest_assured_app).to receive(:headers).with(@double.response_headers)
 
         Response.perform(rest_assured_app)
       end
@@ -79,16 +79,16 @@ module RestAssured
       #r = Models::Redirect.create :to => 'http://exmple.com/api', :pattern => '.*'
       #
       fullpath = '/some/other/path'
-      request.stub(:fullpath).and_return(fullpath)
-      Models::Redirect.stub(:find_redirect_url_for).with(fullpath).and_return('new_url')
+      allow(request).to receive(:fullpath).and_return(fullpath)
+      allow(Models::Redirect).to receive(:find_redirect_url_for).with(fullpath).and_return('new_url')
 
-      rest_assured_app.should_receive(:redirect).with('new_url')
+      expect(rest_assured_app).to receive(:redirect).with('new_url')
 
       Response.perform(rest_assured_app)
     end
 
     it "returns 404 if neither double nor redirect matches the request" do
-      rest_assured_app.should_receive(:status).with(404)
+      expect(rest_assured_app).to receive(:status).with(404)
 
       Response.perform(rest_assured_app)
     end
@@ -96,9 +96,9 @@ module RestAssured
     # TODO change to instead exclude anything that does not respond_to?(:to_s)
     it 'excludes "rack.input" and "rack.errors" as they break with "IOError - not opened for reading:" on consequent #to_json (as they are IO and StringIO)' do
       requests = double.as_null_object
-      Models::Double.stub_chain('where.first').and_return(double(:requests => requests).as_null_object)
+      allow(Models::Double).to receive_message_chain('where.first').and_return(double(:requests => requests).as_null_object)
 
-      env.should_receive(:except).with('rack.input', 'rack.errors', 'rack.logger')
+      expect(env).to receive(:except).with('rack.input', 'rack.errors', 'rack.logger')
 
       Response.perform(rest_assured_app)
     end

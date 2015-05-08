@@ -10,17 +10,17 @@ module RestAssured
 
     it 'starts application in childprocess' do
       cmdargs = %w{-d :memory: -p 6666}
-      Config.stub(:to_cmdargs => cmdargs)
+      allow(Config).to receive_messages(:to_cmdargs => cmdargs)
 
-      ChildProcess.should_receive(:build).with('bin/rest-assured', *cmdargs).and_return(child)
+      expect(ChildProcess).to receive(:build).with('bin/rest-assured', *cmdargs).and_return(child)
 
       expect(child).to receive(:cwd=)
 
       state = ''
-      child.io.should_receive(:inherit!) do
-        state.should_not == 'started'
+      expect(child.io).to receive(:inherit!) do
+        expect(state).not_to eq('started')
       end
-      child.should_receive(:start) do
+      expect(child).to receive(:start) do
         state << 'started'
       end
 

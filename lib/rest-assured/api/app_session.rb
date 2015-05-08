@@ -9,6 +9,12 @@ module RestAssured
       @child.start
     end
 
+    def stop
+      @child.poll_for_exit(10)
+    rescue ChildProcess::TimeoutError
+      @child.stop # tries increasingly harsher methods to kill the process.
+    end
+
     def method_missing(*args)
       @child.send(*args)
     end

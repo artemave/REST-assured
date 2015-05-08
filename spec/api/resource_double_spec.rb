@@ -11,11 +11,11 @@ module RestAssured
       Server.stop
     end
 
-    it { should be_kind_of ActiveResource::Base }
+    it { is_expected.to be_kind_of ActiveResource::Base }
 
     it 'creates new double' do
       d = Models::Double.create! :fullpath => '/some/api', :content => 'content'
-      Models::Double.where(:fullpath => d.fullpath, :content => d.content).should exist
+      expect(Models::Double.where(:fullpath => d.fullpath, :content => d.content)).to exist
     end
 
     it 'finds exising double' do
@@ -23,8 +23,8 @@ module RestAssured
 
       dd = Double.find(d.id)
 
-      dd.fullpath.should == d.fullpath
-      dd.content.should == d.content
+      expect(dd.fullpath).to eq(d.fullpath)
+      expect(dd.content).to eq(d.content)
     end
 
     it 'shows request history' do
@@ -33,10 +33,10 @@ module RestAssured
       d.requests << Models::Request.create(:rack_env => 'different rack_env', :body => 'other body', :params => 'more params')
 
       dd = Double.find(d.id)
-      dd.requests.size.should == 2
-      dd.requests.first.rack_env.should == 'rack_env json'
-      dd.requests.first.params.should == 'params'
-      dd.requests.last.body.should == 'other body'
+      expect(dd.requests.size).to eq(2)
+      expect(dd.requests.first.rack_env).to eq('rack_env json')
+      expect(dd.requests.first.params).to eq('params')
+      expect(dd.requests.last.body).to eq('other body')
     end
 
     context 'when waits requests' do
@@ -57,13 +57,13 @@ module RestAssured
 
         dd.wait_for_requests(2)
 
-        dd.requests.count.should >= 2
+        expect(dd.requests.count).to be >= 2
       end
 
       it 'raises exception if requests have not happened within timeout' do
         d = Models::Double.create :fullpath => '/some/api', :content => 'content'
         dd = Double.find(d.id)
-        dd.stub(:sleep)
+        allow(dd).to receive(:sleep)
 
         @t = Thread.new do
           2.times do
@@ -72,7 +72,7 @@ module RestAssured
         end
 
         sleep 0.5
-        lambda { dd.wait_for_requests(3) }.should raise_error(MoreRequestsExpected, 'Expected 3 requests. Got 2.')
+        expect { dd.wait_for_requests(3) }.to raise_error(MoreRequestsExpected, 'Expected 3 requests. Got 2.')
       end
     end
   end

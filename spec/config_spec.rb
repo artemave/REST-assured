@@ -13,18 +13,18 @@ module RestAssured
     describe 'cmd args array conversion' do
       it 'converts true values in form of "value" => ["--#{value}"]' do
         Config.build(:ssl => true)
-        Config.to_cmdargs.should == ['--ssl']
+        expect(Config.to_cmdargs).to eq(['--ssl'])
       end
 
       it 'does not include false values' do
         Config.build(:ssl => false)
-        Config.to_cmdargs.should_not include('--ssl')
+        expect(Config.to_cmdargs).not_to include('--ssl')
       end
 
       it 'converts key value pairs in form of "key => value" => ["--#{key}", "value"]' do
         Config.build(:port => 1234, :database => ':memory:')
         Config.to_cmdargs.each_slice(2) do |a|
-          (a == ['--port', '1234'] || a == ['--database', ':memory:']).should == true
+          expect(a == ['--port', '1234'] || a == ['--database', ':memory:']).to eq(true)
         end
       end
     end

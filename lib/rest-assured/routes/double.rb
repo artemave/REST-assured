@@ -43,7 +43,7 @@ module RestAssured
       router.post /^\/doubles(\.json)?$/ do |needs_json|
         begin
           data = request.body.read
-          d = MultiJson.load(data)['double']
+          d = JSON.load(data)['double']
 
           # fix acitve resource dumbness
           if d['response_headers'] and d['response_headers']['response_headers']
@@ -54,7 +54,7 @@ module RestAssured
             params.slice(*%w[fullpath content description verb status response_headers])
         end
 
-        @double = Models::Double.create(d) 
+        @double = Models::Double.create(d)
 
         if needs_json
           if @double.errors.present?

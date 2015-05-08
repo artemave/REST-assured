@@ -12,30 +12,30 @@ module RestAssured::Models
       }
     end
 
-    it { should validate_presence_of(:fullpath) }
-    it { should validate_inclusion_of(:verb).in_array Double::VERBS }
-    it { should validate_inclusion_of(:status).in_array Double::STATUSES }
+    it { is_expected.to validate_presence_of(:fullpath) }
+    it { is_expected.to validate_inclusion_of(:verb).in_array Double::VERBS }
+    it { is_expected.to validate_inclusion_of(:status).in_array Double::STATUSES }
 
-    it { should have_many(:requests) }
+    it { is_expected.to have_many(:requests) }
 
     it 'creates double with valid params' do
       d = Double.new valid_params
-      d.should be_valid
+      expect(d).to be_valid
     end
 
     it "defaults verb to GET" do
       f = Double.create valid_params.except(:verb)
-      f.verb.should == 'GET'
+      expect(f.verb).to eq('GET')
     end
 
     it "defaults status to 200" do
       f = Double.create valid_params.except(:status)
-      f.status.should == 200
+      expect(f.status).to eq(200)
     end
 
     it "makes double active by default" do
       f = Double.create valid_params.except(:active)
-      f.active.should be true
+      expect(f.active).to be true
     end
 
     describe 'when created' do
@@ -45,10 +45,10 @@ module RestAssured::Models
         f3 = Double.create valid_params.merge(:fullpath => '/some/other/api')
         f4 = Double.create valid_params.merge(:verb => 'POST')
 
-        f1.reload.active.should be false
-        f2.reload.active.should be true
-        f3.reload.active.should be true
-        f4.reload.active.should be true
+        expect(f1.reload.active).to be false
+        expect(f2.reload.active).to be true
+        expect(f3.reload.active).to be true
+        expect(f4.reload.active).to be true
       end
     end
 
@@ -62,9 +62,9 @@ module RestAssured::Models
         f1.active = true
         f1.save
 
-        f2.reload.active.should be false
-        f3.reload.active.should be true
-        f4.reload.active.should be true
+        expect(f2.reload.active).to be false
+        expect(f3.reload.active).to be true
+        expect(f4.reload.active).to be true
       end
 
       it "makes other doubles inactive only when active bit set to true" do
@@ -76,17 +76,17 @@ module RestAssured::Models
         f1.reload.save
         f2.reload.save
 
-        f1.reload.active.should be false
-        f2.reload.active.should be true
-        f3.reload.active.should be true
-        f4.reload.active.should be true
+        expect(f1.reload.active).to be false
+        expect(f2.reload.active).to be true
+        expect(f3.reload.active).to be true
+        expect(f4.reload.active).to be true
       end
 
       it "handles long paths (more than 255 characters)" do
         long_path = 'a' * 260
         f1 = Double.create valid_params.merge(:fullpath => long_path)
         f1.reload.save
-        f1.reload.fullpath.should == long_path
+        expect(f1.reload.fullpath).to eq(long_path)
       end
     end
 
@@ -98,8 +98,8 @@ module RestAssured::Models
           f3 = Double.create valid_params.merge(:fullpath => '/some/other/api')
 
           f2.destroy
-          f1.reload.active.should be true
-          f3.reload.active.should be true
+          expect(f1.reload.active).to be true
+          expect(f3.reload.active).to be true
         end
       end
     end
