@@ -43,7 +43,7 @@ module RestAssured
       router.post /^\/doubles(\.json)?$/ do |needs_json|
         begin
           data = request.body.read
-          d = JSON.load(data)['double']
+          d = JSON.load(data)
 
           # fix acitve resource dumbness
           if d['response_headers'] and d['response_headers']['response_headers']

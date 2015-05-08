@@ -10,7 +10,7 @@ module RestAssured
     end
 
     def stop
-      @child.poll_for_exit(10)
+      @child.poll_for_exit(5)
     rescue ChildProcess::TimeoutError
       @child.stop # tries increasingly harsher methods to kill the process.
     end

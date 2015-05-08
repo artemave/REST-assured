@@ -21,7 +21,7 @@ Then /^database options should be:$/ do |table|
   empty_to_nil = lambda do |string|
     string.try(:empty?) ? nil : string
   end
-  
+
   @app_config[:db_config][:adapter].should  == res['adapter']
   @app_config[:db_config][:database].should == res['dbname']
   @app_config[:db_config][:username].should == res['dbuser']

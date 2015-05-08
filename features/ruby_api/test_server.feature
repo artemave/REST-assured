@@ -12,7 +12,7 @@ Feature: test server
     """
     Then rest-assured server should be running:
     """
-    RestAssured::Server.should be_up
+    expect(RestAssured::Server.up?).to eq true
     """
 
   Scenario: start asyncronously (so that other heavy setup - e.g. firefox startup - can be done in parallel)
@@ -23,12 +23,12 @@ Feature: test server
     """
     Then rest-assured server should not be running:
     """
-    RestAssured::Server.should_not be_up
+    expect(RestAssured::Server.up?).to eq false
     """
     When it finally comes up
     Then rest-assured server should be running:
     """
-    RestAssured::Server.should be_up
+    expect(RestAssured::Server.up?).to eq true
     """
 
   Scenario: stop rest-assured server
@@ -39,5 +39,5 @@ Feature: test server
     """
     Then it should be stopped:
     """
-    RestAssured::Server.should_not be_up
+    expect(RestAssured::Server.up?).to eq false
     """

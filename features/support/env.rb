@@ -39,13 +39,13 @@ RestAssured::Config.build(db_opts)
 require 'rest-assured'
 require 'shoulda-matchers'
 
-RestAssured::Server.start(db_opts.merge(:port => 9876))
+RestAssured::Server.start(db_opts.merge(:port => 19876))
 
 Before "@api_server" do
   RestAssured::Server.stop
 end
 After "@api_server" do
-  RestAssured::Server.start(db_opts.merge(:port => 9876))
+  RestAssured::Server.start(db_opts.merge(:port => 19876))
 end
 
 require 'rest-assured/application'

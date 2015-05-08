@@ -174,7 +174,7 @@ module RestAssured
       end
 
       it "creates double as AR resource" do
-        post '/doubles.json', { :double => test_double }.to_json, 'CONTENT_TYPE' => 'Application/json'
+        post '/doubles.json', test_double.to_json, 'CONTENT_TYPE' => 'Application/json'
 
         expect(last_response).to be_ok
 
@@ -184,7 +184,7 @@ module RestAssured
       end
 
       it "reports failure when creating with invalid parameters" do
-        post '/doubles.json', { :double => test_double.except(:fullpath) }.to_json, 'CONTENT_TYPE' => 'Application/json'
+        post '/doubles.json', test_double.except(:fullpath).to_json, 'CONTENT_TYPE' => 'Application/json'
 
         expect(last_response).not_to be_ok
         expect(last_response.body).to match(/\{"fullpath":\["can't be blank"\]\}/)
