@@ -11,8 +11,6 @@ module RestAssured
     include Singleton
 
     at_exit do
-      # I don't know why, but without this puts() at_exit is triggered on Ctrl-C when running in spork
-      puts ''
       instance.stop if instance
     end
 
