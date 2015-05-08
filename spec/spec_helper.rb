@@ -1,3 +1,5 @@
+ENV['RACK_ENV'] = 'test'
+
 if ENV['COVERAGE']
   begin
     require 'simplecov'
@@ -15,12 +17,25 @@ $:.unshift(File.expand_path('../../lib'), __FILE__)
 require 'rspec'
 require 'capybara/rspec'
 require 'rack/test'
-require 'database_cleaner'
 require 'awesome_print'
+require 'rest-assured/config'
+
+DB_OPTS = { :adapter => 'postgresql' }
+RestAssured::Config.build(DB_OPTS)
+
+require 'rest-assured'
+require 'rest-assured/application'
+require 'shoulda/matchers'
+
+Capybara.app = RestAssured::Application
+
+def app
+  RestAssured::Application
+end
+
+require 'database_cleaner'
 require File.expand_path('../support/custom_matchers', __FILE__)
 require File.expand_path('../support/reset-singleton', __FILE__)
-
-ENV['RACK_ENV'] = 'test'
 
 module XhrHelpers
   def xhr(path, params = {})
@@ -41,8 +56,13 @@ RSpec.configure do |c|
   end
 
   c.around(:each) do |example|
-    DatabaseCleaner.cleaning do
-      example.run
+    begin
+      DatabaseCleaner.cleaning do
+        example.run
+      end
+    rescue ActiveRecord::StatementInvalid
+      ActiveRecord::Base.connection.reconnect!
+      DatabaseCleaner.clean_with :truncation
     end
   end
 
@@ -59,17 +79,4 @@ RSpec.configure do |c|
       SimpleCov.result.format!
     end
   end
-end
-require 'rest-assured/config'
-DB_OPTS = { :adapter => 'postgresql' }
-RestAssured::Config.build(DB_OPTS)
-
-require 'rest-assured'
-require 'rest-assured/application'
-require 'shoulda/matchers'
-
-Capybara.app = RestAssured::Application
-
-def app
-  RestAssured::Application
 end
