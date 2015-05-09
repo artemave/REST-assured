@@ -103,9 +103,15 @@ module RestAssured
 
       def self.migrate_db
         migrate = lambda { ActiveRecord::Migrator.migrate(File.expand_path('../../../db/migrate', __FILE__)) }
+        silence_stdout = lambda do |&thing|
+          original_stdout = $stdout
+          $stdout = File.open(File::NULL, "w")
+          thing.call
+          $stdout = original_stdout
+        end
 
-        if AppConfig[:environment] == 'production' && Kernel.respond_to?(:silence)
-          silence(:stdout, &migrate)
+        if AppConfig[:environment] == 'production'
+          silence_stdout.call(&migrate)
         else
           migrate.call
         end
