@@ -6,7 +6,7 @@ rvm:
   - 2.2.1
 env: DISPLAY=:99.0
 before_script:
-  - "psql -c 'create database rest_assured_test' -U root"
+  - "createuser -d root && createdb rest_assured_test -U root"
   - "sh -e /etc/init.d/xvfb start"
 script: "bundle exec rspec spec && bundle exec cucumber --format progress"
 branches:
