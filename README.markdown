@@ -67,18 +67,7 @@ This starts up an instance of rest-assured on port 4578. It is accessible via RE
 
 Various options (such as ssl, port, db credentials, etc.) are available through command line options. Check out `rest-assured -h` to see what they are.
 
-### Heroku
-
-You can also deploy it to heroku:
-
-    $ git clone git://github.com/artemave/REST-assured.git
-    $ cd REST-assured
-
-    $ gem install heroku
-    $ heroku login # assuming you already have an account
-    $ heroku create --stack cedar
-
-    $ git push heroku master
+You can also [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
 ## Usage
 
