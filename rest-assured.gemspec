@@ -13,10 +13,10 @@ Gem::Specification.new do |s|
   #s.description          = %q{TODO: Write a gem description}
 
   s.rubyforge_project     = "rest-assured"
-  s.required_ruby_version = '>= 1.8.7'
+  s.required_ruby_version = '>= 1.9.3'
 
-  s.files                 = `git ls-files`.split("\n")
-  s.test_files            = `git ls-files -- {test,spec,features}/*`.split("\n")
+  s.files                 = Dir['CHANGELOG', 'README.markdown', 'LICENSE', '{lib,db,public,views,ssl}/**/*']
+  s.test_files            = Dir['{spec,features}/**/*']
   s.executables           = ['rest-assured']
   s.require_paths         = ['lib']
 
