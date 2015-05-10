@@ -5,5 +5,8 @@
   "keywords": ["REST", "testing", "stub"],
   "addons": [
     "heroku-postgresql:hobby-dev"
-  ]
+  ],
+  "env": {
+    "CUSTOM_RUBY_VERSION": "2.2.1"
+  }
 }
