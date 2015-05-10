@@ -1,3 +1,5 @@
+require 'active_record'
+
 module RestAssured
   module Models
     class Redirect < ActiveRecord::Base

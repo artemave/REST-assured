@@ -1,6 +1,4 @@
 require 'logger'
-require 'active_record'
-require 'active_support/core_ext/kernel/reporting'
 
 module RestAssured
   module Config
@@ -67,6 +65,7 @@ module RestAssured
     private
 
       def self.setup_db
+        require 'active_record'
         setup_db_logging
         connect_db
         migrate_db
