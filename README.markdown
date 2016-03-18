@@ -30,7 +30,7 @@ The idea is that in "test" environment your app is making calls to REST-assured 
 
 ## Set up
 
-You are going to need ruby >= 1.9.2 on Linux/MacOS. Also, one of sqlite3, postgres or mysql.
+You are going to need ruby >= 1.9.3 on Linux/MacOS. Also, one of sqlite3, postgres or mysql.
 
 ### In ruby project
 
