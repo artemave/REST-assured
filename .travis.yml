@@ -1,12 +1,17 @@
 bundler_args: --without development
+sudo: false
+# Travis bug, see https://github.com/bundler/bundler/pull/3559
+cache: bundler
+before_install: gem update bundler
 rvm:
   - 1.9.3
   - 2.0.0
   - 2.1.0
   - 2.2.1
+  - 2.3.0
 env: DISPLAY=:99.0
 addons:
-  postgresql: "9.3"
+  postgresql: "9.5"
 before_script:
   - "createuser -d root && createdb rest_assured_test -U root"
   - "sh -e /etc/init.d/xvfb start"
