@@ -25,6 +25,8 @@ The idea is that in "test" environment your app is making calls to REST-assured 
 
 [Example project](https://github.com/artemave/REST-assured-example)
 
+[Long-winded intro blog post](http://artemave.github.com/2012/05/27/stub-like-a-surgeon-spy-like-james-bond-with-rest-assured/)
+
 
 ## Set up
 
