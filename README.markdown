@@ -11,11 +11,13 @@ Stub/spy http(s) based external dependencies in your integration/acceptance test
 
 ## Description
 
-In a nutshell, you can:
+With REST-assured you can:
 
-* replace external data sources with predefined data (stubbing)
-* verify requests to external services (spying)
-* simulate different behavior of external services using web UI; useful in development
+* in tests: replace external HTTP(S) based data sources with predefined data (stubbing)
+* in tests: verify requests to external services (spying)
+* in development: simulate different behavior of external services using web UI; it looks like this:
+
+![web ui screenshot](https://dl.dropboxusercontent.com/s/cb801va6t3zejdv/fakeshit.png?dl=0)
 
 REST-assured runs in a standalone process. It can be configured at runtime (via ruby client library or REST api) to respond to any request with arbitrary content, status, headers, etc.
 
@@ -37,7 +39,7 @@ You are going to need ruby >= 1.9.3 on Linux/MacOS. Also, one of sqlite3, postgr
 ```ruby
 # Gemfile
 gem 'sqlite3' # or mysql2 or pg
-              # use 'jdbcsqlite3' and 'jdbcmysql' for jruby
+              # use 'jdbcsqlite3' or 'jdbcmysql' for jruby
 gem 'rest-assured'
 
 # env.rb/spec_helper.rb
