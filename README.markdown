@@ -19,9 +19,9 @@ With REST-assured you can:
 
 ![web ui screenshot](https://dl.dropboxusercontent.com/s/cb801va6t3zejdv/fakeshit.png?dl=0)
 
-REST-assured runs in a standalone process. It can be configured at runtime (via ruby client library or REST api) to respond to any request with arbitrary content, status, headers, etc.
+REST-assured is a web server that can be started programmatically and configured at runtime (via ruby client library or REST api) to respond to any request with arbitrary content, status, headers, etc.
 
-The idea is that in "test" environment your app is making calls to REST-assured rather than to real external services.
+But why not to use [VCR](https://github.com/vcr/vcr) or [WebMock](https://github.com/bblimke/webmock) instead? Well, you certainly should. If you can. REST-assured was born on a project where code was written in Java and integration tests in Ruby. This may sound a bit crazy, but the world is full crazy things and if you find yourself in one, you might find REST-assured useful.
 
 [Playground](http://fakesh.it/)
 
