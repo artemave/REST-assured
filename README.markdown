@@ -32,7 +32,7 @@ The idea is that in "test" environment your app is making calls to REST-assured 
 
 ## Set up
 
-You are going to need ruby >= 1.9.3 on Linux/MacOS. Also, one of sqlite3, postgres or mysql.
+You are going to need ruby >= 1.9.3 and either sqlite3, postgres or mysql.
 
 ### In ruby project
 
@@ -45,8 +45,8 @@ gem 'rest-assured'
 # env.rb/spec_helper.rb
 require 'rest-assured'
 
-RestAssured::Server.start(database: ':memory:', port: 7899) # or any other option available on command line
-# Or, you can specify an instance that is already running somewhere:
+RestAssured::Server.start(database: ':memory:') # or any other option available on command line
+# Or you can specify an instance that is already running somewhere:
 RestAssured::Server.address = 'http://wacky-duckling.herokuapp.com'
 ```
 
