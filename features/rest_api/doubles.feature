@@ -34,6 +34,7 @@ Feature: use doubles via api
       | /api/asdfsf        | removed      | DELETE | 202    |
       | /api/some?a=3&b=dd | more content | GET    | 203    |
       | /other/api         |              | GET    | 303    |
+      | /patch/api         |              | PATCH  | 200    |
 
   # current rule: last added double gets picked
   Scenario Outline: request fullpath that matches multiple doubles

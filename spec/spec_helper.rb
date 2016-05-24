@@ -20,7 +20,7 @@ require 'rack/test'
 require 'awesome_print'
 require 'rest-assured/config'
 
-DB_OPTS = { :adapter => 'postgresql' }
+DB_OPTS = { :adapter => 'sqlite' }
 RestAssured::Config.build(DB_OPTS)
 
 require 'rest-assured'

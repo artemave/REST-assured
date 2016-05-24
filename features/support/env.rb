@@ -26,14 +26,14 @@ module RackHeaderHack
   end
 end
 
-# Capybara.register_driver :selenium do |app|
-#   Capybara::Selenium::Driver.new(app, :browser => :chrome)
-# end
+Capybara.register_driver :selenium do |app|
+  Capybara::Selenium::Driver.new(app, :browser => :chrome)
+end
 
 World(Capybara, Rack::Test::Methods, RackHeaderHack, WorldHelpers, Anticipate)
 
 require 'rest-assured/config'
-db_opts = { :adapter => 'postgresql' }
+db_opts = { :adapter => 'sqlite' }
 RestAssured::Config.build(db_opts)
 
 require 'rest-assured'

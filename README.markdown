@@ -219,7 +219,7 @@ Here is the rest API for managing redirects:
   
 ## Running tests
 
-Tests require there to be mysql database `rest_assured_test` accessible by `root` with no password. Cucumber tests also need firefox.
+Tests require sqlite. Cucumber tests also need Chrome.
 
     $ git clone git://github.com/artemave/REST-assured.git
     $ cd rest-assured && bundle install
