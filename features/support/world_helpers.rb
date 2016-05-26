@@ -22,4 +22,10 @@ module WorldHelpers
 
     YAML.load(config_yaml)
   end
+
+  def js_confirm
+    if Capybara.current_driver == :selenium
+      page.driver.browser.switch_to.alert.accept
+    end
+  end
 end

@@ -5,6 +5,7 @@ require 'rspec'
 require 'rack/test'
 require 'capybara'
 require 'capybara/cucumber'
+require 'capybara/poltergeist'
 require 'database_cleaner'
 require 'anticipate'
 require 'awesome_print'
@@ -29,6 +30,7 @@ end
 Capybara.register_driver :selenium do |app|
   Capybara::Selenium::Driver.new(app, :browser => :chrome)
 end
+Capybara.javascript_driver = ENV['FF'] ? :selenium : :poltergeist
 
 World(Capybara, Rack::Test::Methods, RackHeaderHack, WorldHelpers, Anticipate)
 

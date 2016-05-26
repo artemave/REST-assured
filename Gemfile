@@ -14,6 +14,7 @@ group :test do
   gem 'anticipate'
   gem 'rack-test'
   gem 'capybara'
+  gem 'poltergeist'
   gem 'rake'
   #gem 'mysql2'
   gem 'sqlite3'

@@ -13,11 +13,8 @@ env: DISPLAY=:99.0
 services:
   - postgresql
 before_script:
-  - "createuser -d root && createdb rest_assured_test -U root"
-  - "sh -e /etc/init.d/xvfb start"
-script: "bundle exec rspec spec && bundle exec cucumber --format progress"
+  - "createdb rest_assured_test"
+script: "bundle exec rspec spec && bundle exec cucumber"
 branches:
   only:
     - master
-notifications:
-  email: false

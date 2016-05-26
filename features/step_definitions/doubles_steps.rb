@@ -152,7 +152,7 @@ Given /^I choose to delete double with fullpath "([^"]*)"$/ do |fullpath|
 end
 
 Then /^I should be asked to confirm delete$/ do
-  page.driver.browser.switch_to.alert.accept
+  js_confirm
 end
 
 Given /^there are the following doubles:$/ do |table|
