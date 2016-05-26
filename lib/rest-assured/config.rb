@@ -139,7 +139,7 @@ module RestAssured
 
                                 opts = {
                                   :adapter  => 'postgresql',
-                                  :username => AppConfig.user || 'root',
+                                  :username => AppConfig.dbuser || 'root',
                                   :database => AppConfig.database || default_database,
                                   :pool     => 20
                                 }

@@ -33,7 +33,12 @@ end
 World(Capybara, Rack::Test::Methods, RackHeaderHack, WorldHelpers, Anticipate)
 
 require 'rest-assured/config'
-db_opts = { :adapter => 'sqlite' }
+db_opts = {
+  adapter: 'postgres',
+  dbhost: ENV.fetch('DB_HOST', 'localhost'),
+  dbport: ENV.fetch('DB_PORT', 5432),
+  dbuser: ENV.fetch('DB_USER', 'postgres')
+}
 RestAssured::Config.build(db_opts)
 
 require 'rest-assured'

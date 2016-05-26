@@ -20,7 +20,12 @@ require 'rack/test'
 require 'awesome_print'
 require 'rest-assured/config'
 
-DB_OPTS = { :adapter => 'sqlite' }
+DB_OPTS = {
+  adapter: 'postgres',
+  dbhost: ENV.fetch('DB_HOST', 'localhost'),
+  dbport: ENV.fetch('DB_PORT', 5432),
+  dbuser: ENV.fetch('DB_USER', 'postgres')
+}
 RestAssured::Config.build(DB_OPTS)
 
 require 'rest-assured'

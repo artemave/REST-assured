@@ -219,7 +219,7 @@ Here is the rest API for managing redirects:
   
 ## Running tests
 
-Tests require sqlite. Cucumber tests also need Chrome.
+Tests require postgres. Connection params are read from environment variables `DB_HOST`, `DB_PORT` and `DB_USER` (defaults are `localhost`, `5432` and `postgres`). Cucumber tests also need Chrome.
 
     $ git clone git://github.com/artemave/REST-assured.git
     $ cd rest-assured && bundle install

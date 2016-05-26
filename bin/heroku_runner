@@ -14,7 +14,7 @@ opts = {
       port: ENV['PORT'],
    adapter: 'postgresql',
     dbhost: db.host,
-      user: db.user,
+    dbuser: db.user,
     dbpass: db.password,
     dbport: db.port,
   database: db.path[1..-1],
