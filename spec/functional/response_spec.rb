@@ -29,7 +29,8 @@ module RestAssured
           :fullpath         => '/some/path',
           :content          => 'content',
           :response_headers => { 'ACCEPT' => 'text/html' },
-          :status           => 201
+          :status           => 201,
+          :delay          => 0
 
         allow(request).to receive(:fullpath).and_return(@double.fullpath)
       end
@@ -54,7 +55,7 @@ module RestAssured
 
       it 'records request' do
         requests = double
-        allow(Models::Double).to receive_message_chain('where.first').and_return(double(:requests => requests).as_null_object)
+        allow(Models::Double).to receive_message_chain('where.first').and_return(double(:requests => requests, :delay => 0).as_null_object)
 
         expect(requests).to receive(:create!).with(:rack_env => 'env', :body => 'body', :params => 'params')
 
@@ -96,11 +97,25 @@ module RestAssured
     # TODO change to instead exclude anything that does not respond_to?(:to_s)
     it 'excludes "rack.input" and "rack.errors" as they break with "IOError - not opened for reading:" on consequent #to_json (as they are IO and StringIO)' do
       requests = double.as_null_object
-      allow(Models::Double).to receive_message_chain('where.first').and_return(double(:requests => requests).as_null_object)
+      allow(Models::Double).to receive_message_chain('where.first').and_return(double(:requests => requests, :delay => 0).as_null_object)
 
       expect(env).to receive(:except).with('rack.input', 'rack.errors', 'rack.logger')
 
       Response.perform(rest_assured_app)
+    end
+
+    it 'it sleeps for delay seconds' do
+      requests = double.as_null_object
+      allow(Models::Double).to receive_message_chain('where.first').and_return(double(:requests => requests, :delay => 10).as_null_object)
+
+      start_time = Time.now
+
+      Response.perform(rest_assured_app)
+
+      end_time = Time.now
+
+      expect(end_time - start_time).to be > 9
+
     end
 
   end

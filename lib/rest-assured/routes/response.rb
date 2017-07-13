@@ -24,6 +24,8 @@ module RestAssured
 
       d.requests.create!(:rack_env => env.to_json, :body => body, :params => request.params.to_json)
 
+      sleep d.delay
+
       app.headers d.response_headers
       app.body d.content
       app.status d.status

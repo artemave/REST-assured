@@ -8,7 +8,8 @@ module RestAssured::Models
         :content          => 'some content',
         :verb             => 'GET',
         :status           => '303',
-        :response_headers => { 'ACCEPT' => 'text/html' }
+        :response_headers => { 'ACCEPT' => 'text/html' },
+        :delay => 5
       }
     end
 
@@ -36,6 +37,11 @@ module RestAssured::Models
     it "makes double active by default" do
       f = Double.create valid_params.except(:active)
       expect(f.active).to be true
+    end
+
+    it "defaults delay to 0" do
+      f = Double.create valid_params.except(:delay)
+      expect(f.delay).to be 0
     end
 
     describe 'when created' do

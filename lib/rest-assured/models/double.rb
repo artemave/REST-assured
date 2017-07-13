@@ -16,6 +16,7 @@ module RestAssured
       after_initialize :set_status
       after_initialize :set_verb
       after_initialize :set_response_headers
+      after_initialize :set_delay
 
       before_save :toggle_active
       after_destroy :set_active
@@ -49,6 +50,10 @@ module RestAssured
             f.active = true
             f.save
           end
+        end
+
+        def set_delay
+          self.delay = 0 unless delay.present?
         end
     end
   end

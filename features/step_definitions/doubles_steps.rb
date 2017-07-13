@@ -4,8 +4,8 @@ Given /^there are no doubles$/ do
   RestAssured::Models::Double.destroy_all
 end
 
-When /^I create a double with "([^""]*)" as fullpath, "([^""]*)" as response content, "([^""]*)" as request verb and status as "([^""]*)"$/ do |fullpath, content, verb, status|
-  post '/doubles.json', { :fullpath => fullpath, :content => content, :verb => verb, :status => status }
+When /^I create a double with "([^""]*)" as fullpath, "([^""]*)" as response content, "([^""]*)" as request verb, status as "([^""]*)" and delay as "([^""]*)"$/ do |fullpath, content, verb, status, delay|
+  post '/doubles.json', { :fullpath => fullpath, :content => content, :verb => verb, :status => status, :delay => delay}
   last_response.should be_ok
 end
 
@@ -23,8 +23,8 @@ Then /^I should get (#{CAPTURE_A_NUMBER}) in response status$/ do |status|
   last_response.status.should == status
 end
 
-Then /^there should be (#{CAPTURE_A_NUMBER}) double with "([^""]*)" as fullpath, "([^""]*)" as response content, "([^""]*)" as request verb and status as "(#{CAPTURE_A_NUMBER})"$/ do |n, fullpath, content, verb, status|
-  RestAssured::Models::Double.where(:fullpath => fullpath, :content => content, :verb => verb, :status => status).count.should == n
+Then /^there should be (#{CAPTURE_A_NUMBER}) double with "([^""]*)" as fullpath, "([^""]*)" as response content, "([^""]*)" as request verb, status as "(#{CAPTURE_A_NUMBER})" and delay as "(#{CAPTURE_A_NUMBER})"$/ do |n, fullpath, content, verb, status, delay|
+  RestAssured::Models::Double.where(:fullpath => fullpath, :content => content, :verb => verb, :status => status, :delay => delay).count.should == n
 end
 
 Given /^there is double with "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |fullpath, content|

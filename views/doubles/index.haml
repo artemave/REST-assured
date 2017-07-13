@@ -7,6 +7,7 @@
       %th Description
       %th Verb
       %th Status
+      %th Delay
       %th Active?
       %th &nbsp;
   %tbody
@@ -22,6 +23,7 @@
           %td= f.description
           %td= f.verb
           %td= f.status
+          %td= f.delay
           %td.label.text-center
             - if fs.size > 1
               %input.active-double-toggle{:type => 'radio', :name => group, :checked => f.active, :data => { 'double-id' => f.id }}

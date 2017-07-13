@@ -19,6 +19,10 @@
       %option{:name => s, :selected => (@double.status == s)}= s
 
 %p
+  %label{:for => 'double_delay'} Delay
+  %input.wide#double_delay{:type => 'text', :name => 'double[delay]', :value => @double.delay}
+
+%p
   %label{:for => 'double_description'} Description
   %textarea.wide#double_description{:name => 'double[description]', :rows => 3}= @double.description
 
