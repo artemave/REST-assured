@@ -8,7 +8,7 @@ module RestAssured
 
       VERBS = %w{GET POST PUT DELETE HEAD PATCH}
       STATUSES = Net::HTTPResponse::CODE_TO_OBJ.keys.map(&:to_i)
-      MAX_DELAY = 30_000
+      MAX_DELAY = 30
 
       validates_presence_of :fullpath
       validates_inclusion_of :verb, :in => VERBS

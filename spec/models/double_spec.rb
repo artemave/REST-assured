@@ -45,8 +45,8 @@ module RestAssured::Models
     end
 
     it "defaults delay of greater than 30 seconds to 30 seconds" do
-      f = Double.create valid_params.merge(:delay => 9999999999)
-      expect(f.delay).to be 30000
+      f = Double.create valid_params.merge(:delay => 99)
+      expect(f.delay).to be 30
     end
 
     describe 'when created' do
