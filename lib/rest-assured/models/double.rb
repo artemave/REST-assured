@@ -8,6 +8,7 @@ module RestAssured
 
       VERBS = %w{GET POST PUT DELETE HEAD PATCH}
       STATUSES = Net::HTTPResponse::CODE_TO_OBJ.keys.map(&:to_i)
+      MAX_DELAY = 30_000
 
       validates_presence_of :fullpath
       validates_inclusion_of :verb, :in => VERBS
@@ -52,8 +53,12 @@ module RestAssured
           end
         end
 
-        def set_delay
+      def set_delay
           self.delay = 0 unless delay.present?
+          if self.delay > MAX_DELAY
+            puts "delay #{self.delay} exceeds maxmium.  Defaulting to #{MAX_DELAY}"
+            self.delay = MAX_DELAY
+          end
         end
     end
   end

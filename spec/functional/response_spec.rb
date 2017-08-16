@@ -108,14 +108,10 @@ module RestAssured
       requests = double.as_null_object
       allow(Models::Double).to receive_message_chain('where.first').and_return(double(:requests => requests, :delay => 10).as_null_object)
 
-      start_time = Time.now
+      Response.stub(:sleep)
+      expect(Response).to receive(:sleep).with(10)
 
       Response.perform(rest_assured_app)
-
-      end_time = Time.now
-
-      expect(end_time - start_time).to be > 9
-
     end
 
   end

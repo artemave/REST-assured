@@ -44,6 +44,11 @@ module RestAssured::Models
       expect(f.delay).to be 0
     end
 
+    it "defaults delay of greater than 30 seconds to 30 seconds" do
+      f = Double.create valid_params.merge(:delay => 9999999999)
+      expect(f.delay).to be 30000
+    end
+
     describe 'when created' do
       it "toggles active double for the same fullpath and verb" do
         f1 = Double.create valid_params

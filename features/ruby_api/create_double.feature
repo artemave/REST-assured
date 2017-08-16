@@ -78,12 +78,10 @@ Feature: create double
     Scenario: specify a delay
       When I create a double:
     """
-    @double = RestAssured::Double.create(:fullpath => '/some/api', :delay => 10)
+    @double = RestAssured::Double.create(:fullpath => '/some/api', :delay => 4)
     """
       Then the following should be true:
     """
-    @double.delay = 10
-
     start_time = Time.now
 
     get @double.fullpath
@@ -92,6 +90,6 @@ Feature: create double
 
     time_elapsed = end_time - start_time
 
-    expect(time_elapsed).to be > 9
+    expect(time_elapsed).to be > 3
 
     """
