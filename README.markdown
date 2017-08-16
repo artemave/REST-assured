@@ -111,6 +111,15 @@ JSON.parse(req.params).should == expected_params_hash
 JSON.parse(req.rack_env)['HTTP_ACCEPT'].should == 'text/html'
 ```
 
+If you want to simulate a delayed time to first byte to test how your application handles latency or time outs you can
+use the delay property when you create the double.
+
+```ruby
+ @double = RestAssured::Double.create(fullpath: '/slow-products', delay: 5)
+```
+
+Now, when a request is made to `http://localhost:4578/slow-products`, then the server will pause for 5 seconds before responding.
+
 Use REST api to clear doubles/redirects between tests:
 
 ```ruby
@@ -132,6 +141,7 @@ For using REST-assured from non-ruby environments.
   - __verb__ - one of http the following http verbs: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`. Optional. `GET` is default.
   - __status__ - status returned when double is requested. Optional. `200` is default.
   - __response_headers__ - key/value map of headers. Optional.
+  - __delay__ - the length of time in seconds the server should pause before sending the response.  Optional.
   
   Example:
 
@@ -173,7 +183,8 @@ For using REST-assured from non-ruby environments.
             "content": "awesome",
             "description": null,
             "status": 200,
-            "active": true
+            "active": true,
+            "delay" : 0
         }
     }
 
