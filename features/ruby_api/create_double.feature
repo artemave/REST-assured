@@ -74,3 +74,22 @@ Feature: create double
     get @double.fullpath
     last_response.status == 302
     """
+
+    Scenario: specify a delay
+      When I create a double:
+    """
+    @double = RestAssured::Double.create(:fullpath => '/some/api', :delay => 4)
+    """
+      Then the following should be true:
+    """
+    start_time = Time.now
+
+    get @double.fullpath
+
+    end_time = Time.now
+
+    time_elapsed = end_time - start_time
+
+    expect(time_elapsed).to be > 3
+
+    """

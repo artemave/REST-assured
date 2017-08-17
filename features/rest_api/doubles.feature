@@ -4,19 +4,19 @@ Feature: use doubles via api
   I want to mock rest services my app is consuming from
 
   Scenario Outline: create double
-    When I create a double with "<fullpath>" as fullpath, "<content>" as response content, "<verb>" as request verb and status as "<status>"
-    Then there should be 1 double with "<fullpath>" as fullpath, "<content>" as response content, "<result_verb>" as request verb and status as "<result_status>"
+    When I create a double with "<fullpath>" as fullpath, "<content>" as response content, "<verb>" as request verb, status as "<status>" and delay as "<delay>"
+    Then there should be 1 double with "<fullpath>" as fullpath, "<content>" as response content, "<result_verb>" as request verb, status as "<result_status>" and delay as "<result_delay>"
 
     Examples:
-      | fullpath           | content      | verb   | result_verb | status | result_status |
-      | /api/something     | created      | POST   | POST        | 200    | 200           |
-      | /api/sss           | changed      | PUT    | PUT         | 201    | 201           |
-      | /api/asdfsf        | removed      | DELETE | DELETE      | 300    | 300           |
-      | /api/some          | text content | GET    | GET         | 303    | 303           |
-      | /api/some?a=3&b=dd | more content |        | GET         |        | 200           |
-      | /api/empty         |              | POST   | POST        |        | 200           |
-      | /api/file          |              | HEAD   | HEAD        |        | 200           |
-      | /api/file          |              | PATCH  | PATCH       |        | 200           |
+      | fullpath           | content      | verb   | result_verb | status | result_status | delay | result_delay |
+      | /api/something     | created      | POST   | POST        | 200    | 200           |       | 0            |
+      | /api/sss           | changed      | PUT    | PUT         | 201    | 201           | 0     | 0            |
+      | /api/asdfsf        | removed      | DELETE | DELETE      | 300    | 300           | 1     | 1            |
+      | /api/some          | text content | GET    | GET         | 303    | 303           | 2     | 2            |
+      | /api/some?a=3&b=dd | more content |        | GET         |        | 200           | 3     | 3            |
+      | /api/empty         |              | POST   | POST        |        | 200           | 4     | 4            |
+      | /api/file          |              | HEAD   | HEAD        |        | 200           | 5     | 5            |
+      | /api/file          |              | PATCH  | PATCH       |        | 200           | 6     | 6            |
 
   Scenario: view created double details
     When I create a double
