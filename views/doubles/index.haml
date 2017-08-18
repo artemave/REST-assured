@@ -4,6 +4,7 @@
   %thead
     %tr
       %th Request fullpath
+      %th Request path pattern
       %th Description
       %th Verb
       %th Status
@@ -11,7 +12,7 @@
       %th Active?
       %th &nbsp;
   %tbody
-    - @doubles.group_by {|f| f.fullpath + f.verb }.each do |group, fs|
+    - @doubles.group_by {|f| (f.fullpath || f.pathpattern) + f.verb }.each do |group, fs|
       - fs.each_with_index do |f, i|
         %tr{:id => "double_row_#{f.id}"}
           - if i == 0
@@ -20,6 +21,7 @@
                 %a{:href => f.fullpath, :target => '_blank'}= f.fullpath
               - else
                 = f.fullpath
+          %td= f.pathpattern
           %td= f.description
           %td= f.verb
           %td= f.status

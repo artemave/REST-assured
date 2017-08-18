@@ -51,7 +51,7 @@ module RestAssured
           end
         rescue
           d = params['double'] ||
-            params.slice(*%w[fullpath content description verb status response_headers delay])
+            params.slice(*%w[fullpath pathpattern content description verb status response_headers delay])
         end
 
         @double = Models::Double.create(d)

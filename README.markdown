@@ -89,7 +89,17 @@ Create double:
 RestAssured::Double.create(fullpath: '/products', content: 'this is content')
 ```
 
-Now GET `http://localhost:4578/products` will be returning `this is content`.
+Alternatively using a regular expression for the path
+
+```ruby
+RestAssured::Double.create(pathpattern: /products\/[a-z]{10}\/?param=.*/, content: 'this is more content')
+```
+
+Now GET `http://localhost:4578/products` will be returning `this is content` and a GET to
+`http://localhost:4578/products/coolprod22?param=foo` will be returning `this is more content`.
+
+The pathpattern parameter must be a ruby Regexp object or a string containing a valid regular expression.
+Don't forget you will need to escape thing this slashes and question marks in the pattern.
 
 You can also verify what requests happen on a double (spy on it). Say this is a Given part of a test:
 
@@ -152,8 +162,18 @@ For using REST-assured from non-ruby environments.
     $ curl http://localhost:4578/api/something
     awesome
 ```
+  Example using a regular expression for the path:
+  ```
+      $ curl -d 'fullpath=/api/something&content=awesome&response_headers%5BContent-Type%5D=text%2Fhtml' http://localhost:4578/doubles
+      {"double":{"active":true,"content":"awesome","description":null,"fullpath":"/api/something","id":1,"response_headers":{"Content-Type":"text/html"},"status":200,"verb":"GET"}}
 
-  If there is more than one double for the same fullpath and verb, the last created one gets served. In UI you can manually control which double is 'active' (gets served).
+      $ curl http://localhost:4578/api/something
+      awesome
+  ```
+
+  If there is more than one double for the same fullpath and verb, the last created one gets served.
+  Doubles with `fullpath`'s are served in preference to `pathpattern`'s.
+  In UI you can manually control which double is 'active' (gets served).
 
 #### Get double state
 
@@ -166,6 +186,7 @@ For using REST-assured from non-ruby environments.
         "double": {
             "verb": "GET",
             "fullpath": "/api/something",
+            "pathpattern" : null,
             "response_headers": {
                 "Content-Type": "text/html"
             },
