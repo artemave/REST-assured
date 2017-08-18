@@ -10,7 +10,8 @@ module RestAssured
       STATUSES = Net::HTTPResponse::CODE_TO_OBJ.keys.map(&:to_i)
       MAX_DELAY = 30
 
-      validates_presence_of :fullpath
+      validate :fullpath_or_pattern
+      validate :pattern_is_regex
       validates_inclusion_of :verb, :in => VERBS
       validates_inclusion_of :status, :in => STATUSES
 
@@ -18,6 +19,7 @@ module RestAssured
       after_initialize :set_verb
       after_initialize :set_response_headers
       after_initialize :set_delay
+      after_initialize :stringify_regexp
 
       before_save :toggle_active
       after_destroy :set_active
@@ -59,7 +61,29 @@ module RestAssured
             puts "delay #{self.delay} exceeds maxmium.  Defaulting to #{MAX_DELAY}"
             self.delay = MAX_DELAY
           end
+      end
+
+      def fullpath_or_pattern
+        unless self.fullpath.blank? ^ self.pathpattern.blank?
+          errors.add(:path, "Exactly one of fullpath or pathpattern must be present")
         end
+      end
+
+      def pattern_is_regex
+        unless self.pathpattern.blank?
+          begin
+            Regexp.new(self.pathpattern)
+          rescue RegexpError
+            errors.add(:pathpattern, "not a valid regular expression")
+          end
+        end
+      end
+
+      def stringify_regexp
+        unless self.pathpattern.blank?
+          self.pathpattern = self.pathpattern.to_s
+        end
+      end
     end
   end
 end

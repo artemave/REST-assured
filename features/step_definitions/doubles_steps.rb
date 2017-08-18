@@ -9,6 +9,11 @@ When /^I create a double with "([^""]*)" as fullpath, "([^""]*)" as response con
   last_response.should be_ok
 end
 
+When /^I create a double with "([^""]*)" as pathpattern, "([^""]*)" as response content, "([^""]*)" as request verb, status as "([^""]*)" and delay as "([^""]*)"$/ do |pathpattern, content, verb, status, delay|
+  post '/doubles.json', { :pathpattern => pathpattern, :content => content, :verb => verb, :status => status, :delay => delay}
+  last_response.should be_ok
+end
+
 When /^I create a double$/ do
   post '/doubles.json', { :fullpath => '/api/something' }
   @create_a_double_response = last_response.body
@@ -27,12 +32,24 @@ Then /^there should be (#{CAPTURE_A_NUMBER}) double with "([^""]*)" as fullpath,
   RestAssured::Models::Double.where(:fullpath => fullpath, :content => content, :verb => verb, :status => status, :delay => delay).count.should == n
 end
 
+Then /^there should be (#{CAPTURE_A_NUMBER}) double with "([^""]*)" as pathpattern, "([^""]*)" as response content, "([^""]*)" as request verb, status as "(#{CAPTURE_A_NUMBER})" and delay as "(#{CAPTURE_A_NUMBER})"$/ do |n, pathpattern, content, verb, status, delay|
+  RestAssured::Models::Double.where(:pathpattern => pathpattern, :content => content, :verb => verb, :status => status, :delay => delay).count.should == n
+end
+
 Given /^there is double with "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |fullpath, content|
   RestAssured::Models::Double.create(:fullpath => fullpath, :content => content)
 end
 
+Given /^there is double with "([^"]*)" as pathpattern and "([^"]*)" as response content$/ do |pathpattern, content|
+  RestAssured::Models::Double.create(:pathpattern => pathpattern, :content => content)
+end
+
 Given /^there is double with "([^"]*)" as fullpath, "([^"]*)" as response content, "([^"]*)" as request verb and "([^"]*)" as status$/ do |fullpath, content, verb, status|
   RestAssured::Models::Double.create(:fullpath => fullpath, :content => content, :verb => verb, :status => status)
+end
+
+Given /there is double with "([^"]*)" as pathpattern, "([^"]*)" as response content, "([^"]*)" as request verb and "([^"]*)" as status$/ do |pathpattern, content, verb, status|
+  RestAssured::Models::Double.create(:pathpattern => pathpattern, :content => content, :verb => verb, :status => status)
 end
 
 When /^I request "([^"]*)"$/ do |fullpath|
@@ -73,6 +90,7 @@ Given /^the following doubles exist:$/ do |doubles|
   doubles.hashes.each do |row|
     RestAssured::Models::Double.create(
       :fullpath    => row['fullpath'],
+      :pathpattern    => row['pathpattern'],
       :description => row['description'],
       :content     => row['content'],
       :verb        => row['verb'],
@@ -83,7 +101,8 @@ end
 
 Then /^I should see existing doubles:$/ do |doubles|
   doubles.hashes.each do |row|
-    page.should have_content(row[:fullpath])
+    page.should have_content(row[:fullpath]) unless row[:fullpath].blank?
+    page.should have_content(row[:pathpattern]) unless row[:pathpattern].blank?
     page.should have_content(row[:description])
     page.should have_content(row[:verb])
     page.should have_content(row[:status])
@@ -100,8 +119,8 @@ end
 
 When /^I enter double details:$/ do |details|
   double = details.hashes.first
-
   fill_in 'Request fullpath', :with => double['fullpath']
+  fill_in 'Request path pattern', :with => double['pathpattern']
   fill_in 'Content', :with => double['content']
   select  double['verb'], :from => 'Verb'
   fill_in 'Description', :with => double['description']

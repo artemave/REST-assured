@@ -13,15 +13,39 @@ module RestAssured::Models
       }
     end
 
-    it { is_expected.to validate_presence_of(:fullpath) }
+    let :valid_params_with_pattern do
+      valid_params.except(:fullpath).merge(:pathpattern => /^\/api\/.*\/[a-zA-Z]\?nocache=true/)
+    end
+
     it { is_expected.to validate_inclusion_of(:verb).in_array Double::VERBS }
     it { is_expected.to validate_inclusion_of(:status).in_array Double::STATUSES }
 
     it { is_expected.to have_many(:requests) }
 
+    it 'rejects double with neither fullpath or pathpattern' do
+      d = Double.new valid_params.except(:fullpath)
+      expect(d).to_not be_valid
+    end
+
+    it 'rejects double with both fullpath or pathpattern' do
+      d = Double.new valid_params.merge(valid_params_with_pattern)
+      expect(d).to_not be_valid
+    end
+
     it 'creates double with valid params' do
       d = Double.new valid_params
       expect(d).to be_valid
+    end
+
+    it 'creates double with pathpattern' do
+      d = Double.new valid_params_with_pattern
+      expect(d).to be_valid
+    end
+
+    it 'rejects double with invalid pathpattern regex string' do
+      # Probably a common mistake - not escaping forward slashes
+      d = Double.new valid_params_with_pattern.merge(:pathpattern => '**')
+      expect(d).to_not be_valid
     end
 
     it "defaults verb to GET" do

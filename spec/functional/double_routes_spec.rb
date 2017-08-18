@@ -75,7 +75,7 @@ module RestAssured
         post '/doubles', invalid_params
 
         expect(last_response).to be_ok
-        expect(last_response.body).to match(/Crumps!.*Fullpath can't be blank/)
+        expect(last_response.body).to match(/Crumps!.*Exactly one of fullpath or pathpattern must be present/)
       end
 
       it "renders double edit form" do
@@ -137,7 +137,7 @@ module RestAssured
         post '/doubles.json', test_double.except(:fullpath)
 
         expect(last_response).not_to be_ok
-        expect(last_response.body).to match(/\{"fullpath":\["can't be blank"\]\}/)
+        expect(last_response.body).to match(/[\"Exactly one of fullpath or pathpattern must be present\"]/)
       end
 
       it "deletes double" do
@@ -187,7 +187,7 @@ module RestAssured
         post '/doubles.json', test_double.except(:fullpath).to_json, 'CONTENT_TYPE' => 'Application/json'
 
         expect(last_response).not_to be_ok
-        expect(last_response.body).to match(/\{"fullpath":\["can't be blank"\]\}/)
+        expect(last_response.body).to match("{\"path\":[\"Exactly one of fullpath or pathpattern must be present\"]}")
       end
 
       it 'loads double as AR resource' do
