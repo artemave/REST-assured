@@ -100,6 +100,7 @@ Given /^the following doubles exist:$/ do |doubles|
 end
 
 Then /^I should see existing doubles:$/ do |doubles|
+  save_and_open_page
   doubles.hashes.each do |row|
     page.should have_content(row[:fullpath]) unless row[:fullpath].blank?
     page.should have_content(row[:pathpattern]) unless row[:pathpattern].blank?

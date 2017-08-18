@@ -3,11 +3,10 @@ module RestAssured
 
     def self.perform(app)
       request = app.request
-      path = request.fullpath
-      if d = find_matching_double(request.request_method, path)
+      if d = Models::Double.where(:fullpath => request.fullpath, :active => true, :verb => request.request_method).first
         return_double app, d
       elsif redirect_url = Models::Redirect.find_redirect_url_for(request.fullpath)
-        if d = find_matching_double(request.request_method, redirect_url)
+        if d = Models::Double.where(:fullpath => redirect_url, :active => true, :verb => request.request_method).first
           return_double app, d
         else
           app.redirect redirect_url
