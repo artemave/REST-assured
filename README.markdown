@@ -155,7 +155,7 @@ For using REST-assured from non-ruby environments.
   Example:
 
 ```
-    $ curl -d 'fullpath=/api/something&content=awesome&response_headers%5BContent-Type%5D=text%2Fhtml' http://localhost:4578/doubles
+    $ curl -d 'fullpath=%2Fapi%2Fsomething%5C%3Fparam%3D.*&content=awesome&response_headers%5BContent-Type%5D=text%2Fhtml' http://localhost:4578/doubles
     {"double":{"active":true,"content":"awesome","description":null,"fullpath":"/api/something","id":1,"response_headers":{"Content-Type":"text/html"},"status":200,"verb":"GET"}}
 
     $ curl http://localhost:4578/api/something
@@ -163,10 +163,10 @@ For using REST-assured from non-ruby environments.
 ```
   Example using a regular expression for the path:
   ```
-      $ curl -d 'fullpath=/api/something&content=awesome&response_headers%5BContent-Type%5D=text%2Fhtml' http://localhost:4578/doubles
-      {"double":{"active":true,"content":"awesome","description":null,"pathpattern":"/api/something","id":1,"response_headers":{"Content-Type":"text/html"},"status":200,"verb":"GET"}}
+      $ curl -d 'pathpattern=/api/something\?param=.*&content=awesome&response_headers%5BContent-Type%5D=text%2Fhtml' http://localhost:4578/doubles
+      {"double":{"active":true,"content":"awesome","description":null,"pathpattern":"/api/something\?param=.*","id":1,"response_headers":{"Content-Type":"text/html"},"status":200,"verb":"GET"}}
 
-      $ curl http://localhost:4578/api/something
+      $ curl http://localhost:4578/api/something?param=foo
       awesome
   ```
 
