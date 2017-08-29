@@ -99,7 +99,6 @@ Now GET `http://localhost:4578/products` will be returning `this is content` and
 `http://localhost:4578/products/coolprod22?param=foo` will be returning `this is more content`.
 
 The pathpattern parameter must be a ruby Regexp object or a string containing a valid regular expression.
-Don't forget you will need to escape thing this slashes and question marks in the pattern.
 
 You can also verify what requests happen on a double (spy on it). Say this is a Given part of a test:
 
@@ -165,7 +164,7 @@ For using REST-assured from non-ruby environments.
   Example using a regular expression for the path:
   ```
       $ curl -d 'fullpath=/api/something&content=awesome&response_headers%5BContent-Type%5D=text%2Fhtml' http://localhost:4578/doubles
-      {"double":{"active":true,"content":"awesome","description":null,"fullpath":"/api/something","id":1,"response_headers":{"Content-Type":"text/html"},"status":200,"verb":"GET"}}
+      {"double":{"active":true,"content":"awesome","description":null,"pathpattern":"/api/something","id":1,"response_headers":{"Content-Type":"text/html"},"status":200,"verb":"GET"}}
 
       $ curl http://localhost:4578/api/something
       awesome
