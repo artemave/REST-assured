@@ -57,8 +57,6 @@ module RestAssured
         fullpath = '/some/other/path'
         allow(request).to receive(:fullpath).and_return(fullpath)
         allow(Models::Redirect).to receive(:find_redirect_url_for).with(fullpath).and_return(path)
-        puts "PATH"
-        puts path
 
         expect(rest_assured_app).to receive(:body).with(@double.content)
         expect(rest_assured_app).to receive(:status).with(@double.status)
@@ -133,7 +131,7 @@ module RestAssured
       requests = double.as_null_object
       allow(Models::Double).to  receive(:where).and_return(double(:requests => requests, :delay => 10).as_null_object)
 
-      Response.stub(:sleep)
+      allow(Response).to receive(:sleep)
       expect(Response).to receive(:sleep).with(10)
 
       Response.perform(rest_assured_app)

@@ -32,7 +32,7 @@ But why not to use [VCR](https://github.com/vcr/vcr) or [WebMock](https://github
 
 ## Set up
 
-You are going to need ruby >= 1.9.3 and either sqlite3, postgres or mysql.
+You are going to need ruby >= 2.2.2 and either sqlite3, postgres or mysql. Use 2.x version of this gem if you need to support an older ruby version (>= 1.9.3).
 
 ### In ruby project
 

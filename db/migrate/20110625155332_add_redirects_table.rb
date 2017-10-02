@@ -1,4 +1,4 @@
-class AddRedirectsTable < ActiveRecord::Migration
+class AddRedirectsTable < ActiveRecord::Migration[4.2]
   def self.up
     create_table :redirects do |t|
       t.string :pattern

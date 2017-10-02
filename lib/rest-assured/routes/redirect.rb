@@ -11,7 +11,7 @@ module RestAssured
         haml :'redirects/new'
       end
 
-      router.post /^\/redirects(.json)?$/ do |needs_json|
+      router.post /\/redirects(.json)?/ do |needs_json|
         @redirect = Models::Redirect.create(params['redirect'] || { :pattern => params['pattern'], :to => params['to'] })
 
         if needs_json

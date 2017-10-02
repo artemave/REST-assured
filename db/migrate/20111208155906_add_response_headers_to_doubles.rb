@@ -1,4 +1,4 @@
-class AddResponseHeadersToDoubles < ActiveRecord::Migration
+class AddResponseHeadersToDoubles < ActiveRecord::Migration[4.2]
   def self.up
     add_column :doubles, :response_headers, :string
   end

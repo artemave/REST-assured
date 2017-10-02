@@ -1,4 +1,4 @@
-class AddDelayToDoubles < ActiveRecord::Migration
+class AddDelayToDoubles < ActiveRecord::Migration[4.2]
   def self.up
     add_column :doubles, :delay, :integer
   end

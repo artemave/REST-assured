@@ -17,11 +17,6 @@ module RestAssured::Models
       valid_params.except(:fullpath).merge(:pathpattern => /^\/api\/.*\/[a-zA-Z]\?nocache=true/)
     end
 
-    it { is_expected.to validate_inclusion_of(:verb).in_array Double::VERBS }
-    it { is_expected.to validate_inclusion_of(:status).in_array Double::STATUSES }
-
-    it { is_expected.to have_many(:requests) }
-
     it 'rejects double with neither fullpath or pathpattern' do
       d = Double.new valid_params.except(:fullpath)
       expect(d).to_not be_valid

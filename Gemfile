@@ -10,7 +10,6 @@ group :test do
   gem 'selenium-webdriver'
   gem 'database_cleaner'
   gem 'rspec'
-  gem 'shoulda-matchers', require: false
   gem 'anticipate'
   gem 'rack-test'
   gem 'capybara'

@@ -17,7 +17,7 @@ module RestAssured
         redirect to('/doubles')
       end
 
-      router.get %r{^/doubles(\.json)?$} do |needs_json|
+      router.get %r{/doubles(\.json)?} do |needs_json|
         @doubles = Models::Double.all
         if needs_json
           body @doubles.to_json
@@ -40,7 +40,7 @@ module RestAssured
         end
       end
 
-      router.post /^\/doubles(\.json)?$/ do |needs_json|
+      router.post /\/doubles(\.json)?/ do |needs_json|
         begin
           data = request.body.read
           d = JSON.load(data)
@@ -101,7 +101,7 @@ module RestAssured
         end
       end
 
-      router.delete %r{/doubles/(\d+)(\.json)?$} do |id, needs_json|
+      router.delete %r{/doubles/(\d+)(\.json)?} do |id, needs_json|
         if Models::Double.destroy(id)
           flash[:notice] = 'Double deleted'
           redirect '/doubles' unless needs_json

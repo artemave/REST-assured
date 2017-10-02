@@ -1,4 +1,4 @@
-class RenameFixturesToDoubles < ActiveRecord::Migration
+class RenameFixturesToDoubles < ActiveRecord::Migration[4.2]
   def self.up
     rename_table :fixtures, :doubles
   end

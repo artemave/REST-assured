@@ -2,14 +2,6 @@ require File.expand_path('../../spec_helper', __FILE__)
 
 module RestAssured::Models
   describe Redirect do
-    # this is solely to get through 'Can't find first XXX' shoulda crap
-    #before do
-    #Redirect.create :pattern => 'sdfsdf', :to => 'sdfsffdf'
-    #end
-
-    it { is_expected.to validate_presence_of(:pattern) }
-    it { is_expected.to validate_presence_of(:to) }
-
     it 'assigns incremental position on create' do
       r1 = Redirect.create :pattern => '.*', :to => 'someurl'
       expect(r1.position).to eq(0)
@@ -38,20 +30,20 @@ module RestAssured::Models
     context 'redirect url' do
       it 'constructs url to redirect to' do
         path = rand(1000)
-        r = Redirect.create :pattern => '/api/(.*)\?.*', :to => 'http://external.com/some/url/\1?p=5'
+        Redirect.create :pattern => '/api/(.*)\?.*', :to => 'http://external.com/some/url/\1?p=5'
         expect(Redirect.find_redirect_url_for("/api/#{path}?param=1")).to eq("http://external.com/some/url/#{path}?p=5")
       end
 
       it 'returns the one that matches the substring' do
-        r1 = Redirect.create :pattern => '/ai/path', :to => 'someurl'
-        r2 = Redirect.create :pattern => '/api/path', :to => 'someurl'
+        Redirect.create :pattern => '/ai/path', :to => 'someurl'
+        Redirect.create :pattern => '/api/path', :to => 'someurl'
 
         expect(Redirect.find_redirect_url_for('/api/path')).to eq('someurl')
       end
 
       it 'returns the oldest one that match' do
-        r1 = Redirect.create :pattern => '/api', :to => 'someurl'
-        r2 = Redirect.create :pattern => '/api/path', :to => 'otherurl'
+        Redirect.create :pattern => '/api', :to => 'someurl'
+        Redirect.create :pattern => '/api/path', :to => 'otherurl'
 
         expect(Redirect.find_redirect_url_for('/api/path')).to eq('someurl/path')
       end

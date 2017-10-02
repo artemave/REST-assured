@@ -24,16 +24,16 @@ Then /^I should be able to get json representation of that double from response$
   JSON.load( @create_a_double_response ).should == MultiJson.load( d.to_json )
 end
 
-Then /^I should get (#{CAPTURE_A_NUMBER}) in response status$/ do |status|
+Then /^I should get {int} in response status$/ do |status|
   last_response.status.should == status
 end
 
-Then /^there should be (#{CAPTURE_A_NUMBER}) double with "([^""]*)" as fullpath, "([^""]*)" as response content, "([^""]*)" as request verb, status as "(#{CAPTURE_A_NUMBER})" and delay as "(#{CAPTURE_A_NUMBER})"$/ do |n, fullpath, content, verb, status, delay|
-  RestAssured::Models::Double.where(:fullpath => fullpath, :content => content, :verb => verb, :status => status, :delay => delay).count.should == n
+Then "there should be {int} double with {string} as fullpath, {string} as response content, {string} as request verb, status as {string} and delay as {string}" do |n, fullpath, content, verb, status, delay|
+  RestAssured::Models::Double.where(:fullpath => fullpath, :content => content, :verb => verb, :status => status.to_i, :delay => delay.to_i).count.should == n
 end
 
-Then /^there should be (#{CAPTURE_A_NUMBER}) double with "([^""]*)" as pathpattern, "([^""]*)" as response content, "([^""]*)" as request verb, status as "(#{CAPTURE_A_NUMBER})" and delay as "(#{CAPTURE_A_NUMBER})"$/ do |n, pathpattern, content, verb, status, delay|
-  RestAssured::Models::Double.where(:pathpattern => pathpattern, :content => content, :verb => verb, :status => status, :delay => delay).count.should == n
+Then "there should be {int} double with {string} as pathpattern, {string} as response content, {string} as request verb, status as {string} and delay as {string}" do |n, pathpattern, content, verb, status, delay|
+  RestAssured::Models::Double.where(:pathpattern => pathpattern, :content => content, :verb => verb, :status => status.to_i, :delay => delay.to_i).count.should == n
 end
 
 Given /^there is double with "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |fullpath, content|
@@ -64,8 +64,16 @@ When /^I "([^"]*)" "([^"]*)"$/ do |verb, fullpath|
   send(verb.downcase, fullpath)
 end
 
-Then /^I should get (?:"(#{CAPTURE_A_NUMBER})" as response status and )?"([^"]*)" in response content$/ do |status, content|
-  last_response.status.should == status if status.present?
+Then "I should get {string} in response content" do |content|
+  last_response.body.should == content
+end
+
+Then "I should get {int} in response status" do |status|
+  last_response.status.should == status
+end
+
+Then "I should get {int} as response status and {string} in response content" do |status, content|
+  last_response.status.should == status
   last_response.body.should == content
 end
 

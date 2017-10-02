@@ -13,19 +13,19 @@ Gem::Specification.new do |s|
   #s.description          = %q{TODO: Write a gem description}
 
   s.rubyforge_project     = "rest-assured"
-  s.required_ruby_version = '>= 1.9.3'
+  s.required_ruby_version = '>= 2.2.2'
 
   s.files                 = Dir['CHANGELOG', 'README.markdown', 'LICENSE', '{lib,db,public,views,ssl}/**/*']
   s.test_files            = Dir['{spec,features}/**/*']
   s.executables           = ['rest-assured']
   s.require_paths         = ['lib']
 
-  s.add_dependency 'sinatra', '~> 1.4.0'
+  s.add_dependency 'sinatra', ['>= 1.4.0', '~> 2.0']
   s.add_dependency 'childprocess', '~> 0.3'
   s.add_dependency 'sinatra-flash'
-  s.add_dependency 'haml', '~> 4.0'
-  s.add_dependency 'activerecord', '~> 4.0'
-  s.add_dependency 'activeresource', '~> 4.0'
+  s.add_dependency 'haml', ['>= 4.0', '~> 5.0']
+  s.add_dependency 'activerecord', ['>= 4.0', '~> 5.0']
+  s.add_dependency 'activeresource', ['>= 4.0', '~> 5.0']
   s.add_dependency 'thin', '~> 1.6'
 end
 

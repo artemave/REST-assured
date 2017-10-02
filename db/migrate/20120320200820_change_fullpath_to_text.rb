@@ -1,4 +1,4 @@
-class ChangeFullpathToText < ActiveRecord::Migration
+class ChangeFullpathToText < ActiveRecord::Migration[4.2]
   def self.up
     change_column :doubles, :fullpath, :text
   end

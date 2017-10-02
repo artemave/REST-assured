@@ -24,7 +24,7 @@ Given /^I created? a double:$/ do |string|
   eval string
 end
 
-When /^that double gets requested (#{CAPTURE_A_NUMBER}) times$/ do |num|
+When "that double gets requested {int} times" do |num|
   num.times do
     sleep 0.5
     send(@double.verb.downcase, @double.fullpath)
@@ -50,10 +50,9 @@ Then /^it should let me through$/ do
   @more_reqs_exc.should == nil
 end
 
-Then /^it should wait for (#{CAPTURE_A_NUMBER}) seconds(?: \(default timeout\))?$/ do |timeout|
+Then 'it should wait for (default timeout of ){int} seconds' do |timeout|
   @t.join
   wait_time = Time.now - @wait_start
-  #(timeout..(timeout+1)).should cover(wait_time) # cover() only avilable in 1.9
   wait_time.should >= timeout
   wait_time.should < timeout + 1.5
 end

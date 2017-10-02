@@ -30,7 +30,6 @@ RestAssured::Config.build(DB_OPTS)
 
 require 'rest-assured'
 require 'rest-assured/application'
-require 'shoulda/matchers'
 
 Capybara.app = RestAssured::Application
 

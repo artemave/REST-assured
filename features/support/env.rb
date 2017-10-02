@@ -44,7 +44,6 @@ db_opts = {
 RestAssured::Config.build(db_opts)
 
 require 'rest-assured'
-require 'shoulda-matchers'
 
 RestAssured::Server.start(db_opts.merge(:port => 19876))
 

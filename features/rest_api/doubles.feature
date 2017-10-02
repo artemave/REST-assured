@@ -34,7 +34,7 @@ Feature: use doubles via api
   Scenario Outline: request fullpath that matches double
     Given there is double with "<fullpath>" as fullpath, "<content>" as response content, "<verb>" as request verb and "<status>" as status
     When I "<verb>" "<fullpath>"
-    Then I should get "<status>" as response status and "<content>" in response content
+    Then I should get <status> as response status and "<content>" in response content
 
     Examples:
       | fullpath           | content      | verb   | status |
@@ -48,7 +48,7 @@ Feature: use doubles via api
   Scenario Outline: request a path that matches double a path pattern
     Given there is double with "<pathpattern>" as pathpattern, "<content>" as response content, "<verb>" as request verb and "<status>" as status
     When I "<verb>" "<fullpath>"
-    Then I should get "<status>" as response status and "<content>" in response content
+    Then I should get <status> as response status and "<content>" in response content
 
     Examples:
       | pathpattern                   | fullpath            | content      | verb | status |

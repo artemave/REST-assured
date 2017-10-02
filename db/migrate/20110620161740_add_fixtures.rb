@@ -1,4 +1,4 @@
-class AddFixtures < ActiveRecord::Migration
+class AddFixtures < ActiveRecord::Migration[4.2]
   def self.up
     create_table :fixtures do |t|
       t.string  :url

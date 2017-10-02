@@ -4,11 +4,8 @@ sudo: false
 cache: bundler
 before_install: gem update bundler
 rvm:
-  - 1.9.3
-  - 2.0.0
-  - 2.1.0
-  - 2.2.1
-  - 2.3.0
+  - 2.2.2
+  - 2.4.1
 env: DISPLAY=:99.0
 services:
   - postgresql
