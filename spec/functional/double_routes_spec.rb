@@ -4,12 +4,18 @@ module RestAssured
   describe 'Double routes' do
     let :test_double do
       {
-        :fullpath         => '/api/google?a=5',
-        :content          => 'some awesome content',
-        :description      => 'awesome double',
-        :verb             => 'POST',
-        :status           => '201',
-        :response_headers => { 'ACCEPT' => 'text/html' }
+          :fullpath         => '/api/google?a=5',
+          :content          => 'some awesome content',
+          :description      => 'awesome double',
+          :verb             => 'POST',
+          :status           => '201',
+          :response_headers => { 'ACCEPT' => 'text/html' }
+      }
+    end
+
+    let :test_request do
+      {
+         :rack_env => {}
       }
     end
 
@@ -157,6 +163,17 @@ module RestAssured
 
         expect(last_response).to be_ok
         expect(Models::Double.count).to eq(0)
+      end
+
+      it "deletes associated requests" do
+        double = Models::Double.create test_double
+
+        double.requests.create test_request
+
+        delete '/doubles/all'
+
+        expect(last_response).to be_ok
+        expect(Models::Request.count).to eq(0)
       end
     end
 

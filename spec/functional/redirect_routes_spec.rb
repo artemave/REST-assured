@@ -89,6 +89,15 @@ module RestAssured
 
         expect(Models::Redirect.exists?(redirect)).to be_falsey
       end
+
+      it "deletes all redirects" do
+        Models::Redirect.create redirect
+
+        delete '/redirects/all'
+
+        expect(last_response).to be_ok
+        expect(Models::Redirect.count).to eq(0)
+      end
     end
 
     context 'via api', :ui => false do

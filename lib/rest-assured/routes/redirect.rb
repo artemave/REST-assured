@@ -67,7 +67,7 @@ module RestAssured
       end
 
       router.delete '/redirects/all' do
-        status Models::Redirect.delete_all ? 200 : 500
+        status Models::Redirect.destroy_all ? 200 : 500
       end
     end
   end
