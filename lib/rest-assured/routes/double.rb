@@ -109,7 +109,7 @@ module RestAssured
       end
 
       router.delete '/doubles/all' do
-        status Models::Double.delete_all ? 200 : 500
+        status Models::Double.destroy_all ? 200 : 500
       end
     end
   end
