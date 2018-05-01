@@ -20,6 +20,7 @@ group :test do
   gem 'chromedriver-helper'
   gem 'simplecov'
   gem 'awesome_print'
+  gem 'puma'
 end
 
 # skipped for heroku and travis

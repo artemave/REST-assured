@@ -15,10 +15,10 @@ module RestAssured::Utils
         TCPServer.open('127.0.0.1', port) do |serv|
           s = serv.accept
           s.puts 'Hello from test'
+          sleep 0.5
           s.close
         end
       end
-      sleep 0.5
 
       expect(PortExplorer.port_free?(port)).to eq(false)
     end
