@@ -8,19 +8,30 @@ module RestAssured::Utils
       expect { Net::HTTP.get('127.0.0.1', '/', free_port) }.to raise_error(Errno::ECONNREFUSED)
     end
 
-    it 'knows if port is in use' do
-      port = PortExplorer.free_port
+    context 'port is taken' do
+      let(:port) { PortExplorer.free_port }
+      server = nil
 
-      Thread.new do
-        TCPServer.open('127.0.0.1', port) do |serv|
-          s = serv.accept
-          s.puts 'Hello from test'
-          sleep 0.5
-          s.close
-        end
+      before :each do
+        server = TCPServer.new port
       end
 
-      expect(PortExplorer.port_free?(port)).to eq(false)
+      after :each do
+        server.close
+      end
+
+      it 'knows if port is in use' do
+        Thread.new do
+          loop do
+            Thread.start(server.accept) do |client|
+              client.puts "Hello!"
+              client.close
+            end
+          end
+        end
+
+        expect(PortExplorer.port_free?(port)).to eq(false)
+      end
     end
 
     it 'knows that port is free' do
