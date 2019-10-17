@@ -83,7 +83,7 @@ GEM
     domain_name (0.5.20180417)
       unf (>= 0.0.5, < 1.0.0)
     eventmachine (1.2.6)
-    ffi (1.9.23)
+    ffi (1.11.1)
     gherkin (5.0.0)
     haml (5.0.4)
       temple (>= 0.8.0)
