@@ -101,7 +101,10 @@ module RestAssured
       end
 
       def self.migrate_db
-        migrate = lambda { ActiveRecord::MigrationContext.new(File.expand_path('../../../db/migrate', __FILE__)).migrate }
+        migrate = lambda do
+          ActiveRecord::MigrationContext.new(File.expand_path('../../../db/migrate', __FILE__),
+                                             ActiveRecord::Base.connection.schema_migration).migrate
+        end
         silence_stdout = lambda do |&thing|
           original_stdout = $stdout
           $stdout = File.open(File::NULL, "w")
