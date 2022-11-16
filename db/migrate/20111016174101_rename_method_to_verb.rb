@@ -1,4 +1,4 @@
-class RenameMethodToVerb < ActiveRecord::Migration
+class RenameMethodToVerb < ActiveRecord::Migration[4.2]
   def self.up
     rename_column :doubles, :method, :verb
   end

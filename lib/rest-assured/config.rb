@@ -1,6 +1,4 @@
 require 'logger'
-require 'active_record'
-require 'active_support/core_ext/kernel/reporting'
 
 module RestAssured
   module Config
@@ -67,6 +65,7 @@ module RestAssured
     private
 
       def self.setup_db
+        require 'active_record'
         setup_db_logging
         connect_db
         migrate_db
@@ -102,10 +101,16 @@ module RestAssured
       end
 
       def self.migrate_db
-        migrate = lambda { ActiveRecord::Migrator.migrate(File.expand_path('../../../db/migrate', __FILE__)) }
+        migrate = lambda { ActiveRecord::MigrationContext.new(File.expand_path('../../../db/migrate', __FILE__)).migrate }
+        silence_stdout = lambda do |&thing|
+          original_stdout = $stdout
+          $stdout = File.open(File::NULL, "w")
+          thing.call
+          $stdout = original_stdout
+        end
 
-        if AppConfig[:environment] == 'production' && Kernel.respond_to?(:silence)
-          silence(:stdout, &migrate)
+        if AppConfig[:environment] == 'production'
+          silence_stdout.call(&migrate)
         else
           migrate.call
         end
@@ -134,8 +139,9 @@ module RestAssured
 
                                 opts = {
                                   :adapter  => 'postgresql',
-                                  :username => AppConfig.user || 'root',
-                                  :database => AppConfig.database || default_database
+                                  :username => AppConfig.dbuser || 'root',
+                                  :database => AppConfig.database || default_database,
+                                  :pool     => 20
                                 }
                                 if adapter =~ /mysql/
                                   adapter = RUBY_PLATFORM == "java" ? 'jdbcmysql' : 'mysql2'

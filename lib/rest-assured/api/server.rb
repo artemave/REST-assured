@@ -11,8 +11,6 @@ module RestAssured
     include Singleton
 
     at_exit do
-      # I don't know why, but without this puts() at_exit is triggered on Ctrl-C when running in spork
-      puts ''
       instance.stop if instance
     end
 
@@ -39,21 +37,11 @@ module RestAssured
     end
 
     def stop
-      @session.try(:stop)
-
-      10.times do
-        if up?
-          sleep 0.5
-          next
-        else
-          return
-        end
-      end
-      raise "Failed to stop RestAssured server"
+      @session.try :stop
     end
 
     def up?
-      !!@session && @session.alive? && !Utils::PortExplorer.port_free?(AppConfig.port) 
+      !!@session && @session.alive? && !Utils::PortExplorer.port_free?(AppConfig.port)
     end
 
     def self.method_missing(*args)

@@ -1,0 +1,12 @@
+{
+  "name": "REST-assured",
+  "description": "Real stubs and spies for REST services",
+  "repository": "https://github.com/artemave/REST-assured",
+  "keywords": ["REST", "testing", "stub"],
+  "addons": [
+    "heroku-postgresql:hobby-dev"
+  ],
+  "env": {
+    "CUSTOM_RUBY_VERSION": "2.2.1"
+  }
+}

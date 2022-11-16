@@ -4,7 +4,8 @@ require "irb"
 $:.push File.expand_path('../../lib', __FILE__)
 
 require 'rest-assured/config'
-RestAssured::Config.build :database => ( ENV['FRS_DB'] || File.expand_path('../../db/development.db', __FILE__) )
+RestAssured::Config.build adapter: ENV['REST_ASSURED_DB_ADAPTER'] || 'sqlite',
+  :database => ( ENV['REST_ASSURED_DB'] || File.expand_path('../../db/development.db', __FILE__) )
 
 require 'rest-assured/application'
 

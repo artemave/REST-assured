@@ -20,39 +20,39 @@ module RestAssured
 
         visit '/redirects'
 
-        page.should have_content(r.pattern)
-        page.should have_content(r.to)
+        expect(page).to have_content(r.pattern)
+        expect(page).to have_content(r.to)
       end
 
       it "shows form for creating new redirect" do
         visit '/redirects/new'
 
-        page.should have_css('#redirect_pattern')
-        page.should have_css('#redirect_to')
+        expect(page).to have_css('#redirect_pattern')
+        expect(page).to have_css('#redirect_to')
       end
 
       it "creates redirect" do
         post '/redirects', valid_params
         follow_redirect!
 
-        last_request.fullpath.should == '/redirects'
-        last_response.body.should =~ /Redirect created/
-        Models::Redirect.exists?(redirect).should be true
+        expect(last_request.fullpath).to eq('/redirects')
+        expect(last_response.body).to match(/Redirect created/)
+        expect(Models::Redirect.exists?(redirect)).to be true
       end
 
       it "reports failure when creating with invalid parameters" do
         post '/redirects', invalid_params
 
-        last_response.should be_ok
-        last_response.body.should =~ /Crumps!.*Pattern can't be blank/
+        expect(last_response).to be_ok
+        expect(last_response.body).to match(/Crumps!.*Pattern can't be blank/)
       end
 
       it "brings up redirect edit form" do
         r = Models::Redirect.create redirect
         visit "/redirects/#{r.id}/edit"
 
-        find('#redirect_pattern').value.should == r.pattern
-        find('#redirect_to').value.should == r.to
+        expect(find('#redirect_pattern').value).to eq(r.pattern)
+        expect(find('#redirect_to').value).to eq(r.to)
       end
 
       it "updates redirect" do
@@ -61,9 +61,9 @@ module RestAssured
         put "/redirects/#{r.id}", 'redirect[to]' => '/some/other/api'
         follow_redirect!
 
-        last_request.fullpath.should == '/redirects'
-        last_response.body.should =~ /Redirect updated/
-        r.reload.to.should == '/some/other/api'
+        expect(last_request.fullpath).to eq('/redirects')
+        expect(last_response.body).to match(/Redirect updated/)
+        expect(r.reload.to).to eq('/some/other/api')
       end
 
       it "reorders redirects" do
@@ -72,10 +72,10 @@ module RestAssured
 
         put "/redirects/reorder", :redirect => [r2.id, r1.id]
 
-        last_response.should be_ok
-        last_response.body.should == 'Changed'
-        r1.reload.position.should == 1
-        r2.reload.position.should == 0
+        expect(last_response).to be_ok
+        expect(last_response.body).to eq('Changed')
+        expect(r1.reload.position).to eq(1)
+        expect(r2.reload.position).to eq(0)
       end
 
       it "deletes redirect" do
@@ -84,26 +84,10 @@ module RestAssured
         delete "/redirects/#{f.id}"
         follow_redirect!
 
-        last_response.should be_ok
-        last_response.body.should =~ /Redirect deleted/
+        expect(last_response).to be_ok
+        expect(last_response.body).to match(/Redirect deleted/)
 
-        Models::Redirect.exists?(redirect).should be_false
-      end
-    end
-
-    context 'via api', :ui => false do
-      it "creates redirect" do
-        post '/redirects.json', redirect
-
-        last_response.should be_ok
-        Models::Redirect.count.should == 1
-      end
-
-      it "reports failure when creating with invalid parameters" do
-        post '/redirects.json', redirect.except(:pattern)
-
-        last_response.should_not be_ok
-        last_response.body.should =~ /Pattern can't be blank/
+        expect(Models::Redirect.exists?(redirect)).to be_falsey
       end
 
       it "deletes all redirects" do
@@ -111,8 +95,33 @@ module RestAssured
 
         delete '/redirects/all'
 
-        last_response.should be_ok
-        Models::Redirect.count.should == 0
+        expect(last_response).to be_ok
+        expect(Models::Redirect.count).to eq(0)
+      end
+    end
+
+    context 'via api', :ui => false do
+      it "creates redirect" do
+        post '/redirects.json', redirect
+
+        expect(last_response).to be_ok
+        expect(Models::Redirect.count).to eq(1)
+      end
+
+      it "reports failure when creating with invalid parameters" do
+        post '/redirects.json', redirect.except(:pattern)
+
+        expect(last_response).not_to be_ok
+        expect(last_response.body).to match(/Pattern can't be blank/)
+      end
+
+      it "deletes all redirects" do
+        Models::Redirect.create redirect
+
+        delete '/redirects/all'
+
+        expect(last_response).to be_ok
+        expect(Models::Redirect.count).to eq(0)
       end
     end
   end

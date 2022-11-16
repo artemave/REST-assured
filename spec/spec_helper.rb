@@ -1,3 +1,5 @@
+ENV['RACK_ENV'] = 'test'
+
 if ENV['COVERAGE']
   begin
     require 'simplecov'
@@ -15,12 +17,29 @@ $:.unshift(File.expand_path('../../lib'), __FILE__)
 require 'rspec'
 require 'capybara/rspec'
 require 'rack/test'
-require 'database_cleaner'
 require 'awesome_print'
+require 'rest-assured/config'
+
+DB_OPTS = {
+  adapter: 'postgres',
+  dbhost: ENV.fetch('DB_HOST', 'localhost'),
+  dbport: ENV.fetch('DB_PORT', 5432),
+  dbuser: ENV.fetch('DB_USER', 'postgres')
+}
+RestAssured::Config.build(DB_OPTS)
+
+require 'rest-assured'
+require 'rest-assured/application'
+
+Capybara.app = RestAssured::Application
+
+def app
+  RestAssured::Application
+end
+
+require 'database_cleaner'
 require File.expand_path('../support/custom_matchers', __FILE__)
 require File.expand_path('../support/reset-singleton', __FILE__)
-
-ENV['RACK_ENV'] = 'test'
 
 module XhrHelpers
   def xhr(path, params = {})
@@ -35,12 +54,20 @@ RSpec.configure do |c|
   c.include Rack::Test::Methods
   c.include XhrHelpers
 
-  c.before(:each) do
-    DatabaseCleaner.start
+  c.before(:suite) do
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.clean_with(:truncation)
   end
 
-  c.after(:each) do
-    DatabaseCleaner.clean
+  c.around(:each) do |example|
+    begin
+      DatabaseCleaner.cleaning do
+        example.run
+      end
+    rescue ActiveRecord::StatementInvalid
+      ActiveRecord::Base.connection.reconnect!
+      DatabaseCleaner.clean_with :truncation
+    end
   end
 
   c.before(:each, :ui => true) do
@@ -57,18 +84,3 @@ RSpec.configure do |c|
     end
   end
 end
-require 'rest-assured/config'
-DB_OPTS = { :adapter => 'mysql' }
-RestAssured::Config.build(DB_OPTS)
-
-require 'rest-assured'
-require 'rest-assured/application'
-require 'shoulda-matchers'
-
-Capybara.app = RestAssured::Application
-
-def app
-  RestAssured::Application
-end
-
-DatabaseCleaner.strategy = :truncation

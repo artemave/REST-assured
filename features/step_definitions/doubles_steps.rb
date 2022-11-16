@@ -4,8 +4,13 @@ Given /^there are no doubles$/ do
   RestAssured::Models::Double.destroy_all
 end
 
-When /^I create a double with "([^""]*)" as fullpath, "([^""]*)" as response content, "([^""]*)" as request verb and status as "([^""]*)"$/ do |fullpath, content, verb, status|
-  post '/doubles.json', { :fullpath => fullpath, :content => content, :verb => verb, :status => status }
+When /^I create a double with "([^""]*)" as fullpath, "([^""]*)" as response content, "([^""]*)" as request verb, status as "([^""]*)" and delay as "([^""]*)"$/ do |fullpath, content, verb, status, delay|
+  post '/doubles.json', { :fullpath => fullpath, :content => content, :verb => verb, :status => status, :delay => delay}
+  last_response.should be_ok
+end
+
+When /^I create a double with "([^""]*)" as pathpattern, "([^""]*)" as response content, "([^""]*)" as request verb, status as "([^""]*)" and delay as "([^""]*)"$/ do |pathpattern, content, verb, status, delay|
+  post '/doubles.json', { :pathpattern => pathpattern, :content => content, :verb => verb, :status => status, :delay => delay}
   last_response.should be_ok
 end
 
@@ -16,23 +21,35 @@ end
 
 Then /^I should be able to get json representation of that double from response$/ do
   d = RestAssured::Models::Double.last
-  MultiJson.load( @create_a_double_response ).should == MultiJson.load( d.to_json )
+  JSON.load( @create_a_double_response ).should == MultiJson.load( d.to_json )
 end
 
-Then /^I should get (#{CAPTURE_A_NUMBER}) in response status$/ do |status|
+Then /^I should get {int} in response status$/ do |status|
   last_response.status.should == status
 end
 
-Then /^there should be (#{CAPTURE_A_NUMBER}) double with "([^""]*)" as fullpath, "([^""]*)" as response content, "([^""]*)" as request verb and status as "(#{CAPTURE_A_NUMBER})"$/ do |n, fullpath, content, verb, status|
-  RestAssured::Models::Double.where(:fullpath => fullpath, :content => content, :verb => verb, :status => status).count.should == n
+Then "there should be {int} double with {string} as fullpath, {string} as response content, {string} as request verb, status as {string} and delay as {string}" do |n, fullpath, content, verb, status, delay|
+  RestAssured::Models::Double.where(:fullpath => fullpath, :content => content, :verb => verb, :status => status.to_i, :delay => delay.to_i).count.should == n
+end
+
+Then "there should be {int} double with {string} as pathpattern, {string} as response content, {string} as request verb, status as {string} and delay as {string}" do |n, pathpattern, content, verb, status, delay|
+  RestAssured::Models::Double.where(:pathpattern => pathpattern, :content => content, :verb => verb, :status => status.to_i, :delay => delay.to_i).count.should == n
 end
 
 Given /^there is double with "([^"]*)" as fullpath and "([^"]*)" as response content$/ do |fullpath, content|
   RestAssured::Models::Double.create(:fullpath => fullpath, :content => content)
 end
 
+Given /^there is double with "([^"]*)" as pathpattern and "([^"]*)" as response content$/ do |pathpattern, content|
+  RestAssured::Models::Double.create(:pathpattern => pathpattern, :content => content)
+end
+
 Given /^there is double with "([^"]*)" as fullpath, "([^"]*)" as response content, "([^"]*)" as request verb and "([^"]*)" as status$/ do |fullpath, content, verb, status|
   RestAssured::Models::Double.create(:fullpath => fullpath, :content => content, :verb => verb, :status => status)
+end
+
+Given /there is double with "([^"]*)" as pathpattern, "([^"]*)" as response content, "([^"]*)" as request verb and "([^"]*)" as status$/ do |pathpattern, content, verb, status|
+  RestAssured::Models::Double.create(:pathpattern => pathpattern, :content => content, :verb => verb, :status => status)
 end
 
 When /^I request "([^"]*)"$/ do |fullpath|
@@ -47,8 +64,16 @@ When /^I "([^"]*)" "([^"]*)"$/ do |verb, fullpath|
   send(verb.downcase, fullpath)
 end
 
-Then /^I should get (?:"(#{CAPTURE_A_NUMBER})" as response status and )?"([^"]*)" in response content$/ do |status, content|
-  last_response.status.should == status if status.present?
+Then "I should get {string} in response content" do |content|
+  last_response.body.should == content
+end
+
+Then "I should get {int} in response status" do |status|
+  last_response.status.should == status
+end
+
+Then "I should get {int} as response status and {string} in response content" do |status, content|
+  last_response.status.should == status
   last_response.body.should == content
 end
 
@@ -73,6 +98,7 @@ Given /^the following doubles exist:$/ do |doubles|
   doubles.hashes.each do |row|
     RestAssured::Models::Double.create(
       :fullpath    => row['fullpath'],
+      :pathpattern    => row['pathpattern'],
       :description => row['description'],
       :content     => row['content'],
       :verb        => row['verb'],
@@ -83,7 +109,8 @@ end
 
 Then /^I should see existing doubles:$/ do |doubles|
   doubles.hashes.each do |row|
-    page.should have_content(row[:fullpath])
+    page.should have_content(row[:fullpath]) unless row[:fullpath].blank?
+    page.should have_content(row[:pathpattern]) unless row[:pathpattern].blank?
     page.should have_content(row[:description])
     page.should have_content(row[:verb])
     page.should have_content(row[:status])
@@ -100,8 +127,8 @@ end
 
 When /^I enter double details:$/ do |details|
   double = details.hashes.first
-
   fill_in 'Request fullpath', :with => double['fullpath']
+  fill_in 'Request path pattern', :with => double['pathpattern']
   fill_in 'Content', :with => double['content']
   select  double['verb'], :from => 'Verb'
   fill_in 'Description', :with => double['description']
@@ -152,7 +179,7 @@ Given /^I choose to delete double with fullpath "([^"]*)"$/ do |fullpath|
 end
 
 Then /^I should be asked to confirm delete$/ do
-  page.driver.browser.switch_to.alert.accept
+  js_confirm
 end
 
 Given /^there are the following doubles:$/ do |table|

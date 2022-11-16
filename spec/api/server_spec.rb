@@ -3,95 +3,91 @@ require File.expand_path('../../../lib/rest-assured/api/server', __FILE__)
 
 module RestAssured
   describe Server do
-    around do |example|
-      Server.reset_instance
-      example.run
-      Server.reset_instance
+    before do
+      allow(AppSession).to receive(:new).and_return(session)
     end
 
+    after do
+      Singleton.__init__(Server)
+    end
+
+    let (:session) { double.as_null_object }
+
     it 'khows when it is up' do
-      AppSession.stub(:new).and_return(session = double(:alive? => true).as_null_object)
-      Utils::PortExplorer.stub(:port_free? => false)
+      allow(session).to receive(:alive?).and_return(true)
+      allow(Utils::PortExplorer).to receive(:port_free?).and_return(false)
 
       Server.start
-      Server.up?.should == true
+      expect(Server.up?).to eq true
     end
 
     context 'knows that it is NOT up' do
       it 'if it has not been started' do
-        Server.up?.should == false
+        expect(Server.up?).to eq false
       end
 
       it 'if it is starting at the moment' do
-        AppSession.stub(:new).and_return(session = double(:alive? => true).as_null_object)
-        Utils::PortExplorer.stub(:port_free? => true)
+        allow(session).to receive(:alive?).and_return(true)
+        allow(Utils::PortExplorer).to receive(:port_free?).and_return(true)
         Server.start!
 
-        Server.up?.should == false
+        expect(Server.up?).to eq false
       end
     end
 
     context 'when starts' do
       it 'makes sure no previous session is running' do
-        session = double.as_null_object
-        session.stub(:alive?).and_return(true, false)
-        Utils::PortExplorer.stub(:port_free? => false)
-        AppSession.stub(:new).and_return(session)
+        allow(session).to receive(:alive?).and_return(true, false)
+        allow(Utils::PortExplorer).to receive(:port_free?).and_return(false)
 
-        session.should_receive(:stop).once
+        expect(session).to receive(:stop).once
         Server.start!
         Server.start!
       end
 
       it 'builds application config' do
-        AppSession.stub(:new).as_null_object
-
         opts = { :port => 34545, :database => ':memory:' }
 
-        Config.should_receive(:build).with(opts)
+        expect(Config).to receive(:build).with(opts)
         Server.start!(opts)
       end
 
       context 'sets up server address' do
-        before do
-          AppSession.stub(:new).as_null_object
-        end
-
         it 'uses 127.0.0.1 as hostname' do
-          RestAssured::Double.should_receive(:site=).with(/127\.0\.0\.1/)
+          expect(RestAssured::Double).to receive(:site=).with(/127\.0\.0\.1/)
           Server.start!
-          Server.address.should =~ /127\.0\.0\.1/
+          expect(Server.address).to match(/127\.0\.0\.1/)
         end
 
         it 'uses port from config' do
-          RestAssured::Double.should_receive(:site=).with(/#{AppConfig.port}/)
+          expect(RestAssured::Double).to receive(:site=).with(/#{AppConfig.port}/)
             Server.start!
-          Server.address.should =~ /#{AppConfig.port}/
+          expect(Server.address).to match(/#{AppConfig.port}/)
         end
 
         it 'uses http by default' do
-          RestAssured::Double.should_receive(:site=).with(/http[^s]/)
+          expect(RestAssured::Double).to receive(:site=).with(/http[^s]/)
           Server.start!
-          Server.address.should =~ /http[^s]/
+          expect(Server.address).to match(/http[^s]/)
         end
 
         it 'uses https if ssl is set in config' do
           AppConfig.ssl = true
-          RestAssured::Double.should_receive(:site=).with(/https/)
+          expect(RestAssured::Double).to receive(:site=).with(/https/)
           Server.start!
-          Server.address.should =~ /https/
+          expect(Server.address).to match(/https/)
         end
       end
 
       describe 'async/sync start' do
         before do
-          AppSession.stub(:new).and_return(session = double(:alive? => false).as_null_object)
-          Utils::PortExplorer.stub(:port_free? => true)
+          allow(session).to receive(:alive?).and_return(false)
+          allow(Utils::PortExplorer).to receive(:port_free?).and_return(true)
 
           @t = Thread.new do
             sleep 0.5
-            session.stub(:alive?).and_return(true)
-            Utils::PortExplorer.stub(:port_free? => false)
+            allow(session).to receive(:alive?).and_return(true)
+            allow(Utils::PortExplorer).to receive(:port_free?).and_return(false)
           end
         end
 
@@ -101,31 +97,30 @@ module RestAssured
 
         it 'does not wait for Application to come up' do
           Server.start!
-          Server.up?.should == false
+          expect(Server.up?).to eq false
         end
 
         it 'can wait until Application is up before passing control' do
           Server.start
-          Server.up?.should == true
+          expect(Server.up?).to eq true
         end
       end
     end
 
     context 'when stopped' do
       it 'stops application subprocess' do
-        AppSession.stub(:new).and_return(session = double(:alive? => false))
+        allow(session).to receive(:alive?).and_return(false)
         Server.start!
 
-        session.should_receive(:stop)
+        expect(session).to receive(:stop)
         Server.stop
       end
     end
 
     it 'stops application subprocess when current process exits' do
       res_file = Tempfile.new('res')
-      AppSession.stub(:new).and_return(session = double.as_null_object)
-      session.stub(:alive?).and_return(false)
-      session.stub(:stop) do
+      allow(session).to receive(:alive?).and_return(false)
+      allow(session).to receive(:stop) do
         res_file.write "stopped"
         res_file.rewind
       end
@@ -133,7 +128,7 @@ module RestAssured
         Server.start!
       end
       Process.wait
-      res_file.read.should == 'stopped'
+      expect(res_file.read).to eq 'stopped'
     end
   end
 end

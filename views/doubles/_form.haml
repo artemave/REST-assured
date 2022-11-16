@@ -1,6 +1,10 @@
 %p
-  %label{:for => 'double_fullpath'} Request fullpath*
+  Specify either a fullpath or a path pattern
+  %label{:for => 'double_fullpath'} Request fullpath
   %input.wide#double_fullpath{:type => 'text', :name => 'double[fullpath]', :value => @double.fullpath}
+
+  %label{:for => 'double_pathpattern'} Request path pattern
+  %input.wide#double_pathpattern{:type => 'text', :name => 'double[pathpattern]', :value => @double.pathpattern}
 
 %p
   %label{:for => 'double_content'} Content
@@ -17,6 +21,10 @@
   %select#double_status{:name => 'double[status]'}
     - statuses.each do |s|
       %option{:name => s, :selected => (@double.status == s)}= s
+
+%p
+  %label{:for => 'double_delay'} Delay
+  %input.wide#double_delay{:type => 'text', :name => 'double[delay]', :value => @double.delay}
 
 %p
   %label{:for => 'double_description'} Description

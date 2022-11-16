@@ -20,6 +20,22 @@ Feature: create double
     last_response.should be_ok
     """
 
+  Scenario: use a path pattern
+    When I create a double:
+    """
+    @double = RestAssured::Double.create(:pathpattern => /^\/some\/api\?nocache=\d+$/)
+    """
+    Then the following should be true:
+    """
+    @double.verb.should             == 'GET'
+    @double.response_headers.should == {}
+    @double.status.should           == 200
+    @double.content.should          == nil
+
+    get '/some/api?nocache=1234'
+    last_response.should be_ok
+    """
+
   Scenario: specify response headers
     When I create a double:
     """
@@ -73,4 +89,23 @@ Feature: create double
 
     get @double.fullpath
     last_response.status == 302
+    """
+
+    Scenario: specify a delay
+      When I create a double:
+    """
+    @double = RestAssured::Double.create(:fullpath => '/some/api', :delay => 4)
+    """
+      Then the following should be true:
+    """
+    start_time = Time.now
+
+    get @double.fullpath
+
+    end_time = Time.now
+
+    time_elapsed = end_time - start_time
+
+    expect(time_elapsed).to be > 3
+
     """

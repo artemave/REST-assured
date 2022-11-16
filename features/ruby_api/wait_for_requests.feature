@@ -24,7 +24,7 @@ Feature: wait for requests on double to happen
     @double.wait_for_requests(3)
     """
     And that double gets requested 2 times
-    Then it should wait for 5 seconds (default timeout)
+    Then it should wait for default timeout of 5 seconds
     And it should raise MoreRequestsExpected error after with the following message:
     """
     Expected 3 requests. Got 2.

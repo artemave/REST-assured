@@ -3,44 +3,50 @@
 [![Build status](https://secure.travis-ci.org/artemave/REST-assured.png)](https://travis-ci.org/artemave/REST-assured)
 [![Gem Version](https://badge.fury.io/rb/rest-assured.png)](http://badge.fury.io/rb/rest-assured)
 
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
 ## Overview
 
 Stub/spy http(s) based external dependencies in your integration/acceptance tests.
 
 ## Description
 
-In a nutshell, you can:
+With REST-assured you can:
 
-* replace external data sources with predefined data (stubbing)
-* verify requests to external services (spying)
-* simulate different behavior of external services using web UI; useful in development
+* in tests: replace external HTTP(S) based data sources with predefined data (stubbing)
+* in tests: verify requests to external services (spying)
+* in development: simulate different behavior of external services using web UI; it looks like this:
 
-REST-assured runs in a standalone process. It can be configured at runtime (via ruby client library or REST api) to respond to any request with arbitrary content, status, headers, etc.
+![web ui screenshot](https://dl.dropboxusercontent.com/s/cb801va6t3zejdv/fakeshit.png?dl=0)
 
-The idea is that in "test" environment your app is making calls to REST-assured rather than to real external services.
+REST-assured is a web server that can be started programmatically and configured at runtime (via ruby client library or REST api) to respond to any request with arbitrary content, status, headers, etc.
+
+But why not to use [VCR](https://github.com/vcr/vcr) or [WebMock](https://github.com/bblimke/webmock) instead? Well, you certainly should. If you can. REST-assured was born on a project where code was written in Java and integration tests in Ruby. This may sound a bit crazy, but the world is full crazy things and if you find yourself in one, you might find REST-assured useful.
 
 [Playground](http://fakesh.it/)
 
 [Example project](https://github.com/artemave/REST-assured-example)
 
+[Long-winded intro blog post](http://artemave.github.com/2012/05/27/stub-like-a-surgeon-spy-like-james-bond-with-rest-assured/)
+
 
 ## Set up
 
-You are going to need ruby >= 1.9.2 on Linux/MacOS. Also, one of sqlite3, postgres or mysql.
+You are going to need ruby >= 2.2.2 and either sqlite3, postgres or mysql. Use 2.x version of this gem if you need to support an older ruby version (>= 1.9.3).
 
 ### In ruby project
 
 ```ruby
 # Gemfile
 gem 'sqlite3' # or mysql2 or pg
-              # use 'jdbcsqlite3' and 'jdbcmysql' for jruby
+              # use 'jdbcsqlite3' or 'jdbcmysql' for jruby
 gem 'rest-assured'
 
 # env.rb/spec_helper.rb
 require 'rest-assured'
 
-RestAssured::Server.start(database: ':memory:', port: 7899) # or any other option available on command line
-# Or, you can specify an instance that is already running somewhere:
+RestAssured::Server.start(database: ':memory:') # or any other option available on command line
+# Or you can specify an instance that is already running somewhere:
 RestAssured::Server.address = 'http://wacky-duckling.herokuapp.com'
 ```
 
@@ -67,18 +73,7 @@ This starts up an instance of rest-assured on port 4578. It is accessible via RE
 
 Various options (such as ssl, port, db credentials, etc.) are available through command line options. Check out `rest-assured -h` to see what they are.
 
-### Heroku
-
-You can also deploy it to heroku:
-
-    $ git clone git://github.com/artemave/REST-assured.git
-    $ cd REST-assured
-
-    $ gem install heroku
-    $ heroku login # assuming you already have an account
-    $ heroku create --stack cedar
-
-    $ git push heroku master
+You can also [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
 ## Usage
 
@@ -94,7 +89,16 @@ Create double:
 RestAssured::Double.create(fullpath: '/products', content: 'this is content')
 ```
 
-Now GET `http://localhost:4578/products` will be returning `this is content`.
+Alternatively using a regular expression for the path
+
+```ruby
+RestAssured::Double.create(pathpattern: /products\/[a-z]{10}\/?param=.*/, content: 'this is more content')
+```
+
+Now GET `http://localhost:4578/products` will be returning `this is content` and a GET to
+`http://localhost:4578/products/coolprod22?param=foo` will be returning `this is more content`.
+
+The pathpattern parameter must be a ruby Regexp object or a string containing a valid regular expression.
 
 You can also verify what requests happen on a double (spy on it). Say this is a Given part of a test:
 
@@ -115,6 +119,15 @@ req.body.should == some_expected_payload
 JSON.parse(req.params).should == expected_params_hash
 JSON.parse(req.rack_env)['HTTP_ACCEPT'].should == 'text/html'
 ```
+
+If you want to simulate a delayed time to first byte to test how your application handles latency or time outs you can
+use the delay property when you create the double.
+
+```ruby
+ @double = RestAssured::Double.create(fullpath: '/slow-products', delay: 5)
+```
+
+Now, when a request is made to `http://localhost:4578/slow-products`, then the server will pause for 5 seconds before responding.
 
 Use REST api to clear doubles/redirects between tests:
 
@@ -137,18 +150,29 @@ For using REST-assured from non-ruby environments.
   - __verb__ - one of http the following http verbs: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`. Optional. `GET` is default.
   - __status__ - status returned when double is requested. Optional. `200` is default.
   - __response_headers__ - key/value map of headers. Optional.
+  - __delay__ - the length of time in seconds the server should pause before sending the response.  Optional.
   
   Example:
 
 ```
-    $ curl -d 'fullpath=/api/something&content=awesome&response_headers%5BContent-Type%5D=text%2Fhtml' http://localhost:4578/doubles
+    $ curl -d 'fullpath=%2Fapi%2Fsomething%5C%3Fparam%3D.*&content=awesome&response_headers%5BContent-Type%5D=text%2Fhtml' http://localhost:4578/doubles
     {"double":{"active":true,"content":"awesome","description":null,"fullpath":"/api/something","id":1,"response_headers":{"Content-Type":"text/html"},"status":200,"verb":"GET"}}
 
     $ curl http://localhost:4578/api/something
     awesome
 ```
+  Example using a regular expression for the path:
+  ```
+      $ curl -d 'pathpattern=/api/something\?param=.*&content=awesome&response_headers%5BContent-Type%5D=text%2Fhtml' http://localhost:4578/doubles
+      {"double":{"active":true,"content":"awesome","description":null,"pathpattern":"/api/something\?param=.*","id":1,"response_headers":{"Content-Type":"text/html"},"status":200,"verb":"GET"}}
 
-  If there is more than one double for the same fullpath and verb, the last created one gets served. In UI you can manually control which double is 'active' (gets served).
+      $ curl http://localhost:4578/api/something?param=foo
+      awesome
+  ```
+
+  If there is more than one double for the same fullpath and verb, the last created one gets served.
+  Doubles with `fullpath`'s are served in preference to `pathpattern`'s.
+  In UI you can manually control which double is 'active' (gets served).
 
 #### Get double state
 
@@ -161,6 +185,7 @@ For using REST-assured from non-ruby environments.
         "double": {
             "verb": "GET",
             "fullpath": "/api/something",
+            "pathpattern" : null,
             "response_headers": {
                 "Content-Type": "text/html"
             },
@@ -178,7 +203,8 @@ For using REST-assured from non-ruby environments.
             "content": "awesome",
             "description": null,
             "status": 200,
-            "active": true
+            "active": true,
+            "delay" : 0
         }
     }
 
@@ -224,7 +250,7 @@ Here is the rest API for managing redirects:
   
 ## Running tests
 
-Tests require there to be mysql database `rest_assured_test` accessible by `root` with no password. Cucumber tests also need firefox.
+Tests require postgres. Connection params are read from environment variables `DB_HOST`, `DB_PORT` and `DB_USER` (defaults are `localhost`, `5432` and `postgres`). Cucumber tests also need Chrome.
 
     $ git clone git://github.com/artemave/REST-assured.git
     $ cd rest-assured && bundle install

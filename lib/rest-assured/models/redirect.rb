@@ -1,11 +1,11 @@
+require 'active_record'
+
 module RestAssured
   module Models
     class Redirect < ActiveRecord::Base
-      attr_accessible :pattern, :to, :position
-
       validates_presence_of :pattern, :to
 
-      scope :ordered, order('position')
+      scope :ordered, -> { order('position') }
 
       before_create :assign_position
 

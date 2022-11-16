@@ -5,6 +5,7 @@ require 'rspec'
 require 'rack/test'
 require 'capybara'
 require 'capybara/cucumber'
+require 'capybara/poltergeist'
 require 'database_cleaner'
 require 'anticipate'
 require 'awesome_print'
@@ -26,26 +27,31 @@ module RackHeaderHack
   end
 end
 
-# Capybara.register_driver :selenium do |app|
-#   Capybara::Selenium::Driver.new(app, :browser => :chrome)
-# end
+Capybara.register_driver :selenium do |app|
+  Capybara::Selenium::Driver.new(app, :browser => :chrome)
+end
+Capybara.javascript_driver = ENV['FF'] ? :selenium : :poltergeist
 
 World(Capybara, Rack::Test::Methods, RackHeaderHack, WorldHelpers, Anticipate)
 
 require 'rest-assured/config'
-db_opts = { :adapter => 'mysql' }
+db_opts = {
+  adapter: 'postgres',
+  dbhost: ENV.fetch('DB_HOST', 'localhost'),
+  dbport: ENV.fetch('DB_PORT', 5432),
+  dbuser: ENV.fetch('DB_USER', 'postgres')
+}
 RestAssured::Config.build(db_opts)
 
 require 'rest-assured'
-require 'shoulda-matchers'
 
-RestAssured::Server.start(db_opts.merge(:port => 9876))
+RestAssured::Server.start(db_opts.merge(:port => 19876))
 
 Before "@api_server" do
   RestAssured::Server.stop
 end
 After "@api_server" do
-  RestAssured::Server.start(db_opts.merge(:port => 9876))
+  RestAssured::Server.start(db_opts.merge(:port => 19876))
 end
 
 require 'rest-assured/application'

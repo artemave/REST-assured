@@ -1,15 +1,17 @@
 bundler_args: --without development
+sudo: false
+# Travis bug, see https://github.com/bundler/bundler/pull/3559
+cache: bundler
+before_install: gem update bundler
 rvm:
-  - 1.9.3
-  - 2.0.0
-  - 2.1.0
+  - 2.2.2
+  - 2.4.1
 env: DISPLAY=:99.0
+services:
+  - postgresql
 before_script:
-  - "mysql -e 'create database rest_assured_test;'"
-  - "sh -e /etc/init.d/xvfb start"
-script: "bundle exec rspec spec && bundle exec cucumber --format progress"
+  - "createdb rest_assured_test"
+script: "bundle exec rspec spec && bundle exec cucumber"
 branches:
   only:
     - master
-notifications:
-  email: false

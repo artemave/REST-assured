@@ -19,7 +19,7 @@ OptionParser.new do |opts|
   end
 
   opts.on('-u', '--dbuser DBUSER', "Db username (mysql, postgresql only)") do |user|
-    user_opts[:user] = user
+    user_opts[:dbuser] = user
   end
 
   opts.on('--dbpass DBPASSWORD', 'Db password (mysql, postgresql only). Defaults to empty') do |password|

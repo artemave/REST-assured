@@ -1,4 +1,4 @@
-class CreateRequests < ActiveRecord::Migration
+class CreateRequests < ActiveRecord::Migration[4.2]
   def self.up
     create_table :requests do |t|
       t.integer :double_id

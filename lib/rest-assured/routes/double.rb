@@ -17,7 +17,7 @@ module RestAssured
         redirect to('/doubles')
       end
 
-      router.get %r{^/doubles(\.json)?$} do |needs_json|
+      router.get %r{/doubles(\.json)?} do |needs_json|
         @doubles = Models::Double.all
         if needs_json
           body @doubles.to_json
@@ -40,10 +40,10 @@ module RestAssured
         end
       end
 
-      router.post /^\/doubles(\.json)?$/ do |needs_json|
+      router.post /\/doubles(\.json)?/ do |needs_json|
         begin
           data = request.body.read
-          d = MultiJson.load(data)['double']
+          d = JSON.load(data)
 
           # fix acitve resource dumbness
           if d['response_headers'] and d['response_headers']['response_headers']
@@ -51,10 +51,10 @@ module RestAssured
           end
         rescue
           d = params['double'] ||
-            params.slice(*%w[fullpath content description verb status response_headers])
+            params.slice(*%w[fullpath pathpattern content description verb status response_headers delay])
         end
 
-        @double = Models::Double.create(d) 
+        @double = Models::Double.create(d)
 
         if needs_json
           if @double.errors.present?
@@ -101,7 +101,7 @@ module RestAssured
         end
       end
 
-      router.delete %r{/doubles/(\d+)(\.json)?$} do |id, needs_json|
+      router.delete %r{/doubles/(\d+)(\.json)?} do |id, needs_json|
         if Models::Double.destroy(id)
           flash[:notice] = 'Double deleted'
           redirect '/doubles' unless needs_json
@@ -109,7 +109,7 @@ module RestAssured
       end
 
       router.delete '/doubles/all' do
-        status Models::Double.delete_all ? 200 : 500
+        status Models::Double.destroy_all ? 200 : 500
       end
     end
   end

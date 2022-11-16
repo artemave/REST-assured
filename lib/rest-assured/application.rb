@@ -35,7 +35,7 @@ module RestAssured
     include DoubleRoutes
     include RedirectRoutes
 
-    %w{get post put delete}.each do |verb|
+    %w{get post put delete patch}.each do |verb|
       send verb, /.*/ do
         Response.perform(self)
       end

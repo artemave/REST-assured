@@ -1,4 +1,4 @@
-class AddMethodToFixtures < ActiveRecord::Migration
+class AddMethodToFixtures < ActiveRecord::Migration[4.2]
   def self.up
     add_column :fixtures, :method, :string
   end
