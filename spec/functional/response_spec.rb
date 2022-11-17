@@ -3,7 +3,7 @@ require 'rest-assured/routes/response'
 
 module RestAssured
   describe Response do
-    [:get, :post, :put, :delete, :patch].each do |verb|
+    [:get, :post, :put, :delete, :patch, :options, :head].each do |verb|
       it "processes a #{verb.to_s.upcase} request" do
 
         expect(Response).to receive(:perform).with(an_instance_of(RestAssured::Application))
