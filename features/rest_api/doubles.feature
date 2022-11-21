@@ -97,6 +97,11 @@ Feature: use doubles via api
     When I "GET" "/api/something"
     Then I should get 404 in response status
 
+  Scenario: request full path that matches more than one path pattern
+    Given there is double with "^.*$" as pathpattern and "test content" as response content
+    When I "OPTIONS" "/api/sam"
+    Then I should get 204 in response status
+
   Scenario: clear doubles
     Given there are some doubles
     When I delete all doubles
