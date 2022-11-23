@@ -126,7 +126,8 @@ module RestAssured
                                 adapter = RUBY_PLATFORM == "java" ? 'jdbcsqlite3' : 'sqlite3'
                                 {
                                   :adapter => adapter,
-                                  :database => AppConfig.database || default_database
+                                  :database => AppConfig.database || default_database,
+                                  :timeout => 1000
                                 }
                               elsif AppConfig.adapter =~ /postgres|mysql/i
                                 adapter = $&.downcase
