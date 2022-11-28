@@ -79,7 +79,7 @@ module RestAssured
 
       it "reports failure when creating with invalid parameters" do
         post '/doubles', invalid_params
-
+        puts last_response.inspect
         expect(last_response).to be_ok
         expect(last_response.body).to match(/Crumps!.*Exactly one of fullpath or pathpattern must be present/)
       end

@@ -21,6 +21,7 @@ group :test do
   gem 'simplecov'
   gem 'awesome_print'
   gem 'puma'
+  gem 'phantomjs', :require => 'phantomjs/poltergeist'
 end
 
 # skipped for heroku and travis
