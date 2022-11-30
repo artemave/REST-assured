@@ -2,8 +2,6 @@ source "https://rubygems.org"
 
 gemspec
 
-gem 'pg'
-
 # skipped for heroku
 group :test do
   gem 'cucumber'

@@ -68,6 +68,8 @@ module RestAssured
 
       it "creates double" do
         post '/doubles', valid_params
+        puts last_response.inspect
+
         follow_redirect!
 
         expect(last_request.fullpath).to eq('/doubles')

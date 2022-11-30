@@ -10,6 +10,7 @@ require 'database_cleaner'
 require 'anticipate'
 require 'awesome_print'
 require 'rest-assured/utils/port_explorer'
+require 'phantomjs'
 require File.dirname(__FILE__) + '/world_helpers'
 
 ENV['RACK_ENV'] = 'test'
@@ -27,8 +28,14 @@ module RackHeaderHack
   end
 end
 
+Capybara.register_driver :poltergeist do |app|
+  Capybara::Poltergeist::Driver.new(app, :phantomjs => Phantomjs.path)
+end
+
 Capybara.register_driver :selenium do |app|
   Capybara::Selenium::Driver.new(app, :browser => :chrome)
+
+  # Capybara::Poltergeist::Driver.new(app, :phantomjs => Phantomjs.path)
 end
 Capybara.javascript_driver = ENV['FF'] ? :selenium : :poltergeist
 
