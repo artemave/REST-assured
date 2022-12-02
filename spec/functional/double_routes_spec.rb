@@ -68,7 +68,6 @@ module RestAssured
 
       it "creates double" do
         post '/doubles', valid_params
-        puts last_response.inspect
 
         follow_redirect!
 
@@ -81,7 +80,6 @@ module RestAssured
 
       it "reports failure when creating with invalid parameters" do
         post '/doubles', invalid_params
-        puts last_response.inspect
         expect(last_response).to be_ok
         expect(last_response.body).to match(/Crumps!.*Exactly one of fullpath or pathpattern must be present/)
       end

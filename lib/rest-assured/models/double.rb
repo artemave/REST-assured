@@ -9,8 +9,6 @@ module RestAssured
       VERBS = %w{GET POST PUT DELETE HEAD PATCH OPTIONS}
       STATUSES = Net::HTTPResponse::CODE_TO_OBJ.keys.map(&:to_i)
       MAX_DELAY = 30
-      # needed for spec test TODO: possibly move out to test specific env/world class
-      ActiveRecord::Base.use_yaml_unsafe_load=true
 
       validate :fullpath_or_pattern
       validate :pattern_is_regex

@@ -12,6 +12,7 @@ require 'rest-assured/routes/response'
 
 module RestAssured
   class Application < Sinatra::Base
+    ActiveRecord::Base.use_yaml_unsafe_load=true
 
     include Config
 

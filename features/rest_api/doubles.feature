@@ -98,7 +98,7 @@ Feature: use doubles via api
     Then I should get 404 in response status
 
   Scenario: request full path that matches more than one path pattern
-    Given there is double with "^.*$" as pathpattern and "test content" as response content
+    Given there is double with "^.*$" as pathpattern, "test content" as response content, "OPTIONS" as request verb and "204" as status
     When I "OPTIONS" "/api/sam"
     Then I should get 204 in response status
 
