@@ -21,7 +21,7 @@ end
 
 Then /^I should be able to get json representation of that double from response$/ do
   d = RestAssured::Models::Double.last
-  JSON.load( @create_a_double_response ).should == MultiJson.load( d.to_json )
+  JSON.load( @create_a_double_response ).should == JSON.load( d.to_json )
 end
 
 Then /^I should get {int} in response status$/ do |status|

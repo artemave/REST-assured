@@ -77,7 +77,7 @@ You can also [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://he
 
 ## Usage
 
-REST-assured can do two things: respond to a particular path and method (e.g. GET /stuff/v2?thing=1) and redirect requests based on a pattern (e.g. all /foo\* will redirect to http://example.com/bar). Both of these are available to create/read/delete in runtime via api.
+REST-assured can do two things: respond to a particular path and method (e.g. GET /stuff/v2?thing=1) and redirect requests based on a pattern (e.g. all /foo\* will redirect to http://example.com/bar). Both of these are available to create/read/delete/head/options in runtime via api.
 
 ### Ruby API
 

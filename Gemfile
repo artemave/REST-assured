@@ -2,8 +2,6 @@ source "https://rubygems.org"
 
 gemspec
 
-gem 'pg'
-
 # skipped for heroku
 group :test do
   gem 'cucumber'
@@ -21,6 +19,7 @@ group :test do
   gem 'simplecov'
   gem 'awesome_print'
   gem 'puma'
+  gem 'phantomjs', :require => 'phantomjs/poltergeist'
 end
 
 # skipped for heroku and travis

@@ -12,6 +12,7 @@ require 'rest-assured/routes/response'
 
 module RestAssured
   class Application < Sinatra::Base
+    ActiveRecord::Base.use_yaml_unsafe_load=true
 
     include Config
 
@@ -35,7 +36,7 @@ module RestAssured
     include DoubleRoutes
     include RedirectRoutes
 
-    %w{get post put delete patch}.each do |verb|
+    %w{get post put delete patch options head}.each do |verb|
       send verb, /.*/ do
         Response.perform(self)
       end

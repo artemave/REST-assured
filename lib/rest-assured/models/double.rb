@@ -6,7 +6,7 @@ module RestAssured
     class Double < ActiveRecord::Base
       serialize :response_headers, Hash
 
-      VERBS = %w{GET POST PUT DELETE HEAD PATCH}
+      VERBS = %w{GET POST PUT DELETE HEAD PATCH OPTIONS}
       STATUSES = Net::HTTPResponse::CODE_TO_OBJ.keys.map(&:to_i)
       MAX_DELAY = 30
 
